@@ -7,6 +7,11 @@
 - Reading descriptions to understand data provenance, processing notes, and caveats.
 - Searching for a column by name or topic across all resources.
 
+In this skill, metadata discovery is **jq-first**. Prefer jq for descriptor metadata,
+and only fall back to DuckDB or Python when jq cannot do the task cleanly (for
+example: remote-only access without download, or complex transforms that would be
+fragile in jq) and those tools are available.
+
 ---
 
 ## Spec reference
@@ -50,9 +55,9 @@ md5sum stations.csv
 A `datapackage.json` can be megabytes with hundreds of resources and thousands of
 fields. Always query it selectively — extract only the slice you need.
 
-**Do not use Python for metadata queries.** Use jq or DuckDB instead —
-they are purpose-built for selective extraction. jq works on local files; DuckDB can
-query both local files and remote URLs directly.
+Use jq by default for descriptor metadata queries. If jq is unavailable or clearly
+unsuitable for a specific metadata task, fallback to DuckDB or Python is acceptable.
+Use DuckDB primarily for querying the data files referenced by resource `path`.
 
 ---
 
@@ -115,20 +120,20 @@ Store the local path in `PKG` for reuse in queries below.
 
 ---
 
-## Steps 2–5: Query the descriptor
+## Steps 2-5: Query the descriptor
 
-Use **jq** for local files (see below) or **DuckDB** for local or remote files (see
-the DuckDB section). Both tools work on the same descriptor — pick the one that fits
-your setup.
+Use **jq** by default for descriptor metadata queries so the workflow stays consistent
+and easy to debug. If jq is unavailable or the query is impractical in jq, use
+DuckDB or Python as a fallback.
 
 ---
 
 ## Steps 2–5: jq (local files only)
 
-jq is the best tool for selective querying of a local JSON file. It reads only what
+jq is the best default for selective querying of a local JSON file. It reads only what
 you ask for and requires no additional setup. **jq cannot fetch over HTTPS** — if the
 descriptor is remote, download it first with `curl -O <URL>`, then point jq at the
-local file. (To query a remote descriptor without downloading, use DuckDB instead.)
+local file. If downloading is not feasible, DuckDB is a reasonable fallback.
 
 ### Step 2: Identify candidate resources
 
@@ -217,84 +222,22 @@ see [`storage-backends.md`](storage-backends.md).
 
 ---
 
-## Steps 2–5: DuckDB (local and remote)
+## Step 5 handoff: default to DuckDB for data queries
 
-DuckDB is a standalone CLI tool — no Python environment required. Install it with
-`brew install duckdb`, `conda install duckdb`, or download from <https://duckdb.org/>.
-Use `/duckdb-skills:query` to run queries through it — that skill handles CLI
-invocation, session state, natural language, and large result warnings.
+Once jq has identified the resource path, switch to DuckDB for the actual data query.
+Keep these concerns separate:
 
-DuckDB can query the descriptor as a JSON file using SQL.
+- jq: default for descriptor metadata (`resources`, `schema`, descriptions, paths)
+- DuckDB: default for table/file contents (and optional metadata fallback when needed)
 
-**Typed-struct access**: `read_json(file, format='auto')` infers the full structure of `datapackage.json` and materialises `resources` as a typed `STRUCT[]`. Once unnested, each `r` is a typed STRUCT — use **dot-notation** (`r.name`, `r.schema.fields`) for nested access. The JSON path operators (`r->>'$.name'`) also work for scalar fields but return `JSON` for sub-objects and arrays, which `UNNEST` cannot iterate. Dot-notation is both more readable and more reliable for nested fields.
+```bash
+# Step 4 in jq: get the resource path
+REL_PATH=$(jq -r '.resources[] | select(.name == "my_table") | .path' "$PKG")
 
-```sql
--- Count resources (Step 2)
-SELECT count(*)
-FROM (SELECT unnest(resources) AS r FROM read_json('datapackage.json', format='auto'));
-
--- List all resource names and paths (Steps 2 and 4)
-SELECT r.name, r.path
-FROM (SELECT unnest(resources) AS r FROM read_json('datapackage.json', format='auto'));
-
--- Get description for a specific resource (Step 3)
-SELECT r.description
-FROM (SELECT unnest(resources) AS r FROM read_json('datapackage.json', format='auto'))
-WHERE r.name = 'my_table';
-
--- List all metadata for every field in a resource (Step 3)
-SELECT f AS field_metadata
-FROM (
-    SELECT unnest(r.schema.fields) AS f
-    FROM (SELECT unnest(resources) AS r FROM read_json('datapackage.json', format='auto'))
-    WHERE r.name = 'my_table'
-);
-
--- Select specific known fields plus any extras you discover (Step 3)
-SELECT
-    f.name,
-    f.description,
-    f.unit,
-    f.warning
-FROM (
-    SELECT unnest(r.schema.fields) AS f
-    FROM (SELECT unnest(resources) AS r FROM read_json('datapackage.json', format='auto'))
-    WHERE r.name = 'my_table'
-);
-
--- Explore all top-level package fields, excluding resources (Step 3)
-SELECT * EXCLUDE (resources) FROM read_json('datapackage.json', format='auto');
+# Resolve local path (if relative) and query data with DuckDB
+duckdb -c "SELECT * FROM read_parquet('$REL_PATH') LIMIT 10"
+duckdb -c "SELECT * FROM read_csv('$REL_PATH') LIMIT 10"
 ```
 
-DuckDB can also read a remote descriptor directly without downloading (Step 1 optional):
-
-```sql
-SELECT r->>'$.name' AS name
-FROM (
-    SELECT unnest(resources) AS r
-    FROM read_json('https://example.com/data/datapackage.json', format='auto')
-);
-```
-
-DuckDB is especially useful when you want to **query descriptor metadata and data
-files in the same session** (Steps 3–5). Once you have found a resource's path from
-the descriptor, you can query it immediately:
-
-```sql
--- After finding a resource path from the descriptor, query it directly (Step 5)
-SELECT * FROM read_parquet('https://example.com/data/my_table.parquet') LIMIT 10;
-SELECT * FROM read_csv('https://example.com/data/my_table.csv') LIMIT 10;
--- For attached DuckDB or SQLite files, use the alias set up by attach-db
-SELECT * FROM my_db.my_table LIMIT 10;
-```
-
-### Interrupting a long or large query
-
-If a query runs too long or starts returning too much data, interrupt it with `Ctrl+C`
-in the terminal. In the `/duckdb-skills:query` skill, the `query` step estimates result
-size before running and warns you if it exceeds 1M rows. Always add `LIMIT` when
-exploring unfamiliar tables:
-
-```sql
-SELECT * FROM read_parquet('large_table.parquet') LIMIT 1000;
-```
+For `.duckdb` and `.sqlite` resources, follow the attach-and-query patterns in
+[`storage-backends.md`](storage-backends.md).
