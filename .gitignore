@@ -2,9 +2,9 @@
 .pixi/*
 !.pixi/config.toml
 
-# agent specific directories
-.agents/
-.claude/
+# agent specific settings
+.claude/settings.json
+
 # agent scratch workspace
 *-workspace/
 
@@ -19,3 +19,9 @@
 
 # built documentation
 site/
+
+# Python files
+__pycache__
+
+# Longer commit message scratch file
+commit.txt

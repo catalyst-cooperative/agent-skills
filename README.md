@@ -22,6 +22,8 @@ PUDL (the Public Utility Data Liberation Project).
 - [Equipping Agents for the Real World With Agent Skills](https://claude.com/blog/equipping-agents-for-the-real-world-with-agent-skills)
 - [Claude Developer Guide Agent Skills Overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
 - [Create a Claude Plugin Marketplace](https://code.claude.com/docs/en/plugin-marketplaces)
+- [Evals for AI Agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
+- [Testing Agent Skills Systematically with Evals](https://developers.openai.com/blog/eval-skills)
 
 ## Agentic (Data) Engineering
 

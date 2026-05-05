@@ -1,0 +1,67 @@
+{
+  "name": "daily-readings",
+  "title": "Daily Temperature and Precipitation Readings",
+  "description": "Daily summary observations from each station.\n\nNote: readings before 2010-01-01 were collected using an older instrument calibration standard and may differ systematically by 0.3\u20130.5 \u00b0C from post-2010 readings. Do not combine pre- and post-2010 data in a single analysis without applying the calibration correction described in the methodology notes.",
+  "schema": {
+    "fields": [
+      {
+        "name": "station_id",
+        "type": "string",
+        "description": "References stations.station_id. Every reading must belong to a known station.",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "date",
+        "type": "date",
+        "description": "Calendar date of the observation (local time at the station).",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "temp_min_c",
+        "type": "number",
+        "description": "Minimum air temperature recorded during the 24-hour calendar day.",
+        "unit": "degrees Celsius"
+      },
+      {
+        "name": "temp_max_c",
+        "type": "number",
+        "description": "Maximum air temperature recorded during the 24-hour calendar day.",
+        "unit": "degrees Celsius"
+      },
+      {
+        "name": "precipitation_mm",
+        "type": "number",
+        "description": "Total liquid-equivalent precipitation accumulated during the calendar day.",
+        "unit": "millimeters",
+        "warning": "Null values indicate the station did not report precipitation for that day \u2014 not zero precipitation. Do not substitute 0 for null in analysis. A value of 0.0 means the station reported and confirmed trace or no precipitation."
+      },
+      {
+        "name": "wind_speed_avg_ms",
+        "type": "number",
+        "description": "Average wind speed over the calendar day.",
+        "unit": "meters per second"
+      }
+    ],
+    "primaryKey": [
+      "station_id",
+      "date"
+    ],
+    "foreignKeys": [
+      {
+        "fields": [
+          "station_id"
+        ],
+        "reference": {
+          "resource": "stations",
+          "fields": [
+            "station_id"
+          ]
+        }
+      }
+    ]
+  }
+}

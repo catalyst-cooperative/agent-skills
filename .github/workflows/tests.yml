@@ -1,0 +1,31 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test-datapackage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: prefix-dev/setup-pixi@v0.9.5
+        with:
+          frozen: true
+
+      - name: Run datapackage tests
+        run: pixi run test-datapackage
+
+  check-datapackage-catalog-urls:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: prefix-dev/setup-pixi@v0.9.5
+        with:
+          frozen: true
+
+      - name: Check datapackage catalog URL availability
+        run: pixi run python dev/tools/check_datapackage_catalog_urls.py

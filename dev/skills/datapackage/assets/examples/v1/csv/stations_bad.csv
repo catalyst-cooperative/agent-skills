@@ -1,0 +1,4 @@
+station_id,station_name,latitude,longitude,elevation_m,active,commissioned_date
+WS-0001,Portland Airport,45.587,-122.597,nine,yes,1978-01-01
+WS-0001,Duplicate Station,45.587,-122.597,9,true,not-a-date
+WS-0003,Crater Lake NPS,42.944,-122.109,2135,true,1931-07-01

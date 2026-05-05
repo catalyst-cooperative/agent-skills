@@ -1,0 +1,16 @@
+{
+  "name": "weather-stations",
+  "title": "Example Weather Station Dataset",
+  "licenses": [
+    {
+      "name": "CC-BY-4.0",
+      "path": "https://creativecommons.org/licenses/by/4.0/"
+    }
+  ],
+  "sources": [
+    {
+      "title": "National Weather Service",
+      "path": "https://www.weather.gov/"
+    }
+  ]
+}

@@ -1,0 +1,760 @@
+{
+  "catalog": "datapackage-in-the-wild",
+  "generated_at": "2026-04-22",
+  "description": "Curated pointers to real-world remote datapackage descriptors for agent testing. This file stores metadata only (not embedded descriptors).",
+  "selection_notes": [
+    "Mix of Frictionless v1, v2, and ambiguous/legacy descriptors.",
+    "Primarily tabular datasets with a wider spread of tabular formats (CSV, TSV, XLSX, Parquet, Arrow, and text-based tabular feeds) plus a small set of non-tabular edge cases.",
+    "Includes descriptors in multiple human languages (English, Spanish, Portuguese, German).",
+    "Includes descriptors that are imperfect or fail frictionless validation while still being navigable."
+  ],
+  "future_discovery_prompt": "Find real-world datapackage.json descriptors hosted remotely (prefer commit-pinned raw GitHub URLs), focusing primarily on tabular resources but spanning diverse tabular formats (csv, tsv, xlsx/xls, parquet, and where available sqlite/duckdb-backed conventions) plus a smaller set of non-tabular edge cases (json, geojson, pdf, images, zip). Include a mix of Frictionless v1, v2, and ambiguous descriptors with rich metadata and meaningful resource counts. For each candidate, record title/name, concise description, URL, inferred spec version, resource count, format summary, approximate size metadata if present, validation status from frictionless CLI, and likely reasons for validation failures. Keep only descriptors that remain publicly reachable and useful for agent exploration tasks.",
+  "entries": [
+    {
+      "id": "ireland-carbon-budget-scenarios-2021",
+      "title": "Carbon Budget Scenarios for Ireland's Energy System, 2021-50",
+      "description": "Large open energy-system scenario package used for Ireland carbon budget analysis.",
+      "datapackage_url": "https://raw.githubusercontent.com/MaREI-EPMG/ireland-carbon-budget-scenarios-2021/cd8460abe233e2565a3dae0bfa68c259c725f779/datapackage.json",
+      "source_repository": "MaREI-EPMG/ireland-carbon-budget-scenarios-2021",
+      "spec_version": "v1",
+      "version_inference": "profile=data-package",
+      "resources_count": 103,
+      "data_formats": [
+        "csv"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "timeout",
+      "validation_note": "Validation exceeded a 35s cap in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "validation_runtime_or_network_timeout"
+      ]
+    },
+    {
+      "id": "vega-datasets",
+      "title": "vega-datasets",
+      "description": "Widely used visualization dataset collection for Vega ecosystem with many resource types.",
+      "datapackage_url": "https://raw.githubusercontent.com/vega/vega-datasets/51bb7c40cd93ef117f31038eb1fcd29cb1a9f973/datapackage.json",
+      "source_repository": "vega/vega-datasets",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 73,
+      "data_formats": [
+        "arrow",
+        "csv",
+        "geojson",
+        "image",
+        "json",
+        "parquet",
+        "tsv",
+        "zip"
+      ],
+      "has_non_tabular_resources": true,
+      "approx_dataset_size_bytes": 42614248,
+      "approx_dataset_size_note": "Sum of declared resource bytes.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "descriptor_missing_explicit_profile_or_schema",
+        "high_resource_count_increases_validation_surface",
+        "mixed_or_non_tabular_resource_types",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "human_services_data",
+      "title": "Human Services Data Specification",
+      "description": "Community specification package for describing organizations, services, locations, and related metadata in human services.",
+      "datapackage_url": "https://raw.githubusercontent.com/openreferral/specification/74fcf85b0534fd8c6e61eae13d246b4b375a4495/datapackage.json",
+      "source_repository": "openreferral/specification",
+      "spec_version": "v1",
+      "version_inference": "profile=tabular-data-package",
+      "resources_count": 24,
+      "data_formats": [
+        "csv"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "high_resource_count_increases_validation_surface",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "osembe",
+      "title": "The Open Source energy Model Base for the European Union",
+      "description": "Energy-system model input datapackage with many scenario resources.",
+      "datapackage_url": "https://raw.githubusercontent.com/KTH-dESA/OSeMBE_ECEMF/f65a46c9fefd9342ece41c70dd350564586282f9/input_data/diag-npi/datapackage.json",
+      "source_repository": "KTH-dESA/OSeMBE_ECEMF",
+      "spec_version": "v1",
+      "version_inference": "profile=tabular-data-package",
+      "resources_count": 65,
+      "data_formats": [
+        "csv"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "high_resource_count_increases_validation_surface",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "vbb-gtfs-2019-03-19",
+      "title": "GTFS data for Berlin & Brandenburg public transport.",
+      "description": "Transit feed package for Berlin/Brandenburg GTFS tables stored as text resources.",
+      "datapackage_url": "https://raw.githubusercontent.com/derhuerst/vbb-gtfs.jannisr.de/7087ddbacb61d0b0f9c3aabaf75f492054b2f2e6/2019-03-19/datapackage.json",
+      "source_repository": "derhuerst/vbb-gtfs.jannisr.de",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 9,
+      "data_formats": [
+        "txt"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "descriptor_missing_explicit_profile_or_schema",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "divisiones-territoriales-costa-rica",
+      "title": "Divisiones territoriales de Costa Rica",
+      "description": "Divisiones territoriales de Costa Rica: provincias, cantones y distritos.",
+      "datapackage_url": "https://raw.githubusercontent.com/investigacion/divisiones-territoriales-data/f47149d1a2eef5399e37031954d997c00142acbe/datapackage.json",
+      "source_repository": "investigacion/divisiones-territoriales-data",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 8,
+      "data_formats": [
+        "csv",
+        "json"
+      ],
+      "has_non_tabular_resources": true,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment.",
+      "language_hint": "es",
+      "likely_validation_failure_reasons": [
+        "descriptor_missing_explicit_profile_or_schema",
+        "mixed_or_non_tabular_resource_types",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "nomes-proprios",
+      "title": "Nomes proprios em Portugal",
+      "description": "Listas de ocorrencias de nomes proprios aprovados ou rejeitados pelo IRN.",
+      "datapackage_url": "https://raw.githubusercontent.com/centraldedados/nomes_proprios/da89803b1a81065d41838883ebeceac9ecbd3619/datapackage.json",
+      "source_repository": "centraldedados/nomes_proprios",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 4,
+      "data_formats": [
+        "csv"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": 428980,
+      "approx_dataset_size_note": "Sum of declared resource bytes.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment.",
+      "language_hint": "pt",
+      "likely_validation_failure_reasons": [
+        "descriptor_missing_explicit_profile_or_schema",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "geda-2019-2020-ehis",
+      "title": "Gesundheit in Deutschland aktuell - GEDA 2019/2020-EHIS",
+      "description": "Deutschsprachiges Data Package zum GEDA Datensatz mit Verweisen auf Zenodo und GitHub.",
+      "datapackage_url": "https://raw.githubusercontent.com/robert-koch-institut/Gesundheit_in_Deutschland_Aktuell/87a2e74c21ce10f1a27911093fcd0761a48e4533/datapackage.json",
+      "source_repository": "robert-koch-institut/Gesundheit_in_Deutschland_Aktuell",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 1,
+      "data_formats": [
+        "csv"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "valid",
+      "validation_note": "Passes frictionless validate in this environment.",
+      "language_hint": "de",
+      "likely_validation_failure_reasons": []
+    },
+    {
+      "id": "open-parliament-romania",
+      "title": "Open Parliament Romania Data",
+      "description": "Legislative data from the Romanian Chamber of Deputies (deputies, proposals, motions, speeches).",
+      "datapackage_url": "https://raw.githubusercontent.com/ClaudiuCeia/open-parliament-ro/749ad7ece53ed60c9a48b76bc70b7a557bd0462a/data/datapackage.json",
+      "source_repository": "ClaudiuCeia/open-parliament-ro",
+      "spec_version": "v2",
+      "version_inference": "$schema=https://datapackage.org/profiles/2.0/datapackage.json",
+      "resources_count": 7,
+      "data_formats": [
+        "json"
+      ],
+      "has_non_tabular_resources": true,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "mixed_or_non_tabular_resource_types",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "gmns",
+      "title": "General Modeling Network Specification (GMNS)",
+      "description": "Transportation network specification datapackage used to share routable road network modeling data.",
+      "datapackage_url": "https://raw.githubusercontent.com/zephyr-data-specs/GMNS/4e51f4c7893f5df2c8c69ab21c5dc0abd9b69f48/spec/datapackage.json",
+      "source_repository": "zephyr-data-specs/GMNS",
+      "spec_version": "v2",
+      "version_inference": "$schema=https://datapackage.org/profiles/2.0/datapackage.json",
+      "resources_count": 25,
+      "data_formats": [
+        "csv"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "high_resource_count_increases_validation_surface",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "github-innovationgraph",
+      "title": "GitHub Innovation Graph",
+      "description": "Tabular metrics package used for open-source ecosystem innovation graph analyses.",
+      "datapackage_url": "https://raw.githubusercontent.com/github/innovationgraph/8faec9d72c7ec505480197d6dd580e6739fe2a96/datapackage.json",
+      "source_repository": "github/innovationgraph",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 10,
+      "data_formats": [
+        "csv"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "descriptor_missing_explicit_profile_or_schema",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "datasets-covid-19",
+      "title": "Novel Coronavirus 2019",
+      "description": "Public COVID-19 timeseries package from the datasets organization.",
+      "datapackage_url": "https://raw.githubusercontent.com/datasets/covid-19/bdd76cfa0d80a132898345bc21939f89b2e29137/datapackage.json",
+      "source_repository": "datasets/covid-19",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 9,
+      "data_formats": [
+        "csv"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "timeout",
+      "validation_note": "Validation exceeded a 30s cap in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "validation_runtime_or_network_timeout"
+      ]
+    },
+    {
+      "id": "kenneth-french-data-lib",
+      "title": "Kenneth french data lib",
+      "description": "Financial factors dataset package with primarily tabular resources plus compressed artifacts.",
+      "datapackage_url": "https://raw.githubusercontent.com/hannelita/Kenneth-French-Data-Library/f99404ccfb176aafca535590f2e6c6679ad03330/datapackage.json",
+      "source_repository": "hannelita/Kenneth-French-Data-Library",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 15,
+      "data_formats": [
+        "csv",
+        "zip"
+      ],
+      "has_non_tabular_resources": true,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "descriptor_missing_explicit_profile_or_schema",
+        "mixed_or_non_tabular_resource_types",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "ine-ipc-indice-precios",
+      "title": "Indice de Precios al Consumidor (INE)",
+      "description": "Inflation indicators package with mixed tabular file formats including CSV and XLSX.",
+      "datapackage_url": "https://raw.githubusercontent.com/mauforonda/indicadores_inflacion/2794a1c0cfdbbda8ba2b24b5e1459b0b65417107/datapackage.json",
+      "source_repository": "mauforonda/indicadores_inflacion",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 10,
+      "data_formats": [
+        "csv",
+        "xlsx"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment.",
+      "language_hint": "es",
+      "likely_validation_failure_reasons": [
+        "descriptor_missing_explicit_profile_or_schema",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "edgar-global-emissions",
+      "title": "EDGAR Global Emissions Dataset",
+      "description": "Sector and country greenhouse gas emissions package used in climate analysis.",
+      "datapackage_url": "https://raw.githubusercontent.com/openclimatedata/edgar/f33add1ecb2bdfe0e166fe0f8b6935b2a6278ed5/datapackage.json",
+      "source_repository": "openclimatedata/edgar",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 4,
+      "data_formats": [
+        "csv"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "valid",
+      "validation_note": "Passes frictionless validate in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": []
+    },
+    {
+      "id": "covid19-br",
+      "title": "Daily time series on COVID-19 in Brazil",
+      "description": "Brazil COVID-19 daily reports package built from state health secretariat data.",
+      "datapackage_url": "https://raw.githubusercontent.com/turicas/covid19-br/b5dfeb19a80c8e0b58781e995e921c1ee4a7f55a/datapackage.json",
+      "source_repository": "turicas/covid19-br",
+      "spec_version": "v1",
+      "version_inference": "profile=tabular-data-package",
+      "resources_count": 11,
+      "data_formats": [
+        "csv"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "gapminder-population-historic",
+      "title": "ddf--gapminder--population_historic",
+      "description": "Gapminder historic population package with many CSV resources and rich DDF structure.",
+      "datapackage_url": "https://raw.githubusercontent.com/open-numbers/ddf--gapminder--population_historic/e004e57abb3aa51377c7e48ef6f064d0dc159ade/datapackage.json",
+      "source_repository": "open-numbers/ddf--gapminder--population_historic",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 18,
+      "data_formats": [
+        "csv"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "valid",
+      "validation_note": "Passes frictionless validate in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": []
+    },
+    {
+      "id": "gapminder-co2-emissions",
+      "title": "ddf--gapminder--co2emissions",
+      "description": "Gapminder CO2 emissions package in DDF-style tabular resources.",
+      "datapackage_url": "https://raw.githubusercontent.com/open-numbers/ddf--gapminder--co2emissions/835c4d9b0f19cd64f89fc97aa6c3667f5cad338e/datapackage.json",
+      "source_repository": "open-numbers/ddf--gapminder--co2emissions",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 9,
+      "data_formats": [
+        "csv"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "valid",
+      "validation_note": "Passes frictionless validate in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": []
+    },
+    {
+      "id": "st-gallen-urban-indicators",
+      "title": "St. Gallen Urban Indicators",
+      "description": "Swiss urban indicators package with multiple tabular resources.",
+      "datapackage_url": "https://raw.githubusercontent.com/cividi/st-gallen-urban-indicators/12c560d38dc69659eff16aebec5a04810e33452a/datapackage.json",
+      "source_repository": "cividi/st-gallen-urban-indicators",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 8,
+      "data_formats": [
+        "csv"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "descriptor_missing_explicit_profile_or_schema",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "repatriating-offshore-funds-report",
+      "title": "Repatriating Offshore Funds: 2004 Tax Windfall For Select Multinationals",
+      "description": "Single-resource datapackage pointing at a source report PDF; useful non-tabular edge case.",
+      "datapackage_url": "https://raw.githubusercontent.com/reportsthatmatter/us-repatriating-offshore-funds/ebb7db2eed497b6d120e55ae388c496f787f152f/datapackage.json",
+      "source_repository": "reportsthatmatter/us-repatriating-offshore-funds",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 1,
+      "data_formats": [
+        "pdf"
+      ],
+      "has_non_tabular_resources": true,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "descriptor_missing_explicit_profile_or_schema",
+        "mixed_or_non_tabular_resource_types",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "oedatamodel-v111-normalization",
+      "title": "OpenEnergyPlatform data format for scenario data",
+      "description": "OEDataModel normalization datapackage (v111 latest) using a filename ending in -datapackage.json.",
+      "datapackage_url": "https://raw.githubusercontent.com/OpenEnergyPlatform/oedatamodel/aa440b7fdaa65d1a82294b1aa12a9e03e225bec2/oedatamodel/latest/v111/datapackage/OEDataModel-normalization-datapackage/OEDataModel-normalization-datapackage.json",
+      "source_repository": "OpenEnergyPlatform/oedatamodel",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 4,
+      "data_formats": [],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "descriptor_missing_explicit_profile_or_schema",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "oedatamodel-v110-concrete",
+      "title": "OpenEnergyPlatform data format for scenario data in human readable format",
+      "description": "OEDataModel concrete datapackage (release-history v110) with a non-exact datapackage filename.",
+      "datapackage_url": "https://raw.githubusercontent.com/OpenEnergyPlatform/oedatamodel/aa440b7fdaa65d1a82294b1aa12a9e03e225bec2/oedatamodel/release-history/v110/datapackage/OEDataModel-concrete-datapackage/OEDataModel-concrete-datapackage.json",
+      "source_repository": "OpenEnergyPlatform/oedatamodel",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 3,
+      "data_formats": [
+        "csv"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "descriptor_missing_explicit_profile_or_schema",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "oedatamodel-v100-normalization",
+      "title": "OpenEnergyPlatform data format for scenario data",
+      "description": "OEDataModel normalization datapackage (release-history v100) using a filename ending in -datapackage.json.",
+      "datapackage_url": "https://raw.githubusercontent.com/OpenEnergyPlatform/oedatamodel/aa440b7fdaa65d1a82294b1aa12a9e03e225bec2/oedatamodel/release-history/v100/datapackage/OEDataModel-normalization-datapackage/OEDataModel-normalization-datapackage.json",
+      "source_repository": "OpenEnergyPlatform/oedatamodel",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 4,
+      "data_formats": [],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "descriptor_missing_explicit_profile_or_schema",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "hackopendata-2024-farming",
+      "title": "Open Farming Hackdays 2024",
+      "description": "Hackathon event datapackage export with a filename ending in -datapackage.json.",
+      "datapackage_url": "https://raw.githubusercontent.com/OpendataCH/hackopendata-archive/3054c0022c62a307daf3f9dbeb1dfc2824473228/export/2024-farming-datapackage.json",
+      "source_repository": "OpendataCH/hackopendata-archive",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 2,
+      "data_formats": [],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment.",
+      "language_hint": "de",
+      "likely_validation_failure_reasons": [
+        "descriptor_missing_explicit_profile_or_schema",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "hackopendata-2023-energy",
+      "title": "Energy Data Hackdays 2023",
+      "description": "Hackathon event datapackage export for energy datasets using a suffixed datapackage filename.",
+      "datapackage_url": "https://raw.githubusercontent.com/OpendataCH/hackopendata-archive/3054c0022c62a307daf3f9dbeb1dfc2824473228/export/2023-energy-datapackage.json",
+      "source_repository": "OpendataCH/hackopendata-archive",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 2,
+      "data_formats": [],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "descriptor_missing_explicit_profile_or_schema",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "italian-immigration-datapackage",
+      "title": "Italian Immigration Data Package",
+      "description": "Datapackage on migration arrivals, nationalities, and reception statistics in Italy.",
+      "datapackage_url": "https://raw.githubusercontent.com/ondata/liberiamoli-tutti/2e4a3e2804a035fc056f6e3b1e432e56ac6933f1/sbarchi-migranti/dati/italian-immigration-datapackage.json",
+      "source_repository": "ondata/liberiamoli-tutti",
+      "spec_version": "v1",
+      "version_inference": "profile=data-package",
+      "resources_count": 3,
+      "data_formats": [
+        "csv"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment.",
+      "language_hint": "it",
+      "likely_validation_failure_reasons": [
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "soldi-e-politica-datapackage",
+      "title": "Soldi e politica datapackage",
+      "description": "Funding data about Italian political parties, shared as a v1 data package with suffixed filename.",
+      "datapackage_url": "https://raw.githubusercontent.com/ondata/liberiamoli-tutti/2e4a3e2804a035fc056f6e3b1e432e56ac6933f1/soldi_e_politica/dati/soldi_e_politica-datapackage.json",
+      "source_repository": "ondata/liberiamoli-tutti",
+      "spec_version": "v1",
+      "version_inference": "profile=data-package",
+      "resources_count": 2,
+      "data_formats": [
+        "csv"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "valid",
+      "validation_note": "Passes frictionless validate in this environment.",
+      "language_hint": "it",
+      "likely_validation_failure_reasons": []
+    },
+    {
+      "id": "pudl-ferc1-xbrl-nightly-sqlite",
+      "title": "PUDL FERC Form 1 XBRL datapackage (nightly)",
+      "description": "Nightly PUDL datapackage for FERC Form 1 XBRL data with SQLite-backed table resources and explicit schema fields.",
+      "datapackage_url": "https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/ferc1_xbrl_datapackage.json",
+      "source_repository": "catalyst-cooperative/pudl",
+      "spec_version": "v1",
+      "version_inference": "profile=tabular-data-package",
+      "resources_count": 370,
+      "data_formats": [
+        "sqlite"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment (descriptor paths point to local sqlite:/// build-machine locations).",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "high_resource_count_increases_validation_surface",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "pudl-ferc2-xbrl-nightly-sqlite",
+      "title": "PUDL FERC Form 2 XBRL datapackage (nightly)",
+      "description": "Nightly PUDL datapackage for FERC Form 2 XBRL data with SQLite-backed table resources and explicit schema fields.",
+      "datapackage_url": "https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/ferc2_xbrl_datapackage.json",
+      "source_repository": "catalyst-cooperative/pudl",
+      "spec_version": "v1",
+      "version_inference": "profile=tabular-data-package",
+      "resources_count": 434,
+      "data_formats": [
+        "sqlite"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment (descriptor paths point to local sqlite:/// build-machine locations).",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "high_resource_count_increases_validation_surface",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "pudl-ferc6-xbrl-nightly-sqlite",
+      "title": "PUDL FERC Form 6 XBRL datapackage (nightly)",
+      "description": "Nightly PUDL datapackage for FERC Form 6 XBRL data with SQLite-backed table resources and explicit schema fields.",
+      "datapackage_url": "https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/ferc6_xbrl_datapackage.json",
+      "source_repository": "catalyst-cooperative/pudl",
+      "spec_version": "v1",
+      "version_inference": "profile=tabular-data-package",
+      "resources_count": 206,
+      "data_formats": [
+        "sqlite"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment (descriptor paths point to local sqlite:/// build-machine locations).",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "high_resource_count_increases_validation_surface",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "pudl-ferc60-xbrl-nightly-sqlite",
+      "title": "PUDL FERC Form 60 XBRL datapackage (nightly)",
+      "description": "Nightly PUDL datapackage for FERC Form 60 XBRL data with SQLite-backed table resources and explicit schema fields.",
+      "datapackage_url": "https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/ferc60_xbrl_datapackage.json",
+      "source_repository": "catalyst-cooperative/pudl",
+      "spec_version": "v1",
+      "version_inference": "profile=tabular-data-package",
+      "resources_count": 88,
+      "data_formats": [
+        "sqlite"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment (descriptor paths point to local sqlite:/// build-machine locations).",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "high_resource_count_increases_validation_surface",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "pudl-ferc714-xbrl-nightly-sqlite",
+      "title": "PUDL FERC Form 714 XBRL datapackage (nightly)",
+      "description": "Nightly PUDL datapackage for FERC Form 714 XBRL data with SQLite-backed table resources and explicit schema fields.",
+      "datapackage_url": "https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/ferc714_xbrl_datapackage.json",
+      "source_repository": "catalyst-cooperative/pudl",
+      "spec_version": "v1",
+      "version_inference": "profile=tabular-data-package",
+      "resources_count": 26,
+      "data_formats": [
+        "sqlite"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment (descriptor paths point to local sqlite:/// build-machine locations).",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "high_resource_count_increases_validation_surface",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "pudl-parquet-nightly",
+      "title": "PUDL Parquet datapackage (nightly)",
+      "description": "Nightly PUDL datapackage describing tabular Parquet resources with explicit schema fields for each table.",
+      "datapackage_url": "https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/pudl_parquet_datapackage.json",
+      "source_repository": "catalyst-cooperative/pudl",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 359,
+      "data_formats": [
+        "parquet"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "timeout",
+      "validation_note": "Validation exceeded a 45s cap in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "validation_runtime_or_network_timeout"
+      ]
+    }
+  ]
+}

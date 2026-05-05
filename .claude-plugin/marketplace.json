@@ -1,32 +1,43 @@
 {
-    "name": "catalyst-cooperative-agent-skills",
-    "owner": {
-        "name": "Zane Selvans",
-        "email": "zane.selvans@catalyst.coop"
+  "name": "catalyst-cooperative-agent-skills",
+  "owner": {
+    "name": "Zane Selvans",
+    "email": "zane.selvans@catalyst.coop"
+  },
+  "metadata": {
+    "description": "Skills for working with open energy system data from Catalyst Cooperative's Public Utility Data Liberation (PUDL) project, and to provide support to developers and open source contributors working on the open source data processing pipeline.",
+    "version": "0.2.0"
+  },
+  "plugins": [
+    {
+      "name": "frictionless-datapackage",
+      "description": "Navigate metadata and load data described by Frictionless Data Packages.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/datapackage"
+      ]
     },
-    "metadata": {
-        "description": "Skills for working with open energy system data from Catalyst Cooperative's Public Utility Data Liberation (PUDL) project, and to provide support to developers and open source contributors working on the open source data processing pipeline.",
-        "version": "0.1.0"
+    {
+      "name": "pudl-data",
+      "description": "Work with open energy system data distributed through the Public Utility Data Liberation (PUDL) project.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/datapackage",
+        "./skills/pudl"
+      ]
     },
-    "plugins": [
-        {
-            "name": "pudl-data",
-            "description": "Work with open energy system data distributed through the Public Utility Data Liberation (PUDL) project.",
-            "source": "./",
-            "strict": false,
-            "skills": [
-                "./skills/pudl"
-            ]
-        },
-        {
-            "name": "pudl-dev",
-            "description": "Agent support for developers contributing to the Public Utility Data Liberation (PUDL) project.",
-            "source": "./",
-            "strict": false,
-            "skills": [
-                "./skills/pudl",
-                "./skills/pudl-dev"
-            ]
-        }
-    ]
+    {
+      "name": "pudl-dev",
+      "description": "Agent support for developers contributing to the Public Utility Data Liberation (PUDL) project.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/datapackage",
+        "./skills/pudl",
+        "./skills/pudl-dev"
+      ]
+    }
+  ]
 }

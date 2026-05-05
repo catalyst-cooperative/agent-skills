@@ -1,0 +1,6 @@
+station_id,station_name,latitude,longitude,elevation_m,active,commissioned_date
+WS-0001,Portland Airport,45.587,-122.597,9,True,1978-01-01
+WS-0002,Mount Hood Meadows,45.331,-121.669,1706,True,1958-06-01
+WS-0003,Crater Lake NPS,42.944,-122.109,2135,True,1931-07-01
+WS-0004,Astoria Regional Airport,46.158,-123.879,3,False,1948-02-01
+WS-0005,Burns Municipal Airport,43.592,-118.955,1262,True,1954-09-01

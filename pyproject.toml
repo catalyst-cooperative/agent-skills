@@ -1,28 +1,65 @@
 [tool.pixi.workspace]
 channels = ["conda-forge"]
-platforms = ["osx-arm64", "osx-64", "linux-64"]
+platforms = ["osx-arm64", "osx-64", "linux-64", "linux-aarch64"]
 
 [tool.pixi.pypi-dependencies]
 mdformat-mkdocs = ">=5.1.4,<6"
-mdformat-gfm-alerts = ">=2.0.0,<3"
 mdformat_simple_breaks = ">=0.1.0,<1"
-mdformat-web = ">=0.2.0,<1"
 mdformat-wikilink = ">=0.3.0,<1"
 
-[tool.pixi.tasks]
+[tool.pixi.tasks.install-skills]
+cmd = "npx --yes skills experimental_install"
+description = "Install external skills from skills-lock.json into .agents/skills/"
+
+[tool.pixi.tasks.test-datapackage]
+cmd = "pytest dev/skills/datapackage/tests/ -v"
+description = "Run the datapackage skill test suite"
+
+[tool.pixi.tasks.docs-build]
+cmd = "zensical build"
+description = "Build the Zensical documentation site into site/"
+
+[tool.pixi.tasks.devcontainer-install]
+cmd = """
+pixi install \
+  && pixi run install-skills \
+  && pixi run npm install -g \
+      @anthropic-ai/claude-code \
+      @google/gemini-cli \
+      @openai/codex \
+      @mariozechner/pi-coding-agent \
+      opencode-ai
+"""
+description = "Set up the dev container: install pixi environment, skills, and agent CLIs (run once after first start)"
+
+[tool.pixi.tasks.devcontainer-rebuild]
+cmd = """
+docker volume rm agent-skills-pixi || true \
+  && docker build --no-cache -f .devcontainer/Dockerfile .
+"""
+description = "Rebuild the dev container image and recreate the pixi volume from scratch"
+
+[tool.pixi.tasks.devcontainer-start]
+cmd = "docker compose -f .devcontainer/compose.yml up -d"
+description = "Start the dev container in the background (for non-VS Code editors)"
+
+[tool.pixi.tasks.devcontainer-exec]
+cmd = "docker compose -f .devcontainer/compose.yml exec sandbox bash"
+description = "Open a bash shell inside the running dev container"
+
+[tool.pixi.tasks.devcontainer-stop]
+cmd = "docker compose -f .devcontainer/compose.yml down"
+description = "Stop and remove the dev container"
 
 [tool.pixi.dependencies]
+python = ">=3.14"
 duckdb = ">=1.5.1,<2"
 jq = ">=1.8.1,<2"
 prek = ">=0.3.8,<0.4"
 mdformat = ">=1.0.0,<2"
-mdformat-beautysh = ">=1.0.0,<2"
-mdformat-config = ">=0.2.1,<1"
 mdformat-footnote = ">=0.1.3,<1"
 mdformat-front-matters = ">=2.0.0,<3"
 mdformat-gfm = ">=1.0"
-mdformat-ruff = ">=0.1.3,<0.2"
-mdformat-shfmt = ">=0.2.0,<0.3"
 pandas = ">=3.0.2,<4"
 pyarrow = ">=23.0.1,<24"
 polars = ">=1.39.3,<2"
@@ -30,6 +67,7 @@ awscli = ">=2.34.23,<3"
 s3fs = ">=2026.3.0,<2027"
 fsspec = ">=2026.3.0,<2027"
 ruff = ">=0.15.9,<0.16"
+nodejs = ">=24,<25"
 prettier = ">=3.8.1,<4"
 shellcheck = ">=0.11.0,<0.12"
 taplo = "==0.9.3"
@@ -38,6 +76,22 @@ typos = ">=1.45.0,<2"
 ty = ">=0.0.29,<0.0.30"
 beautifulsoup4 = ">=4.14.3,<5"
 zensical = ">=0.0.31,<0.0.32"
+pydantic = ">=2.12.5,<3"
+pytest = ">=9.0,<10"
+frictionless = ">=5.18,<6"
+fastparquet = ">=2025,<2026"
+markdownlint-cli2 = ">=0.22.0,<0.23"
+requests = ">=2.33.1,<3"
+
+# These dependencies are needed inside the dev container
+gh = ">=2.90.0,<3"
+curl = ">=8.19.0,<9"
+ca-certificates = ">=2026.2.25,<2027"
+ripgrep = ">=15.1.0,<16"
+duckdb-cli = ">=1.5.2,<2"
+
+[tool.ty.environment]
+extra-paths = ["dev/skills/datapackage/scripts", "dev/tools"]
 
 [tool.mdformat]
 # Use "no" wrapping so paragraphs stay as single long lines, soft-wrapped in the editor.
@@ -48,6 +102,8 @@ wrap = "no"
 extend-exclude = [
   # Vendored schemas and machine-generated JSON data files
   "skills/*/assets/",
+  # Development-only fixture and catalog data (may contain multilingual content)
+  "dev/skills/*/assets/",
   # Markdown reference tables generated from JSON by scripts/generate_ferc_tables.py
   "skills/pudl/references/ferc1-schedules.md",
   "skills/pudl/references/ferc2-schedules.md",
