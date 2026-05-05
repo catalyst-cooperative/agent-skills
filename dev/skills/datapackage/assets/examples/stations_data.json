@@ -1,0 +1,47 @@
+[
+  {
+    "station_id": "WS-0001",
+    "station_name": "Portland Airport",
+    "latitude": 45.587,
+    "longitude": -122.597,
+    "elevation_m": 9,
+    "active": true,
+    "commissioned_date": "1978-01-01"
+  },
+  {
+    "station_id": "WS-0002",
+    "station_name": "Mount Hood Meadows",
+    "latitude": 45.331,
+    "longitude": -121.669,
+    "elevation_m": 1706,
+    "active": true,
+    "commissioned_date": "1958-06-01"
+  },
+  {
+    "station_id": "WS-0003",
+    "station_name": "Crater Lake NPS",
+    "latitude": 42.944,
+    "longitude": -122.109,
+    "elevation_m": 2135,
+    "active": true,
+    "commissioned_date": "1931-07-01"
+  },
+  {
+    "station_id": "WS-0004",
+    "station_name": "Astoria Regional Airport",
+    "latitude": 46.158,
+    "longitude": -123.879,
+    "elevation_m": 3,
+    "active": false,
+    "commissioned_date": "1948-02-01"
+  },
+  {
+    "station_id": "WS-0005",
+    "station_name": "Burns Municipal Airport",
+    "latitude": 43.592,
+    "longitude": -118.955,
+    "elevation_m": 1262,
+    "active": true,
+    "commissioned_date": "1954-09-01"
+  }
+]

@@ -1,0 +1,140 @@
+{
+  "skill_name": "datapackage",
+  "notes": "Several evals are annotated with 'tool_preference' to track which metadata querying tool (jq vs DuckDB) the agent reaches for. The goal is to compare tool effectiveness experimentally across: (a) pure metadata-only tasks, (b) tasks that cross from metadata into data, and (c) tasks where either tool is viable. Run these against both jq-first and DuckDB-first variants of the skill to determine which produces better outcomes.",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a datapackage.json file at ~/data/energy/datapackage.json. What tables does this dataset contain and what are they about?",
+      "expected_output": "Agent queries the descriptor selectively (not loading it whole) to list resource names and their descriptions. Should use either jq or DuckDB read_json \u2014 not load the raw JSON into context. Returns a useful summary of resources.",
+      "tool_preference": "metadata-only \u2014 either jq or DuckDB viable; note which tool the agent uses",
+      "files": [
+        "assets/datapackage.json"
+      ],
+      "assertions": [
+        "Agent uses jq or DuckDB to query the descriptor, not Python (no json.load or import json for the descriptor)",
+        "Agent does not read the full datapackage.json file into context as raw text",
+        "Agent lists at least 10 resource names with brief descriptions",
+        "Response is well-organized and readable (e.g. grouped, summarized, or clearly structured)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I'm working with a dataset that has a datapackage.json descriptor. I want to find all tables that contain information about fuel consumption. What columns do those tables have?",
+      "expected_output": "Agent searches resource names and descriptions for 'fuel' keyword, lists matching tables, then retrieves column lists for each. Should not load full descriptor. Either jq or DuckDB viable.",
+      "tool_preference": "metadata-only \u2014 either jq or DuckDB viable; note which tool the agent uses",
+      "files": [
+        "assets/datapackage.json"
+      ],
+      "assertions": [
+        "Agent uses jq or DuckDB to search resource names/descriptions for 'fuel' keyword (not Python)",
+        "Agent does not read the full datapackage.json into context as raw text",
+        "Agent identifies at least one fuel-related table",
+        "Agent lists column names for the matched table(s)"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Are there any usage warnings I should know about before using data from this datapackage? The file is at ~/data/datapackage.json.",
+      "expected_output": "Agent queries the descriptor specifically for usage warnings across all resources, surfaces them prominently and verbatim, and explains the practical implication of each. Should not require loading the full file.",
+      "tool_preference": "metadata-only \u2014 jq is likely simpler here; note if DuckDB is used instead",
+      "files": [
+        "assets/datapackage.json"
+      ],
+      "assertions": [
+        "Agent uses jq or DuckDB to query warnings, not Python (no json.load)",
+        "Agent finds and quotes at least one usage warning verbatim (not just paraphrased)",
+        "Agent explains the practical implication of each warning in plain language",
+        "Agent surfaces warnings for multiple resources (not just one)"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I want to know what the 'plant_id_eia' column means \u2014 it appears in several tables in this dataset. Can you find all the tables that have it and show me its description?",
+      "expected_output": "Agent queries the descriptor to find all resources containing 'plant_id_eia', returns its description (which should be consistent across tables), and notes any per-table variation. Either jq or DuckDB viable.",
+      "tool_preference": "metadata-only \u2014 either jq or DuckDB viable; note which tool the agent uses",
+      "files": [
+        "assets/datapackage.json"
+      ],
+      "assertions": [
+        "Agent uses jq or DuckDB to search for plant_id_eia across resources (not Python)",
+        "Agent finds multiple tables (at least 5) containing plant_id_eia",
+        "Agent shows the field description for plant_id_eia",
+        "Agent notes whether the description is consistent across tables or varies"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "I want to look at the actual data in the out_eia923__generation table. Can you show me a sample of the data and tell me what the columns mean?",
+      "expected_output": "Agent reads column descriptions from the descriptor (metadata phase) AND queries the actual Parquet file for a data sample (data phase). DuckDB is expected here since it spans both phases. Agent should use /duckdb-skills:query or equivalent for the data portion.",
+      "tool_preference": "metadata+data \u2014 DuckDB expected; jq alone cannot load the data",
+      "files": [
+        "assets/datapackage.json"
+      ],
+      "assertions": [
+        "Agent reads column descriptions from the descriptor before loading data (metadata phase first)",
+        "Agent retrieves the table's data file path from the descriptor rather than constructing it manually",
+        "Agent uses DuckDB or pandas to query the actual Parquet data (not just the descriptor)",
+        "Agent surfaces any usage warnings on the table before or alongside the sample",
+        "Agent does not use Python json.load to parse the descriptor"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "How many rows are in each table in this dataset, and which tables are the largest?",
+      "expected_output": "Agent recognizes this requires querying the actual data files (not just the descriptor), uses DuckDB to count rows across tables, and returns a ranked list. Should not confuse resource count in the descriptor with row counts in data files.",
+      "tool_preference": "data-only \u2014 DuckDB required; jq cannot answer this",
+      "files": [
+        "assets/datapackage.json"
+      ],
+      "assertions": [
+        "Agent does not confuse resource count in the descriptor with row counts in data files",
+        "Agent uses DuckDB (or equivalent) to COUNT rows from actual Parquet files",
+        "Agent returns a ranked list of tables by row count"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "I found a datapackage.json online at https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/pudl_parquet_datapackage.json. Can you tell me how many tables it describes and find any tables related to electricity prices?",
+      "expected_output": "Agent downloads or streams the remote descriptor selectively (not loading it whole into context), reports total resource count, and searches descriptions for price-related tables. Since the file is remote, DuckDB read_json from URL or curl+jq are both viable; note which is used.",
+      "tool_preference": "metadata-only, remote file \u2014 either tool viable but DuckDB can read remote JSON directly; note which tool the agent uses",
+      "files": [],
+      "assertions": [
+        "Agent queries the remote descriptor without loading it whole into context",
+        "Agent reports the total number of resources (tables) in the descriptor",
+        "Agent searches for price-related tables and reports findings",
+        "Agent stores or notes the base URL for resolving relative resource paths"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "I have a datapackage.json and want to find tables that contain hourly time series data and load one of them into a pandas DataFrame for analysis.",
+      "expected_output": "Agent searches descriptor for hourly tables (metadata phase), notes any warnings about hourly-only Parquet format, then provides pandas code to load the table from the appropriate path. jq handles the discovery; pandas or DuckDB handles the load.",
+      "tool_preference": "metadata then data \u2014 jq viable for discovery, pandas/DuckDB for loading; note handoff point",
+      "files": [
+        "assets/datapackage.json"
+      ],
+      "assertions": [
+        "Agent uses jq or DuckDB to search for hourly tables (not Python)",
+        "Agent identifies at least one hourly time-series table",
+        "Agent provides pandas (or polars/DuckDB) code to load the table",
+        "Agent gets the correct file path from the descriptor for the loading code"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Using only DuckDB, I want to: (1) find all tables in this datapackage.json that mention 'generator' in their description, (2) check their usage warnings, and (3) query the actual data in one of those tables to show me the 10 most recent records. The datapackage.json is at ~/data/datapackage.json and the Parquet files are in the same directory.",
+      "expected_output": "Agent uses DuckDB exclusively throughout \u2014 read_json for all descriptor queries (finding tables, extracting warnings) and read_parquet for the data query \u2014 without invoking jq at any point. The metadata and data queries should ideally happen in the same DuckDB session. This is the pure-DuckDB baseline.",
+      "tool_preference": "pure DuckDB \u2014 jq must not be used; grade on whether a single DuckDB session covers both metadata and data phases cleanly",
+      "files": [
+        "assets/datapackage.json"
+      ],
+      "assertions": [
+        "Agent uses DuckDB read_json to query the descriptor (not jq, not Python json.load)",
+        "Agent finds at least one generator-related table",
+        "Agent checks usage warnings for that table via DuckDB read_json (not jq)",
+        "Agent queries actual Parquet data via DuckDB read_parquet",
+        "Agent does not invoke jq at any point in the workflow"
+      ]
+    }
+  ]
+}

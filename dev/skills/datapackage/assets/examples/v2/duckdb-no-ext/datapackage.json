@@ -1,0 +1,169 @@
+{
+  "$schema": "https://datapackage.org/profiles/2.0/datapackage.json",
+  "name": "weather-stations",
+  "title": "Example Weather Station Dataset",
+  "licenses": [
+    {
+      "name": "CC-BY-4.0",
+      "path": "https://creativecommons.org/licenses/by/4.0/"
+    }
+  ],
+  "sources": [
+    {
+      "title": "National Weather Service",
+      "path": "https://www.weather.gov/"
+    }
+  ],
+  "description": "A demonstration datapackage containing two related tables: station metadata and daily temperature readings. Illustrates Frictionless Data Package v2 structure including field types, constraints, foreign keys, and common non-standard extensions (unit, warning).",
+  "version": "1.0.0",
+  "created": "2025-01-01T00:00:00Z",
+  "contributors": [
+    {
+      "title": "Example Organization",
+      "email": "data@example.org",
+      "roles": [
+        "author"
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "name": "stations",
+      "title": "Weather Stations",
+      "description": "One row per weather monitoring station. The station_id is the stable join key used in all other tables.",
+      "schema": {
+        "fields": [
+          {
+            "name": "station_id",
+            "type": "string",
+            "description": "Unique identifier assigned by the network operator. Stable across all dataset versions.",
+            "constraints": {
+              "required": true,
+              "unique": true,
+              "pattern": "^WS-[0-9]{4}$"
+            }
+          },
+          {
+            "name": "station_name",
+            "type": "string",
+            "description": "Human-readable name of the station location (e.g. 'Portland Airport')."
+          },
+          {
+            "name": "latitude",
+            "type": "number",
+            "description": "Geographic latitude of the station in decimal degrees (WGS84 datum). Positive values are north of the equator.",
+            "unit": "degrees",
+            "constraints": {
+              "minimum": -90,
+              "maximum": 90
+            }
+          },
+          {
+            "name": "longitude",
+            "type": "number",
+            "description": "Geographic longitude of the station in decimal degrees (WGS84 datum). Positive values are east of the prime meridian.",
+            "unit": "degrees",
+            "constraints": {
+              "minimum": -180,
+              "maximum": 180
+            }
+          },
+          {
+            "name": "elevation_m",
+            "type": "integer",
+            "description": "Elevation of the station above mean sea level.",
+            "unit": "meters"
+          },
+          {
+            "name": "active",
+            "type": "boolean",
+            "description": "Whether the station is currently operational and reporting data."
+          },
+          {
+            "name": "commissioned_date",
+            "type": "date",
+            "description": "Date the station began continuous operation."
+          }
+        ],
+        "primaryKey": [
+          "station_id"
+        ]
+      },
+      "path": "weather.duckdb",
+      "format": "duckdb",
+      "mediatype": "application/octet-stream",
+      "bytes": 798720,
+      "hash": "md5:3436ceb2f0e5351744b2d87b0eb7b58e"
+    },
+    {
+      "name": "daily-readings",
+      "title": "Daily Temperature and Precipitation Readings",
+      "description": "Daily summary observations from each station.\n\nNote: readings before 2010-01-01 were collected using an older instrument calibration standard and may differ systematically by 0.3\u20130.5 \u00b0C from post-2010 readings. Do not combine pre- and post-2010 data in a single analysis without applying the calibration correction described in the methodology notes.",
+      "schema": {
+        "fields": [
+          {
+            "name": "station_id",
+            "type": "string",
+            "description": "References stations.station_id. Every reading must belong to a known station.",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "description": "Calendar date of the observation (local time at the station).",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "temp_min_c",
+            "type": "number",
+            "description": "Minimum air temperature recorded during the 24-hour calendar day.",
+            "unit": "degrees Celsius"
+          },
+          {
+            "name": "temp_max_c",
+            "type": "number",
+            "description": "Maximum air temperature recorded during the 24-hour calendar day.",
+            "unit": "degrees Celsius"
+          },
+          {
+            "name": "precipitation_mm",
+            "type": "number",
+            "description": "Total liquid-equivalent precipitation accumulated during the calendar day.",
+            "unit": "millimeters",
+            "warning": "Null values indicate the station did not report precipitation for that day \u2014 not zero precipitation. Do not substitute 0 for null in analysis. A value of 0.0 means the station reported and confirmed trace or no precipitation."
+          },
+          {
+            "name": "wind_speed_avg_ms",
+            "type": "number",
+            "description": "Average wind speed over the calendar day.",
+            "unit": "meters per second"
+          }
+        ],
+        "primaryKey": [
+          "station_id",
+          "date"
+        ],
+        "foreignKeys": [
+          {
+            "fields": [
+              "station_id"
+            ],
+            "reference": {
+              "resource": "stations",
+              "fields": [
+                "station_id"
+              ]
+            }
+          }
+        ]
+      },
+      "path": "weather.duckdb",
+      "format": "duckdb",
+      "mediatype": "application/octet-stream"
+    }
+  ]
+}
