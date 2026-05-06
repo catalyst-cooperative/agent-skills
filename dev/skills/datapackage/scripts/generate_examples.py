@@ -39,11 +39,14 @@ Requires: pandas, pyarrow, duckdb (all available in the agent-skills pixi env).
 SQLite is in the Python stdlib.
 """
 
+import argparse
 import datetime
 import hashlib
 import json
 import random
 import sqlite3
+import sys
+from collections.abc import Sequence
 from functools import cache
 from pathlib import Path
 from typing import Any
@@ -469,7 +472,9 @@ def generate_sqlite(out: Path, package_meta: dict[str, Any]) -> None:
 # Main
 # ---------------------------------------------------------------------------
 
-if __name__ == "__main__":
+
+def generate_all_examples(output_root: Path) -> None:
+    """Generate all example packages under the provided output root."""
     # v1 CSV uses "tabular-data-package" at the package level and
     # "tabular-data-resource" on each resource — the most spec-compliant v1 form.
     # All other v1 backends use "data-package" (non-CSV resources are not
@@ -478,17 +483,42 @@ if __name__ == "__main__":
     v1_other_meta = {"profile": "data-package", **V1_PACKAGE_META_BASE}
 
     print("Generating v1 examples...")
-    generate_csv(ASSETS / "v1" / "csv", v1_csv_meta, v1_resource_profiles=True)
-    generate_parquet(ASSETS / "v1" / "parquet", v1_other_meta)
-    generate_duckdb(ASSETS / "v1" / "duckdb", v1_other_meta)
-    generate_duckdb_no_ext(ASSETS / "v1" / "duckdb-no-ext", v1_other_meta)
-    generate_sqlite(ASSETS / "v1" / "sqlite", v1_other_meta)
+    generate_csv(output_root / "v1" / "csv", v1_csv_meta, v1_resource_profiles=True)
+    generate_parquet(output_root / "v1" / "parquet", v1_other_meta)
+    generate_duckdb(output_root / "v1" / "duckdb", v1_other_meta)
+    generate_duckdb_no_ext(output_root / "v1" / "duckdb-no-ext", v1_other_meta)
+    generate_sqlite(output_root / "v1" / "sqlite", v1_other_meta)
 
     print("\nGenerating v2 examples...")
-    generate_csv(ASSETS / "v2" / "csv", V2_PACKAGE_META_BASE)
-    generate_parquet(ASSETS / "v2" / "parquet", V2_PACKAGE_META_BASE)
-    generate_duckdb(ASSETS / "v2" / "duckdb", V2_PACKAGE_META_BASE)
-    generate_duckdb_no_ext(ASSETS / "v2" / "duckdb-no-ext", V2_PACKAGE_META_BASE)
-    generate_sqlite(ASSETS / "v2" / "sqlite", V2_PACKAGE_META_BASE)
+    generate_csv(output_root / "v2" / "csv", V2_PACKAGE_META_BASE)
+    generate_parquet(output_root / "v2" / "parquet", V2_PACKAGE_META_BASE)
+    generate_duckdb(output_root / "v2" / "duckdb", V2_PACKAGE_META_BASE)
+    generate_duckdb_no_ext(output_root / "v2" / "duckdb-no-ext", V2_PACKAGE_META_BASE)
+    generate_sqlite(output_root / "v2" / "sqlite", V2_PACKAGE_META_BASE)
 
     print("\nDone.")
+
+
+def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
+    """Parse command line arguments for example generation."""
+    parser = argparse.ArgumentParser(
+        description="Generate datapackage example assets for all supported backends."
+    )
+    parser.add_argument(
+        "--output-root",
+        type=Path,
+        default=ASSETS,
+        help="Directory that will receive the generated v1/ and v2/ example trees.",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    """Run the example generator CLI."""
+    args = parse_args(argv)
+    generate_all_examples(args.output_root)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv[1:]))

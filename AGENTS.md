@@ -1,10 +1,23 @@
 # AGENTS.md
 
+> Canonical source note: `AGENTS.md` is the single source of truth for repository-level agent guidance.
+> `CLAUDE.md` is a compatibility symlink to `AGENTS.md`.
+> Do not treat it as a separate file or try to keep two copies in sync.
+
 ## Project Overview
 
-This repository contains shareable agent skills: reusable prompts, references, cached
-assets, and small support scripts that give agents specialized knowledge and workflows.
-Most of the repository is Markdown and YAML/TOML configuration, not application code.
+This repository contains shareable agent skills — reusable, installable prompts that give agents specialized knowledge and workflows.
+Skills live under `skills/`, each providing distributed agent-facing guidance and assets.
+Development-only tests, generators, and other validation artifacts live under `dev/skills/`.
+
+## Distribution Boundary
+
+Everything under `skills/<skill_name>/` is shipped with installed skills, including `SKILL.md`, `references/`, `assets/`, and (when present) `scripts/`.
+Do not mention repository-internal dev paths, test suites, or example-generation scripts in distributed skill content (for example, anything under `dev/skills/`).
+If guidance needs those artifacts at runtime, move the required artifacts into the distributed skill first.
+
+Use `ALL_CAPS.md` only for repository standards or canonical interface files such as `AGENTS.md`, `README.md`, and `SKILL.md`.
+Use kebab-case for other markdown documents.
 
 The main goals when working here are:
 
@@ -12,12 +25,28 @@ The main goals when working here are:
 - preserve existing formatting, frontmatter, and repository conventions
 - prefer updating source data or generator scripts over hand-editing generated outputs
 
-## Canonical Guidance
+```
+agent-skills/
+├── skills/
+│   ├── datapackage/     # Generic Frictionless Data Package exploration skill
+│   │   ├── SKILL.md           # Skill descriptor (YAML front matter) + usage guide
+│   │   ├── assets/            # Distributed JSON schemas and skill assets
+│   │   ├── references/        # frictionless-validate.md, metadata-querying.md, storage-backends.md
+│   │   ├── scripts/           # utility scripts (Python or shell) for use at runtime by agents
+│   │   └── evals/             # Skill evaluation cases
+│   ├── pudl/            # PUDL data-user skill (read tables, explore metadata)
+│   └── pudl-dev/        # PUDL developer skill (ETL, schema, CI, dbt, pytest)
+├── docs/                # Zensical documentation site source (markdown)
+├── .github/workflows/   # CI: test-datapackage.yml, docs.yml
+├── pyproject.toml       # Pixi workspace: dependencies, tasks, tool config
+├── skills-lock.json     # Pinned external skill versions and hashes
+└── .pre-commit-config.yaml
+```
 
-`AGENTS.md` is the canonical source of repository guidance.
-
-`CLAUDE.md` is only a compatibility symlink that points to `AGENTS.md`. Do not treat it
-as a separate file or try to keep two copies in sync.
+This repository uses **pixi** for dependency and environment management.
+All commands must be run through pixi.
+External skills (from `skills-lock.json`) are installed into `.agents/skills/`, which is git-ignored.
+Install them with `pixi run install-skills`.
 
 ## Repository Structure
 
@@ -34,11 +63,18 @@ Important top-level paths:
 - `skills-lock.json` - pinned external skill dependencies and metadata
 - `zensical.toml` - documentation site configuration
 
-Current first-party skills live under `skills/`:
+Current first-party skills live under `skills/`
 
 - `datapackage/` - generic Frictionless Data Package exploration skill
 - `pudl/` - PUDL data-user skill
 - `pudl-dev/` - PUDL contributor and developer skill
+
+Call the underlying tools directly — not through `prek`.
+Pre-commit hooks exist as a safety net for humans at commit time; they are slow, require files to be staged, and run across the entire repository.
+Direct invocation is faster, targets only the files you changed, and works on new files without staging them first.
+
+**Determine which files to check from `git status`, not from memory.**
+Any file may be modified by a formatter, a merge, or another tool after you last ran a check:
 
 Representative Python utilities live under paths like `skills/*/scripts/`. These are
 small maintenance scripts, not a large application framework.
@@ -53,12 +89,19 @@ Useful repo tasks:
 - `pixi run install-skills` - install the external skills pinned in `skills-lock.json`
 - `pixi run test-datapackage` - run the datapackage reference-example test suite
 
+This repository targets modern Python only; do not add `from __future__ import annotations`.
+
+### JSON
+
 For iterative work, call the underlying tools directly rather than routing everything
 through `prek`. Direct invocation is faster, targets only the files you changed, and
 works on new files without staging them first.
 
 Determine which files to validate from `git status --short`, not from memory. Any file
 may be modified by a formatter, a merge, or another tool after your last check.
+
+JSON is the exception: the `pretty-format-json` hook uses non-obvious args (`--autofix --indent=2 --no-sort-keys`) so routing through prek is simpler than replicating them.
+Python code that writes JSON must use `indent=2` and the default `ensure_ascii=True` — do **not** pass `ensure_ascii=False`.
 
 Prefer these patterns:
 
@@ -78,27 +121,38 @@ one-off command combinations:
 - `pixi run prek run --files ...`
 - `pixi run prek run --all-files`
 
-JSON formatting is the main exception to the direct-tools rule. The
-`pretty-format-json` hook uses repo-specific arguments (`--autofix --indent=2 --no-sort-keys`), so it is simpler and safer to run it through `prek`.
-
-When Python code writes JSON for this repository, use `indent=2` and the default
-`ensure_ascii=True`. Do not pass `ensure_ascii=False`.
+`mdformat` is configured with `wrap = "no"` — it does not add hard line breaks.
+Do not add hard line breaks manually in markdown files.
 
 If `prek` fails in the VS Code sandbox because of pseudo-terminal restrictions, run the
 underlying repo-configured tools directly and report that limitation rather than
 silently skipping validation.
 
-## Markdown Conventions
+## Reference/Test Synchronization
 
-This repository is intentionally Markdown-heavy. Follow the existing conventions rather
-than generic Markdown defaults.
+Reference markdown examples are executable specifications for agent behavior.
+When you update a documented workflow, keep its corresponding tests in sync so guidance remains reliable.
+
+When editing a documented workflow snippet:
+
+1. Update the snippet in `skills/<skill>/references/`.
+1. Update the relevant tests in `dev/skills/<skill>/tests/`.
+1. Run the relevant skill test suite.
+
+Tests should validate the documented workflow pattern (API shape, operation, and result form), not incidental fixture details unless those details are explicitly part of the instructions.
+
+## Markdown Conventions
 
 - Treat `pyproject.toml` and `.markdownlint.yaml` as authoritative for Markdown formatting behavior.
 - `mdformat` is configured with `wrap = "no"`. Do not manually hard-wrap paragraphs.
-- `.markdownlint.yaml` disables or relaxes several rules to match the repo's authoring style. Do not "fix" those patterns unless the config changes.
+- Use "semantic line breaks": one sentence per line, with blank lines between paragraphs.
+    This makes diffs cleaner while preserving readability in raw form.
+- `.markdownlint.yaml` disables or relaxes several rules to match the repo's authoring style.
+    Do not "fix" those patterns unless the config changes.
 - Four-space indentation for nested list content is the expected style.
 - Raw HTML may be valid and intentional in Zensical content.
-- Some files contain fenced code blocks, tabs, frontmatter, Mermaid blocks, or generated tables. Preserve those structures.
+- Some files contain fenced code blocks, tabs, frontmatter, Mermaid blocks, or generated tables.
+    Preserve those structures.
 
 When editing Markdown:
 
@@ -107,32 +161,48 @@ When editing Markdown:
 - prefer small edits over broad rewrites
 - re-run `mdformat` and `markdownlint-cli2` on the changed files
 
+## Datapackage Skill Rules
+
+Datapackage repository-maintainer notes (example corpus layout, regeneration workflow, and other dev-only context) are documented in `dev/skills/datapackage/datapackage-dev-guide.md`.
+
+### Editing code examples in reference files
+
+Code blocks in the markdown files under `skills/<skill>/references/` should be covered by a test in `dev/skills/<skill>/tests/`.
+After editing any code example in a reference file, run the full test suite to confirm the example still works:
+
 ## Generated Content
 
-Several files in this repository are wholly or partly generated. Do not hand-edit
-generated table bodies or generated data files if a generator owns them.
+Several files in this repository are wholly or partly generated.
+Do not hand-edit generated table bodies or generated data files if a generator owns them.
 
 Common patterns in this repo:
+
+When you add a new code example to any reference file, add a corresponding test to the appropriate test file that runs the pattern against the example data.
+When you add a new code example to any reference file, add a corresponding test to the appropriate test file that runs the pattern against the example data.
+Check `dev/skills/<skill>/tests/conftest.py` for shared constants (row counts, column names, path roots) before adding new helpers.
 
 - sentinel comments that mark generated regions
 - JSON sidecars or cached metadata used to render tables
 - files marked `linguist-generated=true` in `.gitattributes`
 - utility scripts under `skills/*/scripts/` that regenerate sections or datasets
 
-When a file has a generated block or generated path:
+After modifying `dev/skills/datapackage/scripts/generate_examples.py`, regenerate all example datasets and verify nothing regressed:
 
 - edit the source data, cached metadata, or generator script
 - regenerate the output
-- avoid manual cleanup edits inside the generated region unless the generator itself now emits that formatting
+- avoid manual cleanup edits inside the generated region
 
-Examples of script-owned outputs include the generated datapackage examples under
-`skills/datapackage/assets/examples/` and generated markdown tables produced from
-cached metadata.
+```bash
+python dev/skills/datapackage/scripts/generate_examples.py
+pixi run test-datapackage
+pixi run prek run pretty-format-json --all-files  # reformat generated descriptors
+```
+
+Examples of script-owned outputs include the generated datapackage examples under `skills/datapackage/assets/examples/` and generated markdown tables produced from cached metadata.
 
 ## Python And Script Conventions
 
-Python in this repository is mostly utility scripting. Follow the style already present
-in `skills/*/scripts/`.
+Python in this repository is mostly utility scripting. Follow the style already present in `skills/*/scripts/`.
 
 - use `pathlib.Path` for filesystem work
 - add explicit type hints where they improve readability
@@ -141,19 +211,16 @@ in `skills/*/scripts/`.
 - use UTF-8 when reading or writing text files
 - prefer standard library solutions unless a repo dependency is already the right fit
 
-When changing substantive script behavior, update docstrings and inline usage guidance
-to match.
+When changing substantive script behavior, update docstrings and inline usage guidance to match.
 
-Shell scripts should be POSIX-compatible. The repository validates them with
-`shellcheck`.
+Shell scripts should be POSIX-compatible. The repository validates them with `shellcheck`.
 
-Every tool or runtime invoked directly should be listed as an explicit dependency in
-`pyproject.toml`. Do not rely on transitive dependencies remaining available.
+Every tool or runtime invoked directly should be listed as an explicit dependency in `pyproject.toml`.
+Do not rely on transitive dependencies remaining available.
 
 ## Skill And Reference File Norms
 
-Skill files and supporting references are part of the product here. Preserve their
-structure.
+Skill files and supporting references are the main product here; preserve their structure.
 
 - keep YAML frontmatter valid and minimal
 - maintain the established section layout in `SKILL.md` files unless there is a good reason to redesign it
@@ -168,19 +235,25 @@ Each skill directory generally follows this layout:
 
 ```text
 skills/<name>/
-├── SKILL.md
-├── assets/
-├── references/
-├── scripts/
-├── tests/
-└── evals/
+├── SKILL.md       # Required: YAML front matter descriptor + usage guide
+├── assets/        # Schemas, cached data, and distributed skill assets
+├── references/    # Long-form reference docs (markdown)
+├── scripts/       # Utility scripts (Python or shell)
+└── evals/         # Evaluation cases for measuring skill quality
+
+dev/skills/<name>/
+├── assets/examples/ # Generated example datasets and fixtures
+├── scripts/         # Dev-only utility scripts (Python or shell)
+└── tests/           # pytest suite verifying reference code examples
 ```
 
-When adding a test suite to a skill, add a corresponding GitHub Actions workflow under
-`.github/workflows/` with a `paths` filter scoped to that skill's directory.
-
-External skills are managed through `skills-lock.json`, not by editing the installed
-copies under `.agents/skills/`.
+- Reference documents in `references/` are the authoritative source for patterns.
+    Test files exist solely to validate those patterns; keep them in sync.
+- Files marked `linguist-generated=true` in `.gitattributes` are generated outputs — never hand-edit them.
+    Regenerate them using the script that produced them.
+- When adding a test suite to a skill, add a corresponding GitHub Actions workflow under `.github/workflows/` to run the tests in CI.
+- External skills are managed through `skills-lock.json`, not added to the repo directly.
+    They land in `.agents/skills/` (git-ignored) after `pixi run install-skills`.
 
 ### Layered Skills
 
@@ -192,20 +265,20 @@ That means:
 - higher-level skills should reference that shared guidance and add only domain-specific or workflow-specific context
 - when a shared reference already exists, link to it instead of maintaining a second copy
 
-In this repository, `datapackage` owns generic datapackage querying and loading
-patterns, `pudl` layers PUDL-specific data context on top of that, and `pudl-dev`
-should reference shared data-context guidance rather than duplicating it.
+In this repository:
 
-If a skill depends on another skill conceptually, make that dependency explicit in the
-skill's frontmatter or instructions rather than copying large sections of shared text.
+- `datapackage` owns generic datapackage querying and loading patterns.
+- `pudl` layers PUDL-specific data and metadata context on top of `datapackage`
+- `pudl-dev` should reference shared `pudl` data and metadata guidance rather than duplicating it.
+
+If a skill depends on another skill conceptually, make that dependency explicit in the skill's frontmatter or instructions.
+Never copy large blocks of text from one skill's references into another skill's references.
 
 ## Datapackage-Specific Rules
 
-The datapackage skill has a few repository-level rules that are specific enough to call
-out here.
+The datapackage skill has a few repository-level rules that are specific enough to call out here.
 
-When editing code examples in `skills/datapackage/references/`, run the full datapackage
-test suite afterward:
+After editing code examples in `skills/datapackage/references/`, run the full datapackage test:
 
 ```bash
 pixi run test-datapackage
@@ -230,22 +303,23 @@ when the generator is the real source of truth.
 
 ## Additional Repository Constraints
 
-- The `check-added-large-files` hook is configured at 800 KB to catch accidental large-file additions. Treat that threshold as a prompt to confirm intent, not as a blanket prohibition on larger generated artifacts.
+- The `check-added-large-files` hook is configured at 800 KB to catch accidental large-file additions.
+    Treat that threshold as a prompt to confirm intent, not as a blanket prohibition on larger generated artifacts.
 - LF line endings are required. The repository fixes or rejects mixed line endings.
-- `typos` excludes `skills/*/assets/` and certain generated reference tables because upstream canonical data may contain intentional misspellings. Do not add unnecessary suppressions elsewhere.
-- `ty` is intentionally run over the whole repository. It is fast enough not to be burdensome here, and project-wide checking catches cross-file import, symbol redefinition, and interface drift issues that file-scoped checks can miss.
-- The `ty` hook is skipped in CI, so run it locally when Python changes are relevant.
+- `typos` excludes `skills/*/assets/` and certain generated reference tables because upstream canonical data may contain intentional misspellings.
+    Do not add unnecessary suppressions elsewhere.
+- `ty` is intentionally run over the whole repository.
+    It is fast enough not to be burdensome here, and project-wide checking catches cross-file import, symbol redefinition, and interface drift issues that file-scoped checks can miss.
+- The `ty` hook is skipped in CI, so run it locally after making Python changes.
 
 ## Docs And Site Content
 
-The docs site is configured through `zensical.toml`. When working on content under
-`docs/`, preserve Zensical-compatible Markdown features already in use, such as
-admonitions, tabs, and other extended syntax.
-
-If you need to run docs tooling, run Zensical through Pixi rather than assuming a
-global install.
-
-Edit source files in `docs/`. Do not commit the built `site/` output.
+The docs site is configured through `zensical.toml`.
+When working on content under `docs/`, preserve Zensical-compatible Markdown features already in use.
+This includes features such as admonitions, tabs, and other extended Markdown syntax.
+If you need to run docs tooling, run Zensical through Pixi rather than assuming a global install.
+Edit source files in `docs/`.
+Never commit the built `site/` output.
 
 ## Change Scope
 
@@ -276,3 +350,18 @@ Use `git status --short` to decide which files need checking.
 
 If a task touches multiple file types, prefer `pixi run prek run --files ...` once the
 individual file-level checks are in place.
+
+- **Explicit dependencies**: Every tool or runtime invoked directly must be listed as an explicit dependency in `pyproject.toml`.
+    Do not rely on transitive dependencies — they are an implementation detail of another package and can disappear without warning if that package changes.
+    Add missing dependencies with `pixi add <package>`.
+- **File size limit**: The `check-added-large-files` hook rejects files over 800 KB.
+    The generated DuckDB example files are ~780 KB — avoid making them larger.
+- **Typos**: The `typos` checker excludes `skills/*/assets/` because upstream data may contain canonical misspellings.
+    Do not add spurious typo suppressions elsewhere.
+- **Line endings**: LF only. The `mixed-line-ending` hook enforces this; do not commit CRLF line endings.
+- **Shell scripts**: Write POSIX-compatible shell.
+    The `shellcheck` hook validates all shell scripts.
+- **Python type checking**: `ty` runs as a pre-commit hook locally but is skipped in CI (`ci: skip: [ty-check]` in `.pre-commit-config.yaml`).
+    Always run it locally before committing Python changes.
+- **Documentation**: The `docs/` site is built with Zensical and deployed by CI on push to `main`.
+    Edit source files in `docs/` (markdown); never commit the `site/` build output.

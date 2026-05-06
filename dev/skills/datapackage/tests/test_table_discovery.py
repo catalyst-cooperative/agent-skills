@@ -21,7 +21,7 @@ independent of the database engine, so testing on DuckDB alone is sufficient
 (SQLite would use sqlite_master instead of SHOW ALL TABLES, but the logic is
 identical).
 
-Run:  pixi run pytest skills/datapackage/tests/test_table_discovery.py -v
+Run:  pixi run pytest dev/skills/datapackage/tests/test_table_discovery.py -v
 """
 
 import json

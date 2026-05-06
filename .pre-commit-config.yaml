@@ -3,7 +3,7 @@ ci:
 
 repos:
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.22.0
+    rev: v0.22.1
     hooks:
       - id: markdownlint-cli2
 
@@ -32,11 +32,12 @@ repos:
         args: [--fix=lf]
       - id: trailing-whitespace
       - id: end-of-file-fixer
+      - id: check-json
       - id: pretty-format-json
         args: [--autofix, --indent=2, --no-sort-keys]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.10
+    rev: v0.15.12
     hooks:
       - id: ruff-check
         args: [--fix]
@@ -52,7 +53,7 @@ repos:
         pass_filenames: false
 
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.8.2
+    rev: v3.8.3
     hooks:
       - id: prettier
         types_or: [yaml]
@@ -72,7 +73,13 @@ repos:
     hooks:
       - id: taplo-format
 
+  # Lint Dockerfiles for errors and to ensure best practices
+  - repo: https://github.com/AleksaC/hadolint-py
+    rev: v2.14.0
+    hooks:
+      - id: hadolint
+
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: v1.45.0
+    rev: v1.46.0
     hooks:
       - id: typos

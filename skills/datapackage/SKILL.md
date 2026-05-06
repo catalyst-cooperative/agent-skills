@@ -13,7 +13,7 @@ license: CC-BY-4.0
 compatibility: |
   Required CLI tools: jq >= 1.7
   Optional CLI tools: frictionless >= 5.18 (with fastparquet for Parquet support)
-  Required skills: duckdb-skills (attach-db, query)
+  Required skills: duckdb-skills (install-duckdb, attach-db, query)
   Optional Python packages: marimo, pandas, polars, duckdb (for DataFrame work)
 metadata:
   - author: Catalyst Cooperative
@@ -60,7 +60,7 @@ If not found, tell the user how to install it:
 - Linux (conda): `conda install jq`
 - Windows: `winget install jqlang.jq`
 
-For data loading and SQL queries, the `attach-db` and `query` skills from
+For data loading and SQL queries, the `attach-db`, and `query` skills from
 `duckdb-skills` must be installed. Install them from `duckdb/duckdb-skills`.
 
 ## Workflow overview
@@ -170,39 +170,3 @@ Bundled schemas:
 
 Read the appropriate schema when you need to understand which fields are valid in a
 descriptor or validate one programmatically.
-
-Bundled examples live under `assets/examples/`. They all use the same weather-station
-dataset (5 stations, 30 daily readings) so you can test the same queries across both
-spec versions and all four storage backends. Two parallel sets of examples are provided:
-
-**`assets/examples/v1/`** — Frictionless Data Package v1
-
-| Directory  | Format  | Profile (package level) | Notable v1 patterns                                      |
-| ---------- | ------- | ----------------------- | -------------------------------------------------------- |
-| `csv/`     | CSV     | `tabular-data-package`  | Resources declare `"profile": "tabular-data-resource"`   |
-| `parquet/` | Parquet | `data-package`          | Community pattern: `mediatype: application/parquet`      |
-| `duckdb/`  | DuckDB  | `data-package`          | Community extension: `duckdb_table` key on each resource |
-| `sqlite/`  | SQLite  | `data-package`          | Community extension: `sqlite_table` key on each resource |
-
-**`assets/examples/v2/`** — Frictionless Data Package v2
-
-| Directory  | Format  | `$schema` declared | Notable v2 patterns                                         |
-| ---------- | ------- | ------------------ | ----------------------------------------------------------- |
-| `csv/`     | CSV     | yes                | `contributors[].roles` is an array; `version` field present |
-| `parquet/` | Parquet | yes                | Same community Parquet pattern as v1                        |
-| `duckdb/`  | DuckDB  | yes                | Same `duckdb_table` community extension as v1               |
-| `sqlite/`  | SQLite  | yes                | Same `sqlite_table` community extension as v1               |
-
-Each directory contains a `datapackage.json` descriptor and its data file(s). The data
-is identical across all eight directories — only the descriptor structure differs.
-
-Key differences to observe between v1 and v2 descriptors:
-
-- **Version declaration**: v1 uses `"profile": "tabular-data-package"` or
-    `"profile": "data-package"`; v2 uses `"$schema": "https://datapackage.org/profiles/2.0/datapackage.json"`
-- **Contributors**: v1 uses `"role": "author"` (string); v2 uses `"roles": ["author"]` (array)
-- **`version` / `created` fields**: present in v2; omitted from v1 (not in the v1 spec)
-- **Resource profile**: v1 CSV resources declare `"profile": "tabular-data-resource"`;
-    v2 drops the per-resource profile field
-
-Run `python scripts/generate_examples.py` to regenerate all examples from scratch.

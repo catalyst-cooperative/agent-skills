@@ -1,174 +1,63 @@
 ---
-icon: lucide/rocket
+icon: lucide/book-open
 ---
 
-# Get started
+# Clanker Skills
 
-For full documentation visit [zensical.org](https://zensical.org/docs/).
+This repository contains shareable [agent skills](https://agentskills.io) developed by [Catalyst Cooperative](https://catalyst.coop).
+Skills selectively provide context to coding agents, giving them specialized knowledge and workflows.
+This repository is aimed at the PUDL maintainers who are developing these skills for use by the public.
+To install one of the skills below your system, use [`npx skills`](https://www.npmjs.com/package/skills).
+For example:
 
-## Commands
+```bash
+npx skills add catalyst-cooperative/agent-skills --skill <skill-name>
+```
 
-- [`zensical new`][new] - Create a new project
-- [`zensical serve`][serve] - Start local web server
-- [`zensical build`][build] - Build your site
+Many other agent skills can be found on [skills.sh](https://skills.sh/)
 
-## Examples
+## Available skills
 
-### Admonitions
+### datapackage
 
-> Go to [documentation](https://zensical.org/docs/authoring/admonitions/)
+Explore and query any dataset described by a [Frictionless Data Package](https://datapackage.org/) descriptor (`datapackage.json`).
+Covers schema inspection, validation, metadata querying with `jq` and DuckDB, and reading data from CSV, Parquet, DuckDB, and SQLite backends.
 
-!!! note
+Useful for any agent working with tabular datasets that follow the Frictionless spec — not just PUDL.
 
-    This is a **note** admonition. Use it to provide helpful information.
+### pudl
+
+Guides your agent through [PUDL](https://github.com/catalyst-cooperative/pudl) metadata for interactive exploration.
+Can be used to query and load the referenced data into dataframes in a Jupyter or Marimo note.
+Covers discovering which tables exist, understanding column meanings and caveats, and loading data from S3 or a local PUDL download.
+For human-readable PUDL data documentation, see the [PUDL Data Documentation](https://docs.catalyst.coop/pudl/en/latest/data/index.html).
+
+Aimed at energy analysts and data users who want to work with PUDL open data products.
+
+### pudl-dev
 
 !!! warning
 
-    This is a **warning** admonition. Be careful!
+    The `pudl-dev` skill is half-baked should not be considered ready for widespread use.
 
-### Details
+Guidance for agents being used by contributors to the PUDL open source project.
+Covers the contributor workflow, local ETL and Dagster development, schema and metadata changes, dbt models, and validation.
 
-> Go to [documentation](https://zensical.org/docs/authoring/admonitions/#collapsible-blocks)
+Aimed at PUDL core contributors working on code and data pipeline changes.
 
-??? info "Click to expand for more info"
+## Installing skills for development
 
-    This content is hidden until you click to expand it.
-    Great for FAQs or long explanations.
+A number of repository level skills intended for use in development in this repo are specified in `skills-lock.json`.
+They can be installed into `.agents/skills/` using:
 
-## Code Blocks
-
-> Go to [documentation](https://zensical.org/docs/authoring/code-blocks/)
-
-```python hl_lines="2" title="Code blocks"
-def greet(name):
-    print(f"Hello, {name}!")  # (1)!
-
-
-greet("Python")
+```bash
+pixi run install-skills
 ```
 
-1. > Go to [documentation](https://zensical.org/docs/authoring/code-blocks/#code-annotations)
+Agent harnesses that support the skills spec (Claude Code, Gemini CLI, etc.) will pick them up automatically from that directory.
+Claude should pick them up from the symlink at `.claude/skills` which points at `.agents/skills`.
 
-    Code annotations allow to attach notes to lines of code.
+## Agent sandbox
 
-Code can also be highlighted inline: `#!python print("Hello, Python!")`.
-
-## Content tabs
-
-> Go to [documentation](https://zensical.org/docs/authoring/content-tabs/)
-
-=== "Python"
-
-    ```python
-    print("Hello from Python!")
-    ```
-
-=== "Rust"
-
-    ```rs
-    println!("Hello from Rust!");
-    ```
-
-## Diagrams
-
-> Go to [documentation](https://zensical.org/docs/authoring/diagrams/)
-
-```mermaid
-graph LR
-  A[Start] --> B{Error?};
-  B -->|Yes| C[Hmm...];
-  C --> D[Debug];
-  D --> B;
-  B ---->|No| E[Yay!];
-```
-
-## Footnotes
-
-> Go to [documentation](https://zensical.org/docs/authoring/footnotes/)
-
-Here's a sentence with a footnote.[^1]
-
-Hover it, to see a tooltip.
-
-## Formatting
-
-> Go to [documentation](https://zensical.org/docs/authoring/formatting/)
-
-- ==This was marked (highlight)==
-- ^^This was inserted (underline)^^
-- ~~This was deleted (strikethrough)~~
-- H~2~O
-- A^T^A
-- ++ctrl+alt+del++
-
-## Icons, Emojis
-
-> Go to [documentation](https://zensical.org/docs/authoring/icons-emojis/)
-
-- :sparkles: `:sparkles:`
-- :rocket: `:rocket:`
-- :tada: `:tada:`
-- :memo: `:memo:`
-- :eyes: `:eyes:`
-
-## Maths
-
-> Go to [documentation](https://zensical.org/docs/authoring/math/)
-
-$$
-\cos x=\sum _{k=0}^{\infty}\frac{(-1)^k}{(2k)!}x^{2k}
-$$
-
-!!! warning "Needs configuration"
-
-    Note that MathJax is included via a `script` tag on this page and is not
-    configured in the generated default configuration to avoid including it
-    in a pages that do not need it. See the documentation for details on how
-    to configure it on all your pages if they are more Maths-heavy than these
-    simple starter pages.
-
-<script id="MathJax-script" src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-<script>
-  window.MathJax = {
-    tex: {
-      inlineMath: [["\\(", "\\)"]],
-      displayMath: [["\\[", "\\]"]],
-      processEscapes: true,
-      processEnvironments: true
-    },
-    options: {
-      ignoreHtmlClass: ".*|",
-      processHtmlClass: "arithmatex"
-    }
-  };
-
-  document$.subscribe(() => {
-    MathJax.startup.output.clearCache()
-    MathJax.typesetClear()
-    MathJax.texReset()
-    MathJax.typesetPromise()
-  })
-</script>
-
-## Task Lists
-
-> Go to [documentation](https://zensical.org/docs/authoring/lists/#using-task-lists)
-
-- [x] Install Zensical
-- [x] Configure `zensical.toml`
-- [x] Write amazing documentation
-- [ ] Deploy anywhere
-
-## Tooltips
-
-> Go to [documentation](https://zensical.org/docs/authoring/tooltips/)
-
-[Hover me][example]
-
-[^1]: This is the footnote.
-
-[build]: https://zensical.org/docs/usage/build/
-[example]: https://example.com "I'm a tooltip!"
-[new]: https://zensical.org/docs/usage/new/
-[serve]: https://zensical.org/docs/usage/preview/
+The repository includes a containerized development sandbox that lets coding agents run with full, unrestricted access — safely isolated from your host system.
+See the [Agent Sandbox](agent-sandbox.md) page for setup instructions.

@@ -4,47 +4,44 @@
     "attach-db": {
       "source": "duckdb/duckdb-skills",
       "sourceType": "github",
+      "skillPath": "skills/attach-db/SKILL.md",
       "computedHash": "db6a105a312536b75a58616dfd38b46909253c88fcb1ffd58bfc506ffa3065d6"
     },
     "dignified-python": {
       "source": "dagster-io/skills",
       "sourceType": "github",
-      "computedHash": "522e3f4f33436966a478f8ce94140439981392a91d661cf90b6035f6ebc1e35a"
+      "skillPath": "skills/dignified-python/skills/dignified-python/SKILL.md",
+      "computedHash": "af77280f19bc321a9456d4695f13e6b9d9822766a0faeff2e198acea375fd5b3"
     },
     "duckdb-docs": {
       "source": "duckdb/duckdb-skills",
       "sourceType": "github",
+      "skillPath": "skills/duckdb-docs/SKILL.md",
       "computedHash": "6aa9b9d013487eace5398a0e035cf5ee3efd220b34349a46e7c335cf079f7e66"
     },
     "install-duckdb": {
       "source": "duckdb/duckdb-skills",
       "sourceType": "github",
+      "skillPath": "skills/install-duckdb/SKILL.md",
       "computedHash": "ce264b48e369a23adbda39804fc65c7e9fdffe182f6dfbc9f4e2fdf88b027b9e"
-    },
-    "marimo-notebook": {
-      "source": "marimo-team/skills",
-      "sourceType": "github",
-      "computedHash": "4271f43564b3b8bb41cba36ae4b9ada0164430cc3a1f81267bd5f8cc2d602a9e"
-    },
-    "marimo-pair": {
-      "source": "marimo-team/marimo-pair",
-      "sourceType": "github",
-      "computedHash": "6014caa2f358725102297ce30ce724fc8a1e3c201a7f745eb6a7423b30da264e"
     },
     "query": {
       "source": "duckdb/duckdb-skills",
       "sourceType": "github",
+      "skillPath": "skills/query/SKILL.md",
       "computedHash": "4ef826c2a588b8629aef536a797ea67f31f8f5a04f88acadbc5ba84f6778887d"
     },
     "read-file": {
       "source": "duckdb/duckdb-skills",
       "sourceType": "github",
+      "skillPath": "skills/read-file/SKILL.md",
       "computedHash": "16607eb0d4dc7e2ff8d92e2bdba6bedb67aedb1189f66249a46ed672ca1782c4"
     },
     "skill-creator": {
       "source": "anthropics/claude-plugins-official",
       "sourceType": "github",
-      "computedHash": "9b03bb78ec5c81c4e0546dbb78cfc970368c72dcae5482e8c59690175abbc8e7"
+      "skillPath": "plugins/skill-creator/skills/skill-creator/SKILL.md",
+      "computedHash": "b122f4d1e91aa1d83027e050b5b37c3156203ee85458d7b1360bc48167c9e02a"
     }
   }
 }

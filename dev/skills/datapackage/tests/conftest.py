@@ -11,7 +11,8 @@ import datetime
 import sys
 from pathlib import Path
 
-# Make generate_examples importable without installing it as a package.
+# Pytest runs these tests from the repository context where this path injection
+# is valid, but static analyzers may still report unresolved-import warnings.
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 from generate_examples import (  # noqa: E402

@@ -22,3 +22,6 @@ site/
 
 # Python files
 __pycache__
+
+# Longer commit message scratch file
+commit.txt

@@ -51,10 +51,6 @@ SELECT * FROM read_parquet('/path/to/my_table.parquet') LIMIT 100;
 SELECT * FROM read_parquet('https://example.com/data/my_table.parquet') LIMIT 100;
 SELECT * FROM read_parquet('s3://my-bucket/my_table.parquet') LIMIT 100;
 
--- CSV (auto-detects headers and types)
-SELECT * FROM read_csv('/path/to/my_table.csv') LIMIT 100;
-SELECT * FROM read_csv('https://example.com/data/my_table.csv') LIMIT 100;
-
 -- JSON
 SELECT * FROM read_json('/path/to/data.json', format='auto') LIMIT 100;
 
@@ -63,6 +59,16 @@ SELECT * FROM read_parquet('/data/part-*.parquet') LIMIT 100;
 
 -- Attached DuckDB or SQLite database (via attach-db)
 SELECT * FROM my_db.my_table LIMIT 100;
+```
+
+```sql
+SELECT * FROM read_csv('/path/to/my_table.csv') LIMIT 100;
+SELECT * FROM read_csv('https://example.com/data/my_table.csv') LIMIT 100;
+```
+
+```sql
+ATTACH '/path/to/my_database.duckdb' AS db (READ_ONLY);
+SELECT * FROM db.my_table LIMIT 100;
 ```
 
 ### Finding the correct table name in a database file
@@ -176,8 +182,11 @@ df = pd.read_parquet("s3://my-bucket/path/my_table.parquet")
 
 # Column projection (much faster for wide tables)
 df = pd.read_parquet("/path/to/data/my_table.parquet", columns=["id", "date", "value"])
+```
 
-# CSV
+## CSV
+
+```python
 df = pd.read_csv("/path/to/data/my_table.csv")
 ```
 

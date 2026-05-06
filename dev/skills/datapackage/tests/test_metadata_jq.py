@@ -4,7 +4,7 @@ Exercises each jq command from that reference against our example packages,
 verifying that the queries return the expected values.  A failing test names
 the jq expression that broke so an agent can look it up in the reference.
 
-Run:  pixi run pytest skills/datapackage/tests/test_metadata_jq.py -v
+Run:  pixi run pytest dev/skills/datapackage/tests/test_metadata_jq.py -v
 """
 
 import hashlib

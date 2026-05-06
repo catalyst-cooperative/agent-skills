@@ -2,5 +2,5 @@
 pixi.lock merge=binary linguist-language=YAML linguist-generated=true -diff
 
 # Generated example data files — collapsed in GitHub PR diffs
-skills/datapackage/assets/examples/v1/** linguist-generated=true
-skills/datapackage/assets/examples/v2/** linguist-generated=true
+dev/skills/datapackage/assets/examples/v1/** linguist-generated=true
+dev/skills/datapackage/assets/examples/v2/** linguist-generated=true
