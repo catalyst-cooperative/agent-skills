@@ -1,4 +1,4 @@
-FROM ghcr.io/prefix-dev/pixi:0.67.2
+FROM ghcr.io/prefix-dev/pixi:0.68.1
 
 # The pixi base image (Ubuntu) ships a user named "ubuntu" at UID/GID 1000.
 # We reuse it directly, adding passwordless sudo so the user can install
