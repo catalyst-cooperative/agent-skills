@@ -3,7 +3,7 @@ ci:
 
 repos:
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.22.1
+    rev: v0.23.0
     hooks:
       - id: markdownlint-cli2
 
@@ -37,7 +37,7 @@ repos:
         args: [--autofix, --indent=2, --no-sort-keys]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.12
+    rev: v0.15.21
     hooks:
       - id: ruff-check
         args: [--fix]
@@ -53,7 +53,7 @@ repos:
         pass_filenames: false
 
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.8.3
+    rev: v3.9.5
     hooks:
       - id: prettier
         types_or: [yaml]
@@ -80,6 +80,6 @@ repos:
       - id: hadolint
 
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: v1.46.0
+    rev: v1.48.0
     hooks:
       - id: typos
