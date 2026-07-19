@@ -4,8 +4,7 @@ Use this reference when looking up the short code for a raw input dataset, findi
 documentation page for a specific source, or resolving which datasets PUDL ingests.
 
 > **For agent use, query [`data_sources.json`](../assets/data_sources.json)**
-> **with jq or DuckDB rather than reading this file into context.**
-> The full source table below is for human reference only.
+> **with jq — this file does not embed the full source table.**
 
 ---
 
@@ -36,20 +35,7 @@ jq '.[] | select(.short_code == "ferc1") | .docs_url' assets/data_sources.json
 jq '[.[] | select(.docs_url == null) | .short_code]' assets/data_sources.json
 ```
 
-### DuckDB examples
-
-```sql
--- Find a source by topic keyword
-SELECT short_code, full_name
-FROM read_json('assets/data_sources.json')
-WHERE full_name ILIKE '%balancing authority%';
-
--- List all sources that do not yet have docs pages
-SELECT short_code, full_name
-FROM read_json('assets/data_sources.json')
-WHERE docs_url IS NULL
-ORDER BY short_code;
-```
+These four jq examples cover every lookup this file supports.
 
 ---
 
@@ -63,7 +49,7 @@ aws s3 ls --no-sign-request s3://pudl.catalyst.coop/zenodo/ | awk '{print $2}' |
 ```
 
 When a new short code appears there that isn't in `data_sources.json`, add a record to
-the JSON asset and regenerate the table below using `python scripts/generate_data_sources_table.py`.
+the JSON asset directly — there is no separate generated table to keep in sync.
 
 ---
 
@@ -77,7 +63,7 @@ Each source with a docs URL has a page describing:
 - How PUDL processes and integrates it
 
 The docs index is at:
-<https://docs.catalyst.coop/pudl/en/nightly/data_sources/index.html>
+<https://docs.catalyst.coop/pudl/en/nightly/data_sources/index.html.md>
 
 Fetch a source page when the user asks about a specific data source and the JSON sidecar
 does not provide enough context:
@@ -112,44 +98,24 @@ cache.
 
 ---
 
-## Full source reference
+## Shape of the data
 
-> *Human reference — agents should use the JSON sidecar above.*
+`data_sources.json` is a flat array of records like these two (illustrative only — query
+the JSON for the full, current list of ~29 sources):
 
-<!-- Generated from assets/data_sources.json — do not edit by hand -->
+```json
+[
+  {
+    "short_code": "eia860",
+    "full_name": "EIA Form 860 – Annual Electric Generator Report",
+    "docs_url": "https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia860.html.md"
+  },
+  {
+    "short_code": "ferc2",
+    "full_name": "FERC Form 2 – Annual Report of Major Natural Gas Companies",
+    "docs_url": null
+  }
+]
+```
 
-| Short code          | Full name                                                                         | Docs                                                                                   |
-| ------------------- | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| `censusdp1tract`    | Census DP1 – Profile of General Demographic Characteristics                       | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/censusdp1tract.html)    |
-| `censuspep`         | Census Population Estimates Program (PEP) FIPS Codes                              | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/censuspep.html)         |
-| `eia176`            | EIA Form 176 – Annual Natural and Supplemental Gas Supply and Disposition         | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia176.html)            |
-| `eia191`            | EIA Form 191 – Underground Natural Gas Storage Report                             | —                                                                                      |
-| `eia757a`           | EIA Form 757A – Natural Gas Processing Survey                                     | —                                                                                      |
-| `eia860`            | EIA Form 860 – Annual Electric Generator Report                                   | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia860.html)            |
-| `eia860m`           | EIA Form EIA-860M – Monthly Generator Updates                                     | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia860.html)            |
-| `eia861`            | EIA Form 861 – Annual Electric Power Industry Report                              | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia861.html)            |
-| `eia923`            | EIA Form 923 – Power Plant Operations Report                                      | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia923.html)            |
-| `eia930`            | EIA Form 930 – Hourly and Daily Balancing Authority Operations                    | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia930.html)            |
-| `eiaaeo`            | EIA Annual Energy Outlook (AEO)                                                   | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/eiaaeo.html)            |
-| `eiaapi`            | EIA Bulk API Data                                                                 | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/eiaapi.html)            |
-| `eiawater`          | EIA Water Thermoelectric Power Report                                             | —                                                                                      |
-| `epacamd_eia`       | EPA CAMD to EIA Power Sector Data Crosswalk                                       | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/epacamd_eia.html)       |
-| `epacems`           | EPA Hourly Continuous Emissions Monitoring System (CEMS)                          | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/epacems.html)           |
-| `ferc1`             | FERC Form 1 – Annual Report of Major Electric Utilities                           | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/ferc1.html)             |
-| `ferc2`             | FERC Form 2 – Annual Report of Natural Gas Companies                              | —                                                                                      |
-| `ferc6`             | FERC Form 6 – Annual Report of Oil Pipeline Companies                             | —                                                                                      |
-| `ferc60`            | FERC Form 60 – Annual Report of Centralized Service Companies                     | —                                                                                      |
-| `ferc714`           | FERC Form 714 – Annual Electric Balancing Authority Area and Planning Area Report | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/ferc714.html)           |
-| `ferccid`           | FERC Company Identifier (CID) Listing                                             | —                                                                                      |
-| `ferceqr`           | FERC Form 920 – Electric Quarterly Report (EQR)                                   | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/ferceqr.html)           |
-| `gridpathratoolkit` | GridPath Resource Adequacy Toolkit                                                | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/gridpathratoolkit.html) |
-| `nrelatb`           | NREL Annual Technology Baseline (ATB) for Electricity                             | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/nrelatb.html)           |
-| `phmsagas`          | PHMSA Annual Natural Gas Report                                                   | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/phmsagas.html)          |
-| `rus12`             | USDA RUS Form 12 – Financial and Operating Report: Electric Power Supply          | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/rus12.html)             |
-| `rus7`              | USDA RUS Form 7 – Financial and Operating Report: Electric Distribution           | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/rus7.html)              |
-| `sec10k`            | U.S. SEC Form 10-K Annual Reports                                                 | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/sec10k.html)            |
-| `vcerare`           | Vibrant Clean Energy RARE Power Dataset                                           | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/vcerare.html)           |
-
-<!-- end generated table -->
-
-Sources with `—` in the Docs column have no dedicated documentation page yet.
+A `null` `docs_url` means that source has no dedicated documentation page yet.

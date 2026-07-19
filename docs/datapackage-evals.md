@@ -33,7 +33,7 @@ Here we're primarily trying to evaluate the `datapackage` skill definition so we
 
 ### When asked about a datapackage, the `datapackage` skill **should**
 
-- use `jq` or `duckdb` to parse the JSON and extract high level elements like the title, description, a list of resource names, date created, format of the underlying data, etc.
+- use `jq` to parse the JSON and extract high level elements like the title, description, a list of resource names, date created, format of the underlying data, etc.
 - download the `*datapackage.json` descriptor if it is remote, and cache it locally for re-use.
 - attempt to validate the datapackage descriptor using `frictionless` and report any errors or warnings that arise from validation.
 
@@ -50,7 +50,7 @@ Here we're primarily trying to evaluate the `datapackage` skill definition so we
 
 ### When asked about a resource the `datapackage` skill **should**
 
-- use `jq` or `duckdb` to parse the JSON and extract high level resource metadata elements like the name, description, format, schema, sources, etc.
+- use `jq` to parse the JSON and extract high level resource metadata elements like the name, description, format, schema, sources, etc.
 - read at least a paragraph of the resource description if it is available.
 - summarize the resource description if it is multiple paragraphs in length.
 - mention any warnings or caveats that appear in the resource description.
@@ -64,7 +64,7 @@ Here we're primarily trying to evaluate the `datapackage` skill definition so we
 
 ### When told to search for a keyword in a datapackage, the `datapackage` skill **should**
 
-- use `jq` or `duckdb` to search through the datapackage descriptor and find any exact matches for the keyword in: resource names, resource descriptions, field names, field descriptions, package title, package description, package keywords, and potentially other metadata fields.
+- use `jq` to search through the datapackage descriptor and find any exact matches for the keyword in: resource names, resource descriptions, field names, field descriptions, package title, package description, package keywords, and potentially other metadata fields.
 - report the context of any matches found (e.g. "the keyword 'population' was found in the description of the resource 'countries'").
 - report if no matches were found for the keyword in the datapackage metadata.
 - use a more general regular expression or wildcard pattern that looks for variations on the provided keyword.
@@ -76,4 +76,4 @@ Here we're primarily trying to evaluate the `datapackage` skill definition so we
 
 ### When given a high level topic about a datapackage, the `datapackage` skill **should**
 
-- use `jq` or `duckdb` to search through the datapackage descriptor for multiple closely related keywords or concepts that are relevant to the topic or question.
+- use `jq` to search through the datapackage descriptor for multiple closely related keywords or concepts that are relevant to the topic or question.

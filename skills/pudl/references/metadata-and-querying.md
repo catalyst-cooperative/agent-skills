@@ -8,9 +8,9 @@
 - Deciding whether something you're seeing in a PUDL descriptor is a PUDL-specific
     extension or standard Frictionless Data Package structure.
 
-For the generic mechanics of locating a descriptor, querying it with jq or DuckDB, and
-loading the data it describes, use the `datapackage` skill — this reference covers only
-what PUDL adds on top of that standard.
+For the generic mechanics of locating a descriptor, querying it with jq, and loading the
+data it describes, use the `datapackage` skill — this reference covers only what PUDL
+adds on top of that standard.
 
 ---
 
@@ -37,8 +37,6 @@ descriptions are hundreds of words long. **To decide whether a table is relevant
 loading the full description into context, read only the first line first** — if the
 summary looks promising, then fetch the full description.
 
-**With jq (local file):**
-
 ```bash
 # List all resource names with just the first line of their description
 jq -r '.resources[] | "\(.name): \(.description | split("\n")[0])"' "$PKG"
@@ -49,28 +47,6 @@ jq -r '.resources[] | select(.description | split("\n")[0] | test("generator"; "
 
 # Once a table looks relevant, fetch the full description
 jq -r '.resources[] | select(.name == "core_eia860__scd_generators") | .description' "$PKG"
-```
-
-**With DuckDB (local or remote):**
-
-```sql
--- List resource names with just the first-line summary
-SELECT
-    r->>'$.name' AS name,
-    split_part(r->>'$.description', chr(10), 1) AS summary
-FROM (SELECT unnest(resources) AS r FROM read_json('pudl_parquet_datapackage.json', format='auto'));
-
--- Filter by keyword in the first-line summary only
-SELECT
-    r->>'$.name' AS name,
-    split_part(r->>'$.description', chr(10), 1) AS summary
-FROM (SELECT unnest(resources) AS r FROM read_json('pudl_parquet_datapackage.json', format='auto'))
-WHERE summary ILIKE '%generator%';
-
--- Once a table looks relevant, fetch its full description
-SELECT r->>'$.description' AS description
-FROM (SELECT unnest(resources) AS r FROM read_json('pudl_parquet_datapackage.json', format='auto'))
-WHERE r->>'$.name' = 'core_eia860__scd_generators';
 ```
 
 ---
@@ -87,7 +63,7 @@ populates it with dataset-specific provenance beyond the spec's minimal `name`/`
   "concept_doi": "https://doi.org/10.5281/zenodo.4127026",
   "license_raw": { "name": "other-pd", "title": "U.S. Government Works", "path": "..." },
   "license_pudl": { "name": "CC-BY-4.0", "title": "Creative Commons Attribution 4.0", "path": "..." },
-  "documentation": "https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia860.html",
+  "documentation": "https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia860.html.md",
 }
 ```
 

@@ -21,7 +21,7 @@ Many other agent skills can be found on [skills.sh](https://skills.sh/)
 ### datapackage
 
 Explore and query any dataset described by a [Frictionless Data Package](https://datapackage.org/) descriptor (`datapackage.json`).
-Covers schema inspection, validation, metadata querying with `jq` and DuckDB, and reading data from CSV, Parquet, DuckDB, and SQLite backends.
+Covers schema inspection, validation, metadata querying with `jq`, and reading data from CSV, Parquet, DuckDB, and SQLite backends.
 
 Useful for any agent working with tabular datasets that follow the Frictionless spec — not just PUDL.
 

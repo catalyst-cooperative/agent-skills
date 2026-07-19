@@ -2,7 +2,7 @@
 
 ## Use this when
 
-- Loading PUDL tables in a script or notebook (Jupyter or Marimo).
+- Loading PUDL tables in a script.
 - Choosing between S3 and a local copy.
 - Generating reproducible data-loading code for a user.
 - Deciding how to access raw FERC form data.
@@ -396,7 +396,7 @@ when a needed historical version is no longer present in the S3 cache.
 ## Useful links
 
 - Data catalog / table browser: <https://data.catalyst.coop>
-- PUDL data access documentation: <https://docs.catalyst.coop/pudl/en/nightly/data_access.html>
+- PUDL data access documentation: <https://docs.catalyst.coop/pudl/en/nightly/data_access.html.md>
 - PUDL Data Release Concept DOI (Zenodo): <https://doi.org/10.5281/zenodo.3653158>
 - PUDL Software Concept DOI (Zenodo): <https://doi.org/10.5281/zenodo.3404014>
 - AWS Open Data Registry: <https://registry.opendata.aws/catalyst-cooperative-pudl/>

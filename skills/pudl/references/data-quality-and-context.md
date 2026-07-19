@@ -126,16 +126,16 @@ Use these when you need to explain source data or point users to authoritative
 methodology docs. **Do not reference internal `docs/` or `src/` paths** — they are
 only available to people with the source repository.
 
-| Resource                           | URL                                                                                |
-| ---------------------------------- | ---------------------------------------------------------------------------------- |
-| PUDL documentation home            | <https://docs.catalyst.coop/pudl/>                                                 |
-| Data access guide                  | <https://docs.catalyst.coop/pudl/en/nightly/data_access.html>                      |
-| Data dictionary (tables + columns) | <https://docs.catalyst.coop/pudl/en/nightly/data_dictionaries/pudl_db.html>        |
-| Usage warnings reference           | <https://docs.catalyst.coop/pudl/en/nightly/data_dictionaries/usage_warnings.html> |
-| Methodology docs                   | <https://docs.catalyst.coop/pudl/en/nightly/methodology/>                          |
-| **Data sources index**             | <https://docs.catalyst.coop/pudl/en/nightly/data_sources/>                         |
-| Web data viewer (preview tables)   | <https://data.catalyst.coop>                                                       |
-| GitHub issues / discussions        | <https://github.com/catalyst-cooperative/pudl>                                     |
+| Resource                           | URL                                                                                   |
+| ---------------------------------- | ------------------------------------------------------------------------------------- |
+| PUDL documentation home            | <https://docs.catalyst.coop/pudl/>                                                    |
+| Data access guide                  | <https://docs.catalyst.coop/pudl/en/nightly/data_access.html.md>                      |
+| Data dictionary (tables + columns) | <https://docs.catalyst.coop/pudl/en/nightly/data_dictionaries/pudl_db.html.md>        |
+| Usage warnings reference           | <https://docs.catalyst.coop/pudl/en/nightly/data_dictionaries/usage_warnings.html.md> |
+| Methodology docs                   | <https://docs.catalyst.coop/pudl/en/nightly/methodology/index.html.md>                |
+| **Data sources index**             | <https://docs.catalyst.coop/pudl/en/nightly/data_sources/index.html.md>               |
+| Web data viewer (preview tables)   | <https://data.catalyst.coop>                                                          |
+| GitHub issues / discussions        | <https://github.com/catalyst-cooperative/pudl>                                        |
 
 ---
 
@@ -211,5 +211,5 @@ If a value looks suspicious, guide the user through this sequence:
 1. Check whether the table is `_core_*` (preliminary, may have known issues).
 1. Look up the source form at the agency's website to compare raw values.
 1. Search open PUDL GitHub issues for the symptom.
-1. For methodology questions (imputation, entity resolution), see <https://docs.catalyst.coop/pudl/en/nightly/methodology/>
+1. For methodology questions (imputation, entity resolution), see <https://docs.catalyst.coop/pudl/en/nightly/methodology/index.html.md>
 1. If you think you've found a data bug, report it at <https://github.com/catalyst-cooperative/pudl/issues/new?template=data_bug_report.yml>

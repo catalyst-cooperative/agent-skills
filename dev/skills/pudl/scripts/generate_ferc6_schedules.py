@@ -265,7 +265,8 @@ def parse_html_form(html_path: str) -> dict[str, dict]:
     # Build a flat list of (anchor_name, following_text) pairs
     sections = []
     for anchor in anchors:
-        name = anchor.get("name", "")
+        name_attr = anchor.get("name", "")
+        name = name_attr if isinstance(name_attr, str) else ""
         # Collect text from this anchor to the next
         text_parts = []
         for sibling in anchor.find_all_next():

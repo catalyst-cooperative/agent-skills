@@ -58,8 +58,7 @@ agent-skills/
 │   │   ├── SKILL.md           # Skill descriptor (YAML front matter) + usage guide
 │   │   ├── assets/            # Distributed JSON schemas and skill assets
 │   │   ├── references/        # frictionless-validate.md, metadata-querying.md, storage-backends.md
-│   │   ├── scripts/           # utility scripts (Python or shell) for use at runtime by agents
-│   │   └── evals/             # Skill evaluation cases
+│   │   └── scripts/           # utility scripts (Python or shell) for use at runtime by agents
 │   ├── pudl/            # PUDL data-user skill (read tables, explore metadata)
 ├── docs/                # Zensical documentation site source (markdown)
 ├── .github/workflows/   # CI: test-datapackage.yml, docs.yml
@@ -88,13 +87,13 @@ skills/<name>/
 ├── SKILL.md       # Required: YAML front matter descriptor + usage guide
 ├── assets/        # Schemas, cached data, and distributed skill assets
 ├── references/    # Long-form reference docs (markdown)
-├── scripts/       # Utility scripts (Python or shell)
-└── evals/         # Evaluation cases for measuring skill quality
+└── scripts/       # Utility scripts (Python or shell) for use at runtime by agents
 
 dev/skills/<name>/
 ├── assets/examples/ # Generated example datasets and fixtures
 ├── scripts/         # Dev-only utility scripts (Python or shell)
-└── tests/           # pytest suite verifying reference code examples
+├── tests/           # pytest suite verifying reference code examples
+└── evals/           # Evaluation cases for measuring skill quality — dev-only, never shipped with the installed skill
 ```
 
 - Reference documents in `references/` are the authoritative source for patterns.

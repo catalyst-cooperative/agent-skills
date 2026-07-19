@@ -9,7 +9,7 @@
     },
     {
       "id": 2,
-      "prompt": "I want to load the out_eia923__generation table in a Jupyter notebook. I don't have PUDL installed locally \u2014 can I get it from S3? Show me the code.",
+      "prompt": "I want to load the out_eia923__generation table in a script. I don't have PUDL installed locally \u2014 can I get it from S3? Show me the code.",
       "expected_output": "Agent provides clean, working pandas (or DuckDB) code to read the table from the public S3 bucket (s3://pudl.catalyst.coop/nightly/out_eia923__generation.parquet) with no credentials needed. Code should not import any pudl package. Optionally shows column projection for efficiency.",
       "files": []
     },
@@ -27,8 +27,8 @@
     },
     {
       "id": 5,
-      "prompt": "I'm doing a Marimo notebook analysis of hourly electricity generation by fuel type. Can you help me get started with the right PUDL data?",
-      "expected_output": "Agent identifies the right table(s) for hourly generation (e.g. EPA CEMS or EIA hourly tables), notes that hourly tables are Parquet-only, shows DuckDB or polars code for efficient access (since hourly data is large), surfaces any warnings, AND delegates/initiates handoff to marimo-pair for the notebook work.",
+      "prompt": "I'm analyzing hourly electricity generation by fuel type. Can you help me get started with the right PUDL data?",
+      "expected_output": "Agent identifies the right table(s) for hourly generation (e.g. EPA CEMS or EIA hourly tables), notes that hourly tables are Parquet-only, shows DuckDB or polars code for efficient access (since hourly data is large), and surfaces any warnings.",
       "files": []
     }
   ]

@@ -14,7 +14,7 @@ compatibility: |
   Required CLI tools: jq >= 1.7
   Optional CLI tools: frictionless >= 5.18 (with fastparquet for Parquet support)
   Required skills: attach-db, query (optional: install-duckdb)
-  Optional Python packages: marimo, pandas, polars, duckdb (for DataFrame work)
+  Optional Python packages: pandas, polars, duckdb (for DataFrame work)
 metadata:
   - author: Catalyst Cooperative
   - email: hello@catalyst.coop
@@ -66,7 +66,7 @@ installed (optionally `install-duckdb` too). Install them from `duckdb/duckdb-sk
 ## Workflow overview
 
 1. **Locate the descriptor** — find or download `datapackage.json` (see below).
-1. **Query metadata selectively** — use jq or DuckDB to extract only what you need.
+1. **Query metadata selectively** — use jq to extract only what you need.
     See [Metadata Querying](./references/metadata-querying.md).
 1. **Surface warnings** — always check for usage warnings before presenting a resource.
 1. **Validate** *(optional)* — if the user wants to know whether the data actually
@@ -80,7 +80,7 @@ installed (optionally `install-duckdb` too). Install them from `duckdb/duckdb-sk
 ## Reference index
 
 - [Metadata Querying](./references/metadata-querying.md) — locate the descriptor,
-    query it selectively with jq or DuckDB, surface usage warnings
+    query it selectively with jq, surface usage warnings
 - [Storage Backends](./references/storage-backends.md) — load data from Parquet,
     DuckDB, SQLite, or CSV files referenced by the descriptor
 - [Frictionless Validate](./references/frictionless-validate.md) — use the `frictionless`

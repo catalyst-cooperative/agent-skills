@@ -108,9 +108,6 @@ extend-exclude = [
   "skills/*/assets/",
   # Development-only fixture and catalog data (may contain multilingual content)
   "dev/skills/*/assets/",
-  # Markdown reference tables generated from JSON by scripts/generate_ferc_tables.py
-  "skills/pudl/references/ferc1-schedules.md",
-  "skills/pudl/references/ferc2-schedules.md",
 ]
 
 [tool.typos.default.extend-words]

@@ -7,10 +7,10 @@
 - Reading descriptions to understand data provenance, processing notes, and caveats.
 - Searching for a column by name or topic across all resources.
 
-In this skill, metadata discovery is **jq-first**. Prefer jq for descriptor metadata,
-and only fall back to DuckDB or Python when jq cannot do the task cleanly (for
-example: remote-only access without download, or complex transforms that would be
-fragile in jq) and those tools are available.
+In this skill, metadata discovery always uses **jq** — it's installed everywhere,
+reads only what you ask for, and needs no session or setup. Reserve DuckDB for the
+data files a descriptor points to (Parquet, SQLite, DuckDB, CSV); it isn't needed to
+read the descriptor's own JSON.
 
 ---
 
@@ -55,9 +55,8 @@ md5sum stations.csv
 A `datapackage.json` can be megabytes with hundreds of resources and thousands of
 fields. Always query it selectively — extract only the slice you need.
 
-Use jq by default for descriptor metadata queries. If jq is unavailable or clearly
-unsuitable for a specific metadata task, fallback to DuckDB or Python is acceptable.
-Use DuckDB primarily for querying the data files referenced by resource `path`.
+Use jq for descriptor metadata queries. Use DuckDB for querying the data files
+referenced by resource `path`.
 
 ---
 
@@ -120,20 +119,12 @@ Store the local path in `PKG` for reuse in queries below.
 
 ---
 
-## Steps 2-5: Query the descriptor
+## Steps 2–5: jq
 
-Use **jq** by default for descriptor metadata queries so the workflow stays consistent
-and easy to debug. If jq is unavailable or the query is impractical in jq, use
-DuckDB or Python as a fallback.
-
----
-
-## Steps 2–5: jq (local files only)
-
-jq is the best default for selective querying of a local JSON file. It reads only what
-you ask for and requires no additional setup. **jq cannot fetch over HTTPS** — if the
+jq is the default for selective querying of a local JSON file. It reads only what you
+ask for and requires no additional setup. **jq cannot fetch over HTTPS** — if the
 descriptor is remote, download it first with `curl -O <URL>`, then point jq at the
-local file. If downloading is not feasible, DuckDB is a reasonable fallback.
+local file.
 
 ### Step 2: Identify candidate resources
 
@@ -231,8 +222,8 @@ Once jq has identified the resource path, switch to DuckDB for the actual data q
 
 Keep these concerns separate:
 
-- jq: default for descriptor metadata (`resources`, `schema`, descriptions, paths)
-- DuckDB: default for table/file contents (and optional metadata fallback when needed)
+- jq: descriptor metadata (`resources`, `schema`, descriptions, paths)
+- DuckDB: table/file contents
 
 ```bash
 # Step 4 in jq: get the resource path

@@ -15,8 +15,8 @@ license: CC-BY-4.0
 compatibility: |
   Required skills: datapackage (which requires jq >= 1.7, attach-db, and query)
   Required Python packages: pandas >= 2.0, s3fs (for S3 access)
-  Optional Python packages: polars >= 1.0, marimo (for notebook EDA)
-  Optional skills: marimo-pair, dignified-python
+  Optional Python packages: polars >= 1.0
+  Optional skills: dignified-python
 metadata:
   - author: Catalyst Cooperative
   - email: hello@catalyst.coop
@@ -30,7 +30,7 @@ public energy data products. It assumes no access to the PUDL Python package or 
 repository — only the publicly distributed data files and their metadata.
 
 PUDL's primary outputs are Apache Parquet files, described by a Frictionless Data
-Package descriptor. For generic descriptor-querying patterns (jq, DuckDB JSON), use
+Package descriptor. For generic descriptor-querying patterns (jq), use
 the `datapackage` skill — this skill provides PUDL-specific knowledge layered on top.
 
 Beyond the main Parquet outputs, PUDL also distributes FERC historical form databases
@@ -76,7 +76,7 @@ user explicitly asks to load or explore data.
     lineage; the S3 path uses a concrete DOI for one specific archived version. See
     [Data Quality and Context](./references/data-quality-and-context.md) for details.
 
-1. **Query metadata selectively** — use `/datapackage` skill patterns (jq or DuckDB)
+1. **Query metadata selectively** — use `/datapackage` skill patterns (jq)
     to find relevant tables, read descriptions, and surface warnings.
 
 1. **Check table tier** — see [Data Quality and Context](./references/data-quality-and-context.md).
@@ -92,10 +92,6 @@ user explicitly asks to load or explore data.
 
 1. *(Only if the user explicitly asks to load data)* **Load the data** — Parquet from
     S3 or local. See [Data Access](./references/data-access.md).
-
-1. *(Only if the user explicitly asks for interactive exploration)* **Delegate EDA to
-    a notebook agent** — hand off to `/marimo-pair` (Marimo) or appropriate Jupyter
-    agent.
 
 ## Reference index
 
@@ -133,7 +129,7 @@ user explicitly asks to load or explore data.
     by number or name (e.g. "Schedule 301", "Page 400a", "plant in service schedule") —
     prefer querying `ferc1_schedules.json` over reading this file
 - [ferc1_schedules.json](./assets/ferc1_schedules.json) — **query this first** for any
-    FERC Form 1 schedule or table lookup; use jq or DuckDB `read_json()` to find
+    FERC Form 1 schedule or table lookup; use jq to find
     schedules by keyword, account number, or PUDL table name without loading the full
     markdown into context
 - [FERC Form 2 Schedules](./references/ferc2-schedules.md) — all 77 Form 2 schedules
@@ -142,11 +138,11 @@ user explicitly asks to load or explore data.
     pipeline financial or operational data — prefer querying `ferc2_schedules.json` over
     reading this file
 - [ferc2_schedules.json](./assets/ferc2_schedules.json) — **query this first** for any
-    FERC Form 2 schedule or table lookup; use jq or DuckDB `read_json()` to find
+    FERC Form 2 schedule or table lookup; use jq to find
     schedules by keyword, account number, or XBRL table name without loading the full
     markdown into context
 - [ferc_electricity_accounts.json](./assets/ferc_electricity_accounts.json) — **query this first** for any
-    FERC Form 1 (electric utility) account number lookup; use jq or DuckDB `read_json()` to resolve account
+    FERC Form 1 (electric utility) account number lookup; use jq to resolve account
     definitions and cross-reference with Form 1 schedules via the `ferc_accounts` array
 
 ## PUDL-specific constraints
@@ -199,7 +195,7 @@ user explicitly asks to load or explore data.
     ways: RST-formatted, docstring-style descriptions, per-resource provenance metadata,
     and a package-level unit registry. Read
     [PUDL Datapackage Extensions](./references/metadata-and-querying.md) before writing
-    jq/DuckDB queries against `description` or other non-standard fields — it covers only
+    jq queries against `description` or other non-standard fields — it covers only
     what's unique to PUDL; for generic descriptor-querying mechanics, use the
     `datapackage` skill.
 
@@ -228,23 +224,25 @@ jq --arg s "$SCHED" '.[] | select(.schedule == $s) | .ferc_accounts[]' \
 xargs -I{} jq --arg a {} '.[] | select(.account == $a)' assets/ferc_electricity_accounts.json
 ```
 
-**Combined DuckDB query:**
+**Joining across both files (jq):** load the accounts file with `--slurpfile` and use
+`INDEX()` to build an account-number lookup, then join it against each schedule's
+`ferc_accounts` array:
 
-```sql
--- Find PUDL tables and account definitions for a Form 1 topic (e.g. "regulatory assets")
-SELECT s.schedule, s.title, unnest(s.pudl_tables) AS pudl_table,
-       a.account, a.description AS account_description
-FROM read_json('assets/ferc1_schedules.json') s,
-     LATERAL unnest(s.ferc_accounts) AS t(acct)
-JOIN read_json('assets/ferc_electricity_accounts.json') a ON a.account = t.acct
-WHERE s.description ILIKE '%regulatory asset%'
-ORDER BY s.schedule, a.account;
+```bash
+# Find PUDL tables and account definitions for a Form 1 topic (e.g. "regulatory assets")
+jq --slurpfile accounts assets/ferc_electricity_accounts.json '
+  ($accounts[0] | INDEX(.account)) as $acct_lookup
+  | .[]
+  | select(.description | test("regulatory asset"; "i"))
+  | .schedule as $sched | .title as $title | .pudl_tables as $tables
+  | .ferc_accounts[]
+  | {schedule: $sched, title: $title, pudl_tables: $tables,
+     account: ., account_description: $acct_lookup[.].description}
+' assets/ferc1_schedules.json
 
--- Find Form 2 XBRL tables for a topic (e.g. "storage")
-SELECT schedule, title, unnest(xbrl_tables) AS xbrl_table
-FROM read_json('assets/ferc2_schedules.json')
-WHERE description ILIKE '%storage%'
-ORDER BY schedule;
+# Find Form 2 XBRL tables for a topic (e.g. "storage") — single file, no join needed
+jq '[.[] | select(.description | test("storage"; "i"))] |
+    .[] | {schedule, title, xbrl_tables}' assets/ferc2_schedules.json
 ```
 
 ## Delegation
@@ -254,5 +252,4 @@ ORDER BY schedule;
 | Query datapackage.json metadata    | `/datapackage`      |
 | Attach a .duckdb or .sqlite file   | `/attach-db`        |
 | Run SQL or NL queries against data | `/query`            |
-| Explore/visualize data in Marimo   | `/marimo-pair`      |
 | General Python/pandas help         | `/dignified-python` |
