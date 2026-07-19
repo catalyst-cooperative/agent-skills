@@ -63,7 +63,7 @@ populates it with dataset-specific provenance beyond the spec's minimal `name`/`
   "concept_doi": "https://doi.org/10.5281/zenodo.4127026",
   "license_raw": { "name": "other-pd", "title": "U.S. Government Works", "path": "..." },
   "license_pudl": { "name": "CC-BY-4.0", "title": "Creative Commons Attribution 4.0", "path": "..." },
-  "documentation": "https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia860.html.md",
+  "documentation": "https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia860.html",
 }
 ```
 
@@ -76,7 +76,10 @@ populates it with dataset-specific provenance beyond the spec's minimal `name`/`
     `license_pudl` when telling a user how they may use PUDL's output; mention
     `license_raw` only if they ask about the original source's terms.
 - `documentation` — a direct link to that source's PUDL docs page. Prefer this over
-    constructing a docs URL from the short code.
+    constructing a docs URL from the short code. **Append `.md` only when *you* are
+    fetching the page** (PUDL publishes an LLM-optimized markdown mirror of every docs
+    page). If you share this link with the user, give them the plain `.html` URL from
+    the field — the `.md` version is for your own reading, not theirs.
 
 ```bash
 # Get provenance for every source dataset behind the current descriptor

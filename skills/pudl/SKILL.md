@@ -13,14 +13,14 @@ description: >
   FERC Form 1, FERC Form 714, FERC EQR, EPA CEMS, EPA CAMD, etc.).
 license: CC-BY-4.0
 compatibility: |
-  Required skills: datapackage (which requires jq >= 1.7, attach-db, and query)
+  Required skills: datapackage (which requires jq >= 1.8, attach-db, and query)
   Required Python packages: pandas >= 2.0, s3fs (for S3 access)
   Optional Python packages: polars >= 1.0
   Optional skills: dignified-python
 metadata:
   - author: Catalyst Cooperative
   - email: hello@catalyst.coop
-  - last-updated: 2026-04-03
+  - last-updated: 2026-07-19
 ---
 
 # PUDL Data Explorer Guide
@@ -85,21 +85,23 @@ user explicitly asks to load or explore data.
 1. **Check methodology before implementation details** — if the user is asking how
     PUDL cleans, imputes, allocates, reconciles, estimates, or models data, read
     [Methodology](./references/methodology.md) first and fetch the relevant public
-    methodology page before looking at source code, docstrings, or implementation
-    details. Summarize the public methodology page and point the user to it. Only
-    dive into code-level implementation after the user has seen that write-up or if
-    no methodology page exists for the topic.
+    methodology page (append `.md` to the URL for your own reading — but when pointing
+    the user to it, give them the plain `.html` link) before looking at source code,
+    docstrings, or implementation details. Summarize the public methodology page and
+    point the user to it. Only dive into code-level implementation after the user has
+    seen that write-up or if no methodology page exists for the topic.
 
 1. *(Only if the user explicitly asks to load data)* **Load the data** — Parquet from
     S3 or local. See [Data Access](./references/data-access.md).
 
 ## Reference index
 
-- [Data Sources](./references/data-sources.md) — exhaustive list of all ~29 dataset
-    short codes, full names, and per-source documentation links; read when a user asks
-    about a specific source dataset (EIA-860, FERC Form 714, EPA CEMS, etc.) or needs
-    documentation links, or when resolving a raw-archive S3 path and you need the short
-    code and have to distinguish between a concept-DOI and a concrete-DOI.
+- [Data Sources](./references/data-sources.md) — how to query the PUDL descriptor's own
+    `sources` array (31 datasets, with short codes, names, licensing, and per-source
+    documentation links); read when a user asks about a specific source dataset
+    (EIA-860, FERC Form 714, EPA CEMS, etc.) or needs documentation links, or when
+    resolving a raw-archive S3 path and you need the short code and have to
+    distinguish between a concept-DOI and a concrete-DOI.
 - [Data Access](./references/data-access.md) — S3 paths, loading patterns
     (pandas/DuckDB/polars/pure SQL), FERC historical database locations, and EQR access;
     read whenever generating data-loading code or explaining how to access any PUDL output

@@ -76,6 +76,7 @@ Skill files and supporting references are the main product here; preserve their 
 - prefer references and cached artifacts for large factual lookups instead of bloating `SKILL.md`
 - write instructions for agents, not marketing copy for humans
 - keep examples realistic and copyable
+- describe the skill as it works now, never relative to a prior version ("used to", "we removed", "no longer") — that history belongs in commit messages, not shipped content
 
 Reference documents in `references/` are the authoritative source for reusable patterns.
 Tests exist to validate those patterns and should stay in sync with them.

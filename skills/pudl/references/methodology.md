@@ -16,7 +16,7 @@ docstrings. Only move on to code-level explanation if the user asks for more det
 after seeing the methodology write-up, or if there is no methodology page for the
 topic.
 
-Index: <https://docs.catalyst.coop/pudl/en/nightly/methodology/index.html.md>
+Index: <https://docs.catalyst.coop/pudl/en/nightly/methodology/index.html>
 
 ---
 
@@ -24,7 +24,7 @@ Index: <https://docs.catalyst.coop/pudl/en/nightly/methodology/index.html.md>
 
 ### Entity Resolution
 
-**URL**: <https://docs.catalyst.coop/pudl/en/nightly/methodology/entity_resolution.html.md>
+**URL**: <https://docs.catalyst.coop/pudl/en/nightly/methodology/entity_resolution.html>
 
 **When relevant**: User asks how PUDL identifies the same plant, generator, or utility
 across multiple forms or years; asks about "golden records", canonical IDs, or why
@@ -42,7 +42,7 @@ and related entity tables.
 
 ### Timeseries Imputation
 
-**URL**: <https://docs.catalyst.coop/pudl/en/nightly/methodology/timeseries_imputation.html.md>
+**URL**: <https://docs.catalyst.coop/pudl/en/nightly/methodology/timeseries_imputation.html>
 
 **When relevant**: User asks how missing, anomalous, or flagged values are handled in
 hourly or sub-hourly timeseries data (electricity demand, net generation, etc.); asks
@@ -60,7 +60,7 @@ reported values.
 
 ### SEC 10-K Ownership Data Extraction
 
-**URL**: <https://docs.catalyst.coop/pudl/en/nightly/methodology/sec10k_modeling.html.md>
+**URL**: <https://docs.catalyst.coop/pudl/en/nightly/methodology/sec10k_modeling.html>
 
 **When relevant**: User asks how utility holding company hierarchies are determined;
 asks about ownership structure, parent companies, subsidiaries, or the

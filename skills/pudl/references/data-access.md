@@ -396,7 +396,7 @@ when a needed historical version is no longer present in the S3 cache.
 ## Useful links
 
 - Data catalog / table browser: <https://data.catalyst.coop>
-- PUDL data access documentation: <https://docs.catalyst.coop/pudl/en/nightly/data_access.html.md>
+- PUDL data access documentation: <https://docs.catalyst.coop/pudl/en/nightly/data_access.html>
 - PUDL Data Release Concept DOI (Zenodo): <https://doi.org/10.5281/zenodo.3653158>
 - PUDL Software Concept DOI (Zenodo): <https://doi.org/10.5281/zenodo.3404014>
 - AWS Open Data Registry: <https://registry.opendata.aws/catalyst-cooperative-pudl/>

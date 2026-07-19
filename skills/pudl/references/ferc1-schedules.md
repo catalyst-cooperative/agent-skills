@@ -92,10 +92,10 @@ Raw tables come in two formats depending on the filing year:
 Source (schedule titles): FERC Form 1 blank form (2025-07-31 edition),
 "LIST OF SCHEDULES (Electric Utility)". The blank form HTML and older PDF versions can
 be downloaded from links in the PUDL docs:
-[FERC Form 1 additional documentation](https://docs.catalyst.coop/pudl/en/nightly/data_sources/ferc1.html.md#download-additional-documentation)
+[FERC Form 1 additional documentation](https://docs.catalyst.coop/pudl/en/nightly/data_sources/ferc1.html#download-additional-documentation)
 
 Source (DBF table names): Hand-compiled mapping published as the
-[FERC Form 1 DBF data dictionary](https://docs.catalyst.coop/pudl/en/nightly/data_dictionaries/ferc1_db.html.md).
+[FERC Form 1 DBF data dictionary](https://docs.catalyst.coop/pudl/en/nightly/data_dictionaries/ferc1_db.html).
 
 ## Cross-schedule composite tables
 

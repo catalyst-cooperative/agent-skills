@@ -11,14 +11,14 @@ description: >
   dataset-specific skills (like `pudl`) that layer domain knowledge on top.
 license: CC-BY-4.0
 compatibility: |
-  Required CLI tools: jq >= 1.7
-  Optional CLI tools: frictionless >= 5.18 (with fastparquet for Parquet support)
+  Required CLI tools: jq >= 1.8
+  Optional CLI tools: frictionless >= 5.19 (with fastparquet for Parquet support)
   Required skills: attach-db, query (optional: install-duckdb)
   Optional Python packages: pandas, polars, duckdb (for DataFrame work)
 metadata:
   - author: Catalyst Cooperative
   - email: hello@catalyst.coop
-  - last-updated: 2026-04-03
+  - last-updated: 2026-07-19
 ---
 
 # Frictionless Data Package Guide
