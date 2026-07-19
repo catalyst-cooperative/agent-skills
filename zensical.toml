@@ -46,11 +46,15 @@ Copyright &copy; 2026 Catalyst COoperative
 # Read more: https://zensical.org/docs/setup/navigation/
 nav = [
   { "Home" = "index.md" },
-  { "Datapackage Skill" = "datapackage-skill.md" },
-  { "PUDL Skill" = "pudl-skill.md" },
-  { "Agent Sandbox" = "agent-sandbox.md" },
-  { "Datapackage Evals" = "datapackage-evals.md" },
-  { "Skill Evals" = "skill-evals.md" },
+  { "Using the Skills" = [
+    { "Datapackage Skill" = "datapackage-skill.md" },
+    { "PUDL Skill" = "pudl-skill.md" },
+  ] },
+  { "Development" = [
+    { "Agent Sandbox" = "agent-sandbox.md" },
+    { "Datapackage Evals" = "datapackage-evals.md" },
+    { "Skill Evals" = "skill-evals.md" },
+  ] },
 ]
 
 # With the "extra_css" option you can add your own CSS styling to customize
