@@ -8,11 +8,21 @@ Run:  pixi run pytest dev/skills/datapackage/tests/test_frictionless.py -v
 """
 
 import json
+import shutil
 import subprocess
 from pathlib import Path
 
 import pytest
-from conftest import EXAMPLES, READING_COUNT, RESOURCE_NAMES, STATION_COUNT
+
+# pytest injects conftest during test collection; static analyzers may still
+# flag this as unresolved-import outside the pytest runtime context.
+from .conftest import (
+    EXAMPLES,
+    READING_COUNT,
+    RESOURCE_NAMES,
+    STATION_COUNT,
+    STATIONS_RESOURCE_BASE,
+)
 
 # ---------------------------------------------------------------------------
 # Subprocess helper
@@ -277,3 +287,42 @@ def test_describe_infers_schema_from_csv():
         assert col in inferred_names, (
             f"Expected column '{col}' in inferred schema, got: {inferred_names}"
         )
+
+
+# ---------------------------------------------------------------------------
+# --schema with invalid data
+# Reference: "Attaching an external schema" section
+# ---------------------------------------------------------------------------
+
+
+def test_invalid_csv_against_external_schema_reports_errors(tmp_path: Path):
+    """bad_stations.csv fails validation against the stations table schema."""
+    schema_path = tmp_path / "stations_schema.json"
+    schema_path.write_text(
+        json.dumps(STATIONS_RESOURCE_BASE["schema"], indent=2) + "\n",
+        encoding="utf-8",
+    )
+    bad_csv = tmp_path / "bad_stations.csv"
+    shutil.copy2(EXAMPLES / "bad_stations.csv", bad_csv)
+
+    result = frictionless(
+        "validate",
+        "--json",
+        "--schema",
+        schema_path.name,
+        bad_csv.name,
+        cwd=tmp_path,
+    )
+
+    assert result.returncode != 0, "Expected non-zero exit code for invalid CSV"
+    report = json.loads(result.stdout)
+    assert report["valid"] is False
+    assert report["stats"]["errors"] > 0
+
+    task = report["tasks"][0]
+    assert task["valid"] is False
+    error_types = {err["type"] for err in task["errors"]}
+
+    # Fixture has duplicate station_id and invalid type values.
+    assert "type-error" in error_types
+    assert "primary-key" in error_types

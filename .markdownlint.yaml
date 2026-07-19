@@ -9,9 +9,8 @@ MD013: false
 MD024:
   siblings_only: true
 
-# MD010: no-hard-tabs. shfmt uses tabs to indent shell continuation lines (after \),
-# which is correct shell style. Disable the check inside code blocks so shfmt's
-# formatting survives markdownlint's pass.
+# MD010: no-hard-tabs. Disable this inside code blocks to avoid spurious warnings
+# in embedded examples copied from shells, SQL clients, or generated output.
 MD010:
   code_blocks: false
 

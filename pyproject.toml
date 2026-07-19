@@ -3,9 +3,9 @@ channels = ["conda-forge"]
 platforms = ["osx-arm64", "osx-64", "linux-64", "linux-aarch64"]
 
 [tool.pixi.pypi-dependencies]
-mdformat-mkdocs = ">=5.1.4,<6"
-mdformat_simple_breaks = ">=0.1.0,<1"
-mdformat-wikilink = ">=0.3.0,<1"
+mdformat-mkdocs = ">=5.1.4"
+mdformat_simple_breaks = ">=0.1.0"
+mdformat-wikilink = ">=0.3.0"
 
 [tool.pixi.tasks.install-skills]
 cmd = "npx --yes skills experimental_install"
@@ -15,9 +15,21 @@ description = "Install external skills from skills-lock.json into .agents/skills
 cmd = "pytest dev/skills/datapackage/tests/ -v"
 description = "Run the datapackage skill test suite"
 
+[tool.pixi.tasks.test-pudl]
+cmd = "pytest dev/skills/pudl/tests/ -v"
+description = "Run the pudl skill test suite"
+
+[tool.pixi.tasks.test]
+depends-on = ["test-datapackage", "test-pudl"]
+description = "Run every skill's test suite. Add new per-skill test tasks to depends-on here."
+
 [tool.pixi.tasks.docs-build]
 cmd = "zensical build"
 description = "Build the Zensical documentation site into site/"
+
+[tool.pixi.tasks.prek-update]
+cmd = "prek update"
+description = "Bump the `rev` pins in .pre-commit-config.yaml to their latest tagged versions"
 
 [tool.pixi.tasks.devcontainer-install]
 cmd = """
@@ -27,7 +39,7 @@ pixi install \
       @anthropic-ai/claude-code \
       @google/gemini-cli \
       @openai/codex \
-      @mariozechner/pi-coding-agent \
+      @earendil-works/pi-tui \
       opencode-ai
 """
 description = "Set up the dev container: install pixi environment, skills, and agent CLIs (run once after first start)"
@@ -53,42 +65,43 @@ description = "Stop and remove the dev container"
 
 [tool.pixi.dependencies]
 python = ">=3.14"
-duckdb = ">=1.5.1,<2"
-jq = ">=1.8.1,<2"
-prek = ">=0.3.8,<0.4"
-mdformat = ">=1.0.0,<2"
-mdformat-footnote = ">=0.1.3,<1"
-mdformat-front-matters = ">=2.0.0,<3"
-mdformat-gfm = ">=1.0"
-pandas = ">=3.0.2,<4"
-pyarrow = ">=23.0.1,<24"
-polars = ">=1.39.3,<2"
-awscli = ">=2.34.23,<3"
-s3fs = ">=2026.3.0,<2027"
-fsspec = ">=2026.3.0,<2027"
-ruff = ">=0.15.9,<0.16"
-nodejs = ">=24,<25"
-prettier = ">=3.8.1,<4"
-shellcheck = ">=0.11.0,<0.12"
+duckdb = ">=1.5.4,<2"
+jq = ">=1.8.2,<2"
+prek = ">=0.4.10"
+mdformat = ">=1.0.0"
+mdformat-footnote = ">=0.1.3"
+mdformat-front-matters = ">=2.0.0"
+mdformat-gfm = ">=1.0.0"
+pandas = ">=3.0.3"
+pyarrow = ">=24.0.0"
+polars = ">=1.42.0"
+awscli = ">=2.35.11"
+s3fs = ">=2026.6.0"
+fsspec = ">=2026.6.0"
+ruff = ">=0.15.22"
+nodejs = ">=26.3.1"
+prettier = ">=3.8.4"
+shellcheck = ">=0.11.0"
 taplo = "==0.9.3"
-actionlint = ">=1.7.12,<2"
-typos = ">=1.45.0,<2"
-ty = ">=0.0.29,<0.0.30"
-beautifulsoup4 = ">=4.14.3,<5"
-zensical = ">=0.0.31,<0.0.32"
-pydantic = ">=2.12.5,<3"
-pytest = ">=9.0,<10"
-frictionless = ">=5.18,<6"
-fastparquet = ">=2025,<2026"
-markdownlint-cli2 = ">=0.22.0,<0.23"
-requests = ">=2.33.1,<3"
+actionlint = ">=1.7.12"
+typos = ">=1.48"
+ty = ">=0.0.61"
+beautifulsoup4 = ">=4.15.0"
+zensical = ">=0.0.51"
+frictionless = ">=5.19.0,<6"
+fastparquet = ">=2026.5.0"
+pydantic = ">=2.13.4"
+pint = ">=0.25.3,<0.26"
+pytest = ">=9.1.1"
+markdownlint-cli2 = ">=0.22.1"
+requests = ">=2.34.2"
 
 # These dependencies are needed inside the dev container
-gh = ">=2.90.0,<3"
-curl = ">=8.19.0,<9"
-ca-certificates = ">=2026.2.25,<2027"
-ripgrep = ">=15.1.0,<16"
-duckdb-cli = ">=1.5.2,<2"
+gh = ">=2.95.0"
+curl = ">=8.21.0"
+ca-certificates = ">=2026.6.17"
+ripgrep = ">=15.1.0"
+duckdb-cli = ">=1.5.4"
 
 [tool.ty.environment]
 extra-paths = ["dev/skills/datapackage/scripts", "dev/tools"]
@@ -104,9 +117,6 @@ extend-exclude = [
   "skills/*/assets/",
   # Development-only fixture and catalog data (may contain multilingual content)
   "dev/skills/*/assets/",
-  # Markdown reference tables generated from JSON by scripts/generate_ferc_tables.py
-  "skills/pudl/references/ferc1-schedules.md",
-  "skills/pudl/references/ferc2-schedules.md",
 ]
 
 [tool.typos.default.extend-words]

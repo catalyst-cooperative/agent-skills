@@ -1,0 +1,38 @@
+---
+name: bot-auto-merge
+
+# Runs on pull_request_target (not pull_request) so it has access to secrets even for
+# PRs opened by Dependabot, which run with a read-only token by default. This is safe
+# here because we never check out or execute any code from the PR -- we only call the
+# GitHub API by PR URL to approve it and enable auto-merge.
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+
+permissions: {}
+
+jobs:
+  bot-auto-merge:
+    name: Auto-merge passing bot PRs
+    runs-on: ubuntu-latest
+    if: >-
+      github.actor == 'dependabot[bot]' ||
+      github.actor == 'pre-commit-ci[bot]'
+    steps:
+      - name: Impersonate auto merge PR bot
+        uses: actions/create-github-app-token@v3
+        id: generate-token
+        with:
+          app-id: ${{ secrets.BOT_AUTO_MERGE_PRS_APP_ID }}
+          private-key: ${{ secrets.BOT_AUTO_MERGE_PRS_APP_KEY }}
+
+      - name: Approve and enable auto-merge
+        # `gh pr merge --auto` just flags the PR for GitHub to merge on its own once
+        # every required check passes (via branch protection, or a merge queue if
+        # one is configured) -- no polling or retry logic needed here.
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: |
+          gh pr review --approve "$PR_URL"
+          gh pr merge --auto "$PR_URL"

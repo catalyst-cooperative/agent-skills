@@ -21,9 +21,10 @@ Many other agent skills can be found on [skills.sh](https://skills.sh/)
 ### datapackage
 
 Explore and query any dataset described by a [Frictionless Data Package](https://datapackage.org/) descriptor (`datapackage.json`).
-Covers schema inspection, validation, metadata querying with `jq` and DuckDB, and reading data from CSV, Parquet, DuckDB, and SQLite backends.
+Covers schema inspection, validation, metadata querying with `jq`, and reading data from CSV, Parquet, DuckDB, and SQLite backends.
 
 Useful for any agent working with tabular datasets that follow the Frictionless spec — not just PUDL.
+See [Using the Datapackage Skill](datapackage-skill.md) for installation instructions and example prompts.
 
 ### pudl
 
@@ -33,17 +34,7 @@ Covers discovering which tables exist, understanding column meanings and caveats
 For human-readable PUDL data documentation, see the [PUDL Data Documentation](https://docs.catalyst.coop/pudl/en/latest/data/index.html).
 
 Aimed at energy analysts and data users who want to work with PUDL open data products.
-
-### pudl-dev
-
-!!! warning
-
-    The `pudl-dev` skill is half-baked should not be considered ready for widespread use.
-
-Guidance for agents being used by contributors to the PUDL open source project.
-Covers the contributor workflow, local ETL and Dagster development, schema and metadata changes, dbt models, and validation.
-
-Aimed at PUDL core contributors working on code and data pipeline changes.
+See [Using the PUDL Skill](pudl-skill.md) for installation instructions and example prompts.
 
 ## Installing skills for development
 

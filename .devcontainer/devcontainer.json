@@ -28,7 +28,8 @@
         "ms-toolsai.jupyter",
         "tamasfe.even-better-toml",
         "DavidAnson.vscode-markdownlint",
-        "renan-r-santos.pixi-code"
+        "renan-r-santos.pixi-code",
+        "anthropic.claude-code"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/workspace/.pixi/envs/default/bin/python",

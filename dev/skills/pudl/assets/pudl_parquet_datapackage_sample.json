@@ -1,0 +1,1181 @@
+{
+  "name": "pudl",
+  "title": "The Public Utility Data Liberation Project (PUDL)",
+  "description": "PUDL is a data processing pipeline created by Catalyst Cooperative that cleans, integrates, and standardizes some of the most widely used public energy datasets in the US. The data serve researchers, activists, journalists, and policy makers that might not have the technical expertise to access it in its raw form, the time to clean and prepare the data for bulk analysis, or the means to purchase it from existing commercial providers.",
+  "homepage": "https://docs.catalyst.coop/pudl",
+  "licenses": [
+    {
+      "name": "CC-BY-4.0",
+      "title": "Creative Commons Attribution 4.0",
+      "path": "https://creativecommons.org/licenses/by/4.0"
+    }
+  ],
+  "version": "2026.7.3.dev9",
+  "$schema": "https://datapackage.org/profiles/2.0/datapackage.json",
+  "unit_registry": {
+    "format": "pint",
+    "definitions": [
+      "MMBtu = 1e6 * BTU = MMBTU",
+      "Mcf = 1000 * cubic_foot",
+      "MMcf = 1e6 * cubic_foot",
+      "TBtu = 1e12 * BTU",
+      "VAr = watt = volt_ampere_reactive",
+      "MVAr = 1e6 * VAr",
+      "USD = [currency]"
+    ]
+  },
+  "sources": [
+    {
+      "name": "eia860",
+      "title": "EIA Form 860 -- Annual Electric Generator Report",
+      "path": "https://www.eia.gov/electricity/data/eia860",
+      "email": "infoelectric@eia.gov",
+      "description": "US Energy Information Administration (EIA) Form 860 data for electric power plants with 1 megawatt or greater combined nameplate capacity.",
+      "keywords": [
+        "MW",
+        "MWh",
+        "annual",
+        "ash",
+        "bituminous",
+        "emissions"
+      ],
+      "concept_doi": "https://doi.org/10.5281/zenodo.4127026",
+      "license_raw": {
+        "name": "other-pd",
+        "title": "U.S. Government Works",
+        "path": "https://www.usa.gov/publicdomain/label/1.0/"
+      },
+      "license_pudl": {
+        "name": "CC-BY-4.0",
+        "title": "Creative Commons Attribution 4.0",
+        "path": "https://creativecommons.org/licenses/by/4.0"
+      },
+      "contributors": [
+        {
+          "title": "Catalyst Cooperative",
+          "path": "https://catalyst.coop/",
+          "email": "pudl@catalyst.coop",
+          "roles": [
+            "publisher"
+          ],
+          "zenodo_role": "distributor",
+          "organization": "Catalyst Cooperative",
+          "name": "catalyst-cooperative"
+        }
+      ],
+      "doi": "https://doi.org/10.5281/zenodo.20380530",
+      "documentation": "https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia860.html"
+    },
+    {
+      "name": "eia923",
+      "title": "EIA Form 923 -- Power Plant Operations Report",
+      "path": "https://www.eia.gov/electricity/data/eia923",
+      "email": "infoelectric@eia.gov",
+      "description": "The EIA Form 923 collects detailed monthly and annual electric power data on electricity generation, fuel consumption, fossil fuel stocks, and receipts at the power plant and prime mover level.",
+      "keywords": [
+        "MW",
+        "MWh",
+        "ash",
+        "bituminous",
+        "boilers",
+        "emissions"
+      ],
+      "concept_doi": "https://doi.org/10.5281/zenodo.4127039",
+      "license_raw": {
+        "name": "other-pd",
+        "title": "U.S. Government Works",
+        "path": "https://www.usa.gov/publicdomain/label/1.0/"
+      },
+      "license_pudl": {
+        "name": "CC-BY-4.0",
+        "title": "Creative Commons Attribution 4.0",
+        "path": "https://creativecommons.org/licenses/by/4.0"
+      },
+      "contributors": [
+        {
+          "title": "Catalyst Cooperative",
+          "path": "https://catalyst.coop/",
+          "email": "pudl@catalyst.coop",
+          "roles": [
+            "publisher"
+          ],
+          "zenodo_role": "distributor",
+          "organization": "Catalyst Cooperative",
+          "name": "catalyst-cooperative"
+        }
+      ],
+      "doi": "https://doi.org/10.5281/zenodo.21108616",
+      "documentation": "https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia923.html"
+    },
+    {
+      "name": "eia930",
+      "title": "EIA Form 930 -- Hourly and Daily Balancing Authority Operations Report",
+      "path": "https://www.eia.gov/electricity/gridmonitor/",
+      "description": "The EIA Form 930 provides hourly demand and generation statistics by balancing area (or sub-balancing area in the case of some larger areas). These statistics include a breakdown by energy source (coal, gas, hydro, wind, solar, etc.) as well as interchange between the balancing areas, including international exchanges with Canada and Mexico.",
+      "keywords": [
+        "MW",
+        "MWh",
+        "balancing authorities",
+        "distribution",
+        "eia"
+      ],
+      "concept_doi": "https://doi.org/10.5281/zenodo.10840077",
+      "license_raw": {
+        "name": "other-pd",
+        "title": "U.S. Government Works",
+        "path": "https://www.usa.gov/publicdomain/label/1.0/"
+      },
+      "license_pudl": {
+        "name": "CC-BY-4.0",
+        "title": "Creative Commons Attribution 4.0",
+        "path": "https://creativecommons.org/licenses/by/4.0"
+      },
+      "contributors": [
+        {
+          "title": "Catalyst Cooperative",
+          "path": "https://catalyst.coop/",
+          "email": "pudl@catalyst.coop",
+          "roles": [
+            "publisher"
+          ],
+          "zenodo_role": "distributor",
+          "organization": "Catalyst Cooperative",
+          "name": "catalyst-cooperative"
+        }
+      ],
+      "doi": "https://doi.org/10.5281/zenodo.21204532",
+      "documentation": "https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia930.html"
+    },
+    {
+      "name": "epacems",
+      "title": "EPA Hourly Continuous Emission Monitoring System (CEMS)",
+      "path": "https://campd.epa.gov/",
+      "description": "US EPA hourly Continuous Emissions Monitoring System (CEMS) data.Hourly CO2, SO2, NOx emissions and gross load.",
+      "keywords": [
+        "MW",
+        "MWh",
+        "air markets program data",
+        "ampd",
+        "ash",
+        "cems",
+        "emissions"
+      ],
+      "concept_doi": "https://doi.org/10.5281/zenodo.10233185",
+      "license_raw": {
+        "name": "other-pd",
+        "title": "U.S. Government Works",
+        "path": "https://www.usa.gov/publicdomain/label/1.0/"
+      },
+      "license_pudl": {
+        "name": "CC-BY-4.0",
+        "title": "Creative Commons Attribution 4.0",
+        "path": "https://creativecommons.org/licenses/by/4.0"
+      },
+      "contributors": [
+        {
+          "title": "Catalyst Cooperative",
+          "path": "https://catalyst.coop/",
+          "email": "pudl@catalyst.coop",
+          "roles": [
+            "publisher"
+          ],
+          "zenodo_role": "distributor",
+          "organization": "Catalyst Cooperative",
+          "name": "catalyst-cooperative"
+        }
+      ],
+      "doi": "https://doi.org/10.5281/zenodo.21204540",
+      "documentation": "https://docs.catalyst.coop/pudl/en/nightly/data_sources/epacems.html"
+    },
+    {
+      "name": "ferc1",
+      "title": "FERC Form 1 -- Annual Report of Major Electric Utilities",
+      "path": "https://www.ferc.gov/industries-data/electric/general-information/electric-industry-forms/form-1-electric-utility-annual",
+      "email": "Form1@ferc.gov",
+      "description": "The Federal Energy Regulatory Commission (FERC) Form 1 is a comprehensive financial and operating report submitted annually for electric rate regulation, market oversight analysis, and financial audits by Major electric utilities, licensees and others.",
+      "keywords": [
+        "MW",
+        "MWh",
+        "accounting",
+        "bituminous",
+        "boilers"
+      ],
+      "concept_doi": "https://doi.org/10.5281/zenodo.4127043",
+      "license_raw": {
+        "name": "other-pd",
+        "title": "U.S. Government Works",
+        "path": "https://www.usa.gov/publicdomain/label/1.0/"
+      },
+      "license_pudl": {
+        "name": "CC-BY-4.0",
+        "title": "Creative Commons Attribution 4.0",
+        "path": "https://creativecommons.org/licenses/by/4.0"
+      },
+      "contributors": [
+        {
+          "title": "Catalyst Cooperative",
+          "path": "https://catalyst.coop/",
+          "email": "pudl@catalyst.coop",
+          "roles": [
+            "publisher"
+          ],
+          "zenodo_role": "distributor",
+          "organization": "Catalyst Cooperative",
+          "name": "catalyst-cooperative"
+        }
+      ],
+      "doi": "https://doi.org/10.5281/zenodo.20474290",
+      "documentation": "https://docs.catalyst.coop/pudl/en/nightly/data_sources/ferc1.html"
+    },
+    {
+      "name": "ferc714",
+      "title": "FERC Form 714 -- Annual Electric Balancing Authority Area and Planning Area Report",
+      "path": "https://www.ferc.gov/industries-data/electric/general-information/electric-industry-forms/form-no-714-annual-electric",
+      "email": "form714@ferc.gov",
+      "description": "Electric transmitting utilities operating balancing authority areas and planning areas with annual peak demand over 200MW are required to file Form 714 with the Federal Energy Regulatory Commission (FERC), reporting balancing authority area generation, actual and scheduled inter-balancing authority area power transfers, and net energy for load, summer-winter generation peaks and system lambda.",
+      "keywords": [
+        "MW",
+        "MWh",
+        "distribution",
+        "electric",
+        "electricity"
+      ],
+      "concept_doi": "https://doi.org/10.5281/zenodo.4127100",
+      "license_raw": {
+        "name": "other-pd",
+        "title": "U.S. Government Works",
+        "path": "https://www.usa.gov/publicdomain/label/1.0/"
+      },
+      "license_pudl": {
+        "name": "CC-BY-4.0",
+        "title": "Creative Commons Attribution 4.0",
+        "path": "https://creativecommons.org/licenses/by/4.0"
+      },
+      "contributors": [
+        {
+          "title": "Catalyst Cooperative",
+          "path": "https://catalyst.coop/",
+          "email": "pudl@catalyst.coop",
+          "roles": [
+            "publisher"
+          ],
+          "zenodo_role": "distributor",
+          "organization": "Catalyst Cooperative",
+          "name": "catalyst-cooperative"
+        }
+      ],
+      "doi": "https://doi.org/10.5281/zenodo.16676145",
+      "documentation": "https://docs.catalyst.coop/pudl/en/nightly/data_sources/ferc714.html"
+    },
+    {
+      "name": "mshamines",
+      "title": "Mine Safety and Health Administration (MSHA) Mines",
+      "path": "https://arlweb.msha.gov/OpenGovernmentData/OGIMSHA.asp",
+      "description": "The Mine dataset lists all Coal and Metal/Non-Metal mines under MSHA's jurisdiction. It includes such information as the current status of each mine (Active, Abandoned, NonProducing, etc.), the current owner and operating company, commodity codes and physical attributes of the mine.",
+      "keywords": [
+        "coal",
+        "department of labor",
+        "federal",
+        "government",
+        "metal"
+      ],
+      "concept_doi": "https://doi.org/10.5281/zenodo.7683517",
+      "license_raw": {
+        "name": "other-pd",
+        "title": "U.S. Government Works",
+        "path": "https://www.usa.gov/publicdomain/label/1.0/"
+      },
+      "license_pudl": {
+        "name": "CC-BY-4.0",
+        "title": "Creative Commons Attribution 4.0",
+        "path": "https://creativecommons.org/licenses/by/4.0"
+      },
+      "contributors": [
+        {
+          "title": "Catalyst Cooperative",
+          "path": "https://catalyst.coop/",
+          "email": "pudl@catalyst.coop",
+          "roles": [
+            "publisher"
+          ],
+          "zenodo_role": "distributor",
+          "organization": "Catalyst Cooperative",
+          "name": "catalyst-cooperative"
+        }
+      ]
+    },
+    {
+      "name": "pudl",
+      "title": "The Public Utility Data Liberation (PUDL) Project",
+      "path": "https://catalyst.coop/pudl",
+      "email": "pudl@catalyst.coop",
+      "description": "PUDL is a data processing pipeline created by Catalyst Cooperative that cleans, integrates, and standardizes some of the most widely used public energy datasets in the US. The data serve researchers, activists, journalists, and policy makers that might not have the technical expertise to access it in its raw form, the time to clean and prepare the data for bulk analysis, or the means to purchase it from existing commercial providers.",
+      "keywords": [
+        "us",
+        "electricity",
+        "open data",
+        "open source"
+      ],
+      "concept_doi": "https://doi.org/10.5281/zenodo.3404014",
+      "license_raw": {
+        "name": "CC-BY-4.0",
+        "title": "Creative Commons Attribution 4.0",
+        "path": "https://creativecommons.org/licenses/by/4.0"
+      },
+      "license_pudl": {
+        "name": "CC-BY-4.0",
+        "title": "Creative Commons Attribution 4.0",
+        "path": "https://creativecommons.org/licenses/by/4.0"
+      },
+      "contributors": [
+        {
+          "title": "Catalyst Cooperative",
+          "path": "https://catalyst.coop/",
+          "email": "pudl@catalyst.coop",
+          "roles": [
+            "publisher"
+          ],
+          "zenodo_role": "distributor",
+          "organization": "Catalyst Cooperative",
+          "name": "catalyst-cooperative"
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "name": "core_eia860__scd_generators",
+      "type": "table",
+      "description": "Slowly changing dimension (SCD) table describing attributes of generators which may vary from year to year. Compiled from across EIA-860 and EIA-923 data.\n\n\nMost-recent data:\n  2026\n\n\nProcessing:\n  Data has been cleaned and organized into well-modeled tables that serve as building blocks for downstream wide tables and analyses.\n\nSource:\n  EIA Form 860 -- Annual Electric Generator Report\n\nPrimary key:\n  plant_id_eia, generator_id, report_date\n\n\nUsage Warnings\n^^^^^^^^^^^^^^\n\n\n* Data has been drawn from several EIA sources which are not always consistent with each other, and PUDL chooses the most consistent or relevant value to facilitate cross-referencing even if that means some values will differ from the raw sources. See `Harvesting <https://docs.catalyst.coop/pudl/en/latest/data_dictionaries/usage_warnings.html#harvested>`_ for details, and see `Entity Resolution Methodology <https://docs.catalyst.coop/pudl/en/latest/methodology/entity_resolution.html>`_ for a fuller conceptual overview.\n\n* Contains information from multiple raw inputs.\n\n\n\n\n\nAdditional Details\n^^^^^^^^^^^^^^^^^^\n\nThis is one of two tables where canonical\nvalues for generators are set. It contains values which are expected to vary slowly, while\n:ref:`core_eia__entity_generators` contains those expected to remain fixed.\nEIA reports many attributes in many different tables across\nEIA-860 and EIA-923. In order to compile tidy, well-normalized database tables, PUDL\ncollects all instances of these values and and chooses a canonical value. By default,\nPUDL chooses the most consistently reported value of a given attribute as long as it\nis at least 70% of the given instances reported. If an attribute was reported\ninconsistently across the original EIA tables, then it will show up as a\nnull value. See :doc:`/methodology/entity_resolution` for a conceptual overview of\nthis process.\nAll tables downstream of this one inherit the canonical values established here.",
+      "licenses": [
+        {
+          "name": "CC-BY-4.0",
+          "title": "Creative Commons Attribution 4.0",
+          "path": "https://creativecommons.org/licenses/by/4.0"
+        }
+      ],
+      "sources": [
+        {
+          "name": "eia860",
+          "title": "EIA Form 860 -- Annual Electric Generator Report",
+          "path": "https://www.eia.gov/electricity/data/eia860",
+          "email": "infoelectric@eia.gov",
+          "description": "US Energy Information Administration (EIA) Form 860 data for electric power plants with 1 megawatt or greater combined nameplate capacity.",
+          "keywords": [
+            "MW",
+            "MWh",
+            "annual",
+            "ash",
+            "bituminous",
+            "emissions"
+          ],
+          "concept_doi": "https://doi.org/10.5281/zenodo.4127026",
+          "license_raw": {
+            "name": "other-pd",
+            "title": "U.S. Government Works",
+            "path": "https://www.usa.gov/publicdomain/label/1.0/"
+          },
+          "license_pudl": {
+            "name": "CC-BY-4.0",
+            "title": "Creative Commons Attribution 4.0",
+            "path": "https://creativecommons.org/licenses/by/4.0"
+          },
+          "contributors": [
+            {
+              "title": "Catalyst Cooperative",
+              "path": "https://catalyst.coop/",
+              "email": "pudl@catalyst.coop",
+              "roles": [
+                "publisher"
+              ],
+              "zenodo_role": "distributor",
+              "organization": "Catalyst Cooperative",
+              "name": "catalyst-cooperative"
+            }
+          ],
+          "doi": "https://doi.org/10.5281/zenodo.20380530",
+          "documentation": "https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia860.html"
+        },
+        {
+          "name": "eia923",
+          "title": "EIA Form 923 -- Power Plant Operations Report",
+          "path": "https://www.eia.gov/electricity/data/eia923",
+          "email": "infoelectric@eia.gov",
+          "description": "The EIA Form 923 collects detailed monthly and annual electric power data on electricity generation, fuel consumption, fossil fuel stocks, and receipts at the power plant and prime mover level.",
+          "keywords": [
+            "MW",
+            "MWh",
+            "ash",
+            "bituminous",
+            "boilers",
+            "emissions"
+          ],
+          "concept_doi": "https://doi.org/10.5281/zenodo.4127039",
+          "license_raw": {
+            "name": "other-pd",
+            "title": "U.S. Government Works",
+            "path": "https://www.usa.gov/publicdomain/label/1.0/"
+          },
+          "license_pudl": {
+            "name": "CC-BY-4.0",
+            "title": "Creative Commons Attribution 4.0",
+            "path": "https://creativecommons.org/licenses/by/4.0"
+          },
+          "contributors": [
+            {
+              "title": "Catalyst Cooperative",
+              "path": "https://catalyst.coop/",
+              "email": "pudl@catalyst.coop",
+              "roles": [
+                "publisher"
+              ],
+              "zenodo_role": "distributor",
+              "organization": "Catalyst Cooperative",
+              "name": "catalyst-cooperative"
+            }
+          ],
+          "doi": "https://doi.org/10.5281/zenodo.21108616",
+          "documentation": "https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia923.html"
+        }
+      ],
+      "path": "core_eia860__scd_generators.parquet",
+      "scheme": "file",
+      "format": "parquet",
+      "mediatype": "application/parquet",
+      "schema": {
+        "fields": [
+          {
+            "name": "plant_id_eia",
+            "type": "integer",
+            "description": "The unique six-digit facility identification number, also called an ORISPL, assigned by the Energy Information Administration.",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "generator_id",
+            "type": "string",
+            "description": "Generator ID is usually numeric, but sometimes includes letters. Make sure you treat it as a string!",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "report_date",
+            "type": "date",
+            "description": "Date reported.",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "operational_status_code",
+            "type": "string",
+            "description": "The operating status of the asset."
+          },
+          {
+            "name": "capacity_mw",
+            "type": "number",
+            "description": "Total installed (nameplate) capacity, in megawatts.",
+            "unit": "MW"
+          }
+        ],
+        "primaryKey": [
+          "plant_id_eia",
+          "generator_id",
+          "report_date"
+        ]
+      },
+      "keywords": [
+        "MW",
+        "MWh",
+        "annual",
+        "ash",
+        "bituminous"
+      ],
+      "contributors": [
+        {
+          "title": "Catalyst Cooperative",
+          "path": "https://catalyst.coop/",
+          "email": "pudl@catalyst.coop",
+          "roles": [
+            "publisher"
+          ],
+          "zenodo_role": "distributor",
+          "organization": "Catalyst Cooperative",
+          "name": "catalyst-cooperative"
+        }
+      ]
+    },
+    {
+      "name": "_core_eia860__cooling_equipment",
+      "type": "table",
+      "description": "Information about cooling equipment at generation facilities.\n\n\nMost-recent data:\n  2025\n\n\nProcessing:\n  Data has been cleaned but not tidied/normalized. Published only temporarily and may be removed without notice.\n\nSource:\n  EIA Form 860 -- Annual Electric Generator Report (Schedule 6D)\n\nPrimary key:\n  plant_id_eia, utility_id_eia, cooling_id_eia, report_date\n\n\nUsage Warnings\n^^^^^^^^^^^^^^\n\n\n* This table has not been harvested with other EIA 923 or 860 data. The same variables present in this table may show up in other _core tables in other years.\n\n\n\n\n\nAdditional Details\n^^^^^^^^^^^^^^^^^^\n\nA single plant can have\nseveral collections of cooling equipment, so each line in this table represents one\ncooling system at a given plant. You can determine how to link each set of cooling\nequipment to specific boilers in a plant via :ref:`core_eia860__assn_boiler_cooling`.\n\nEIA-860 respondents are required to submit information about cooling equipment for\nplants over 100 MW - including steam, combined cycle, nuclear or solar thermal\ngenerators.\n\nThis table has been cleaned, but not tidied/normalized with other EIA 923 or 860\ndata. The same variables present in this table may show up in other\ntables and/or in other years. Once this table has been harvested, it will be converted\ninto a``core`` table.",
+      "licenses": [
+        {
+          "name": "CC-BY-4.0",
+          "title": "Creative Commons Attribution 4.0",
+          "path": "https://creativecommons.org/licenses/by/4.0"
+        }
+      ],
+      "sources": [
+        {
+          "name": "eia860",
+          "title": "EIA Form 860 -- Annual Electric Generator Report",
+          "path": "https://www.eia.gov/electricity/data/eia860",
+          "email": "infoelectric@eia.gov",
+          "description": "US Energy Information Administration (EIA) Form 860 data for electric power plants with 1 megawatt or greater combined nameplate capacity.",
+          "keywords": [
+            "MW",
+            "MWh",
+            "annual",
+            "ash",
+            "bituminous",
+            "emissions"
+          ],
+          "concept_doi": "https://doi.org/10.5281/zenodo.4127026",
+          "license_raw": {
+            "name": "other-pd",
+            "title": "U.S. Government Works",
+            "path": "https://www.usa.gov/publicdomain/label/1.0/"
+          },
+          "license_pudl": {
+            "name": "CC-BY-4.0",
+            "title": "Creative Commons Attribution 4.0",
+            "path": "https://creativecommons.org/licenses/by/4.0"
+          },
+          "contributors": [
+            {
+              "title": "Catalyst Cooperative",
+              "path": "https://catalyst.coop/",
+              "email": "pudl@catalyst.coop",
+              "roles": [
+                "publisher"
+              ],
+              "zenodo_role": "distributor",
+              "organization": "Catalyst Cooperative",
+              "name": "catalyst-cooperative"
+            }
+          ],
+          "doi": "https://doi.org/10.5281/zenodo.20380530",
+          "documentation": "https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia860.html"
+        }
+      ],
+      "path": "_core_eia860__cooling_equipment.parquet",
+      "scheme": "file",
+      "format": "parquet",
+      "mediatype": "application/parquet",
+      "schema": {
+        "fields": [
+          {
+            "name": "plant_id_eia",
+            "type": "integer",
+            "description": "The unique six-digit facility identification number, also called an ORISPL, assigned by the Energy Information Administration.",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "utility_id_eia",
+            "type": "integer",
+            "description": "The EIA Utility Identification number.",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "cooling_id_eia",
+            "type": "string",
+            "description": "EIA Identification code for cooling system (if multiple cooling systems are not distinguished by separate IDs, the word 'PLANT' is listed to encompass the cooling system for the entire plant)",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "report_date",
+            "type": "date",
+            "description": "Date reported.",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "cooling_type_1",
+            "type": "string",
+            "description": "Type of cooling system"
+          },
+          {
+            "name": "cooling_water_source",
+            "type": "string",
+            "description": "Name of river, lake, or water source that provides cooling water"
+          },
+          {
+            "name": "pond_surface_area_acres",
+            "type": "number",
+            "description": "Total surface area of cooling pond",
+            "unit": "acre"
+          },
+          {
+            "name": "power_requirement_mw",
+            "type": "number",
+            "description": "Maximum power requirement for cooling towers at 100 percent load",
+            "unit": "MW"
+          }
+        ],
+        "primaryKey": [
+          "plant_id_eia",
+          "utility_id_eia",
+          "cooling_id_eia",
+          "report_date"
+        ]
+      },
+      "keywords": [
+        "MW",
+        "MWh",
+        "annual",
+        "ash",
+        "bituminous"
+      ],
+      "contributors": [
+        {
+          "title": "Catalyst Cooperative",
+          "path": "https://catalyst.coop/",
+          "email": "pudl@catalyst.coop",
+          "roles": [
+            "publisher"
+          ],
+          "zenodo_role": "distributor",
+          "organization": "Catalyst Cooperative",
+          "name": "catalyst-cooperative"
+        }
+      ]
+    },
+    {
+      "name": "out_eia923__generation",
+      "type": "table",
+      "description": "Monthly time series of net electricity generated by power plant generators.\n\n\nMost-recent data:\n  2026\n\n\nProcessing:\n  Data has been expanded into a wide/denormalized format, with IDs and codes accompanied by human-readable names and descriptions.\n\nSource:\n  EIA Form 923 -- Power Plant Operations Report (Schedule 3)\n\nPrimary key:\n  plant_id_eia, generator_id, report_date\n\n\nUsage Warnings\n^^^^^^^^^^^^^^\n\n\n* Date column arbitrarily uses the first of the month.\n\n* Not all IDs are present.\n\n* Table has known low coverage - either geographic or temporal or otherwise.\n\n* A small number of respondents only report annual fuel consumption, and all of it is reported in December.\n\n* Data has been drawn from several EIA sources which are not always consistent with each other, and PUDL chooses the most consistent or relevant value to facilitate cross-referencing even if that means some values will differ from the raw sources. See `Harvesting <https://docs.catalyst.coop/pudl/en/latest/data_dictionaries/usage_warnings.html#harvested>`_ for details, and see `Entity Resolution Methodology <https://docs.catalyst.coop/pudl/en/latest/methodology/entity_resolution.html>`_ for a fuller conceptual overview.\n\n\n\n\n\nAdditional Details\n^^^^^^^^^^^^^^^^^^\n\nThis is the most granular information we have about how much electricity individual\ngenerators are producing, but only about half of all the generation reported in the\n``core_eia923__monthly_generation_fuel`` appears in this table due to the different reporting\nrequirements imposed on different types and sizes of generators.\n\nWhenever possible, we use this generator-level net generation to estimate the heat rates\nof generation units and the marginal cost of electricity on a per-generator basis, but\nthose calculations depend on plant-level fuel costs and sometimes uncertain or\nincomplete boiler-generator associations.\n\nThis table inherits canonicalized values for plants and utilities.\nEIA reports many attributes in many different tables across\nEIA-860 and EIA-923. In order to compile tidy, well-normalized database tables, PUDL\ncollects all instances of these values and and chooses a canonical value. By default,\nPUDL chooses the most consistently reported value of a given attribute as long as it\nis at least 70% of the given instances reported. If an attribute was reported\ninconsistently across the original EIA tables, then it will show up as a\nnull value. See :doc:`/methodology/entity_resolution` for a conceptual overview of\nthis process.",
+      "licenses": [
+        {
+          "name": "CC-BY-4.0",
+          "title": "Creative Commons Attribution 4.0",
+          "path": "https://creativecommons.org/licenses/by/4.0"
+        }
+      ],
+      "sources": [
+        {
+          "name": "eia923",
+          "title": "EIA Form 923 -- Power Plant Operations Report",
+          "path": "https://www.eia.gov/electricity/data/eia923",
+          "email": "infoelectric@eia.gov",
+          "description": "The EIA Form 923 collects detailed monthly and annual electric power data on electricity generation, fuel consumption, fossil fuel stocks, and receipts at the power plant and prime mover level.",
+          "keywords": [
+            "MW",
+            "MWh",
+            "ash",
+            "bituminous",
+            "boilers",
+            "emissions"
+          ],
+          "concept_doi": "https://doi.org/10.5281/zenodo.4127039",
+          "license_raw": {
+            "name": "other-pd",
+            "title": "U.S. Government Works",
+            "path": "https://www.usa.gov/publicdomain/label/1.0/"
+          },
+          "license_pudl": {
+            "name": "CC-BY-4.0",
+            "title": "Creative Commons Attribution 4.0",
+            "path": "https://creativecommons.org/licenses/by/4.0"
+          },
+          "contributors": [
+            {
+              "title": "Catalyst Cooperative",
+              "path": "https://catalyst.coop/",
+              "email": "pudl@catalyst.coop",
+              "roles": [
+                "publisher"
+              ],
+              "zenodo_role": "distributor",
+              "organization": "Catalyst Cooperative",
+              "name": "catalyst-cooperative"
+            }
+          ],
+          "doi": "https://doi.org/10.5281/zenodo.21108616",
+          "documentation": "https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia923.html"
+        }
+      ],
+      "path": "out_eia923__generation.parquet",
+      "scheme": "file",
+      "format": "parquet",
+      "mediatype": "application/parquet",
+      "schema": {
+        "fields": [
+          {
+            "name": "report_date",
+            "type": "date",
+            "description": "Date reported.",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "plant_id_eia",
+            "type": "integer",
+            "description": "The unique six-digit facility identification number, also called an ORISPL, assigned by the Energy Information Administration.",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "plant_id_pudl",
+            "type": "integer",
+            "description": "A manually assigned PUDL plant ID. May not be constant over time."
+          },
+          {
+            "name": "plant_name_eia",
+            "type": "string",
+            "description": "Plant name."
+          },
+          {
+            "name": "utility_id_eia",
+            "type": "integer",
+            "description": "The EIA Utility Identification number."
+          },
+          {
+            "name": "utility_id_pudl",
+            "type": "integer",
+            "description": "A manually assigned PUDL utility ID. May not be stable over time."
+          },
+          {
+            "name": "utility_name_eia",
+            "type": "string",
+            "description": "The name of the utility."
+          },
+          {
+            "name": "generator_id",
+            "type": "string",
+            "description": "Generator ID is usually numeric, but sometimes includes letters. Make sure you treat it as a string!",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "unit_id_pudl",
+            "type": "integer",
+            "description": "Dynamically assigned PUDL unit id. WARNING: This ID is not guaranteed to be static long term as the input data and algorithm may evolve over time."
+          },
+          {
+            "name": "net_generation_mwh",
+            "type": "number",
+            "description": "Net electricity generation for the specified period in megawatt-hours (MWh).",
+            "unit": "MWh"
+          },
+          {
+            "name": "data_maturity",
+            "type": "string",
+            "description": "Maturity of the source data published by EIA that is reflected in this record. EIA releases data incrementally over time, including monthly updates, annual year-to-date updates, provisional early releases of annual data, and final annual release data that is not expected to change further. Records sourced from multiple upstream EIA datasets may have no well defined data maturity. Records whose values have been inferred within PUDL will also have no data maturity."
+          }
+        ],
+        "primaryKey": [
+          "plant_id_eia",
+          "generator_id",
+          "report_date"
+        ]
+      },
+      "keywords": [
+        "MW",
+        "MWh",
+        "ash",
+        "bituminous",
+        "boilers"
+      ],
+      "contributors": [
+        {
+          "title": "Catalyst Cooperative",
+          "path": "https://catalyst.coop/",
+          "email": "pudl@catalyst.coop",
+          "roles": [
+            "publisher"
+          ],
+          "zenodo_role": "distributor",
+          "organization": "Catalyst Cooperative",
+          "name": "catalyst-cooperative"
+        }
+      ]
+    },
+    {
+      "name": "out_ferc1__yearly_steam_plants_fuel_by_plant_sched402",
+      "type": "table",
+      "description": "Annual time series of FERC fuel data by plant.\n\n\nMost-recent data:\n  2025\n\n\nProcessing:\n  Data has been expanded into a wide/denormalized format, with IDs and codes accompanied by human-readable names and descriptions.\n\nSource:\n  FERC Form 1 -- Annual Report of Major Electric Utilities (Schedule 402)\n\nPrimary key:\n  report_year, utility_id_ferc1, plant_name_ferc1\n\n\nUsage Warnings\n^^^^^^^^^^^^^^\n\n\n* Some columns contain subtotals; use caution when choosing columns to aggregate.\n\n* FERC data is notoriously difficult to extract cleanly, and often contains free-form strings, non-labeled total rows and lack of IDs. See `Notable Irregularities <https://docs.catalyst.coop/pudl/en/latest/data_sources/ferc1.html#notable-irregularities>`_ for details.",
+      "licenses": [
+        {
+          "name": "CC-BY-4.0",
+          "title": "Creative Commons Attribution 4.0",
+          "path": "https://creativecommons.org/licenses/by/4.0"
+        }
+      ],
+      "sources": [
+        {
+          "name": "ferc1",
+          "title": "FERC Form 1 -- Annual Report of Major Electric Utilities",
+          "path": "https://www.ferc.gov/industries-data/electric/general-information/electric-industry-forms/form-1-electric-utility-annual",
+          "email": "Form1@ferc.gov",
+          "description": "The Federal Energy Regulatory Commission (FERC) Form 1 is a comprehensive financial and operating report submitted annually for electric rate regulation, market oversight analysis, and financial audits by Major electric utilities, licensees and others.",
+          "keywords": [
+            "MW",
+            "MWh",
+            "accounting",
+            "bituminous",
+            "boilers"
+          ],
+          "concept_doi": "https://doi.org/10.5281/zenodo.4127043",
+          "license_raw": {
+            "name": "other-pd",
+            "title": "U.S. Government Works",
+            "path": "https://www.usa.gov/publicdomain/label/1.0/"
+          },
+          "license_pudl": {
+            "name": "CC-BY-4.0",
+            "title": "Creative Commons Attribution 4.0",
+            "path": "https://creativecommons.org/licenses/by/4.0"
+          },
+          "contributors": [
+            {
+              "title": "Catalyst Cooperative",
+              "path": "https://catalyst.coop/",
+              "email": "pudl@catalyst.coop",
+              "roles": [
+                "publisher"
+              ],
+              "zenodo_role": "distributor",
+              "organization": "Catalyst Cooperative",
+              "name": "catalyst-cooperative"
+            }
+          ],
+          "doi": "https://doi.org/10.5281/zenodo.20474290",
+          "documentation": "https://docs.catalyst.coop/pudl/en/nightly/data_sources/ferc1.html"
+        }
+      ],
+      "path": "out_ferc1__yearly_steam_plants_fuel_by_plant_sched402.parquet",
+      "scheme": "file",
+      "format": "parquet",
+      "mediatype": "application/parquet",
+      "schema": {
+        "fields": [
+          {
+            "name": "report_year",
+            "type": "integer",
+            "description": "Four-digit year in which the data was reported.",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "utility_id_ferc1",
+            "type": "integer",
+            "description": "PUDL-assigned utility ID, identifying a FERC1 utility. This is an auto-incremented ID and is not expected to be stable from year to year.",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "plant_name_ferc1",
+            "type": "string",
+            "description": "Name of the plant, as reported to FERC. This is a freeform string, not guaranteed to be consistent across references to the same plant.",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "fuel_mmbtu",
+            "type": "number",
+            "description": "Total heat content for plant (in MMBTU).",
+            "unit": "MMBtu"
+          },
+          {
+            "name": "fuel_cost",
+            "type": "number",
+            "description": "Total fuel cost for plant (in $USD).",
+            "unit": "USD"
+          }
+        ],
+        "primaryKey": [
+          "report_year",
+          "utility_id_ferc1",
+          "plant_name_ferc1"
+        ]
+      },
+      "keywords": [
+        "MW",
+        "MWh",
+        "accounting",
+        "bituminous",
+        "boilers"
+      ],
+      "contributors": [
+        {
+          "title": "Catalyst Cooperative",
+          "path": "https://catalyst.coop/",
+          "email": "pudl@catalyst.coop",
+          "roles": [
+            "publisher"
+          ],
+          "zenodo_role": "distributor",
+          "organization": "Catalyst Cooperative",
+          "name": "catalyst-cooperative"
+        }
+      ]
+    },
+    {
+      "name": "out_ferc714__georeferenced_respondents",
+      "type": "table",
+      "description": "Annual summary of demand and other information about FERC-714 respondents.\n\n\nMost-recent data:\n  2024\n\n\nProcessing:\n  Data has been expanded into a wide/denormalized format, with IDs and codes accompanied by human-readable names and descriptions.\n\nSource:\n  FERC Form 714 -- Annual Electric Balancing Authority Area and Planning Area Report\n\nPrimary key:\n  respondent_id_ferc714, report_date\n\n\nUsage Warnings\n^^^^^^^^^^^^^^\n\n\n* Contains information from multiple raw inputs.\n\n* FERC data is notoriously difficult to extract cleanly, and often contains free-form strings, non-labeled total rows and lack of IDs. See `Notable Irregularities <https://docs.catalyst.coop/pudl/en/latest/data_sources/ferc1.html#notable-irregularities>`_ for details.\n\n\n\n\n\nAdditional Details\n^^^^^^^^^^^^^^^^^^\n\nThis table differs from\n:ref:`out_ferc714__summarized_demand` in that it also\nincludes a geometry column describing the respondent's service territory in each year.\nThese service territories are based on the counties that the corresponding EIA-861\nrespondent reported serving in that year. There is sometimes ambiguity as to\nwhether a FERC-714 respondent should be interpreted as an individual utility or a\nbalancing authority. The ``respodent_type`` column indicates which type of entity has\nbeen assumed in determining the service territory from EIA-861 data.",
+      "licenses": [
+        {
+          "name": "CC-BY-4.0",
+          "title": "Creative Commons Attribution 4.0",
+          "path": "https://creativecommons.org/licenses/by/4.0"
+        }
+      ],
+      "sources": [
+        {
+          "name": "ferc714",
+          "title": "FERC Form 714 -- Annual Electric Balancing Authority Area and Planning Area Report",
+          "path": "https://www.ferc.gov/industries-data/electric/general-information/electric-industry-forms/form-no-714-annual-electric",
+          "email": "form714@ferc.gov",
+          "description": "Electric transmitting utilities operating balancing authority areas and planning areas with annual peak demand over 200MW are required to file Form 714 with the Federal Energy Regulatory Commission (FERC), reporting balancing authority area generation, actual and scheduled inter-balancing authority area power transfers, and net energy for load, summer-winter generation peaks and system lambda.",
+          "keywords": [
+            "MW",
+            "MWh",
+            "distribution",
+            "electric",
+            "electricity"
+          ],
+          "concept_doi": "https://doi.org/10.5281/zenodo.4127100",
+          "license_raw": {
+            "name": "other-pd",
+            "title": "U.S. Government Works",
+            "path": "https://www.usa.gov/publicdomain/label/1.0/"
+          },
+          "license_pudl": {
+            "name": "CC-BY-4.0",
+            "title": "Creative Commons Attribution 4.0",
+            "path": "https://creativecommons.org/licenses/by/4.0"
+          },
+          "contributors": [
+            {
+              "title": "Catalyst Cooperative",
+              "path": "https://catalyst.coop/",
+              "email": "pudl@catalyst.coop",
+              "roles": [
+                "publisher"
+              ],
+              "zenodo_role": "distributor",
+              "organization": "Catalyst Cooperative",
+              "name": "catalyst-cooperative"
+            }
+          ],
+          "doi": "https://doi.org/10.5281/zenodo.16676145",
+          "documentation": "https://docs.catalyst.coop/pudl/en/nightly/data_sources/ferc714.html"
+        },
+        {
+          "name": "censusdp1tract",
+          "title": "Census DP1 -- Profile of General Demographic Characteristics",
+          "path": "https://www.census.gov/geographies/mapping-files/2010/geo/tiger-data.html",
+          "description": "US Census Demographic Profile 1 (DP1) County and Tract GeoDatabase.",
+          "keywords": [
+            "age",
+            "census",
+            "censusdp1tract",
+            "demographics",
+            "gender"
+          ],
+          "concept_doi": "https://doi.org/10.5281/zenodo.4127048",
+          "license_raw": {
+            "name": "other-pd",
+            "title": "U.S. Government Works",
+            "path": "https://www.usa.gov/publicdomain/label/1.0/"
+          },
+          "license_pudl": {
+            "name": "CC-BY-4.0",
+            "title": "Creative Commons Attribution 4.0",
+            "path": "https://creativecommons.org/licenses/by/4.0"
+          },
+          "contributors": [
+            {
+              "title": "Catalyst Cooperative",
+              "path": "https://catalyst.coop/",
+              "email": "pudl@catalyst.coop",
+              "roles": [
+                "publisher"
+              ],
+              "zenodo_role": "distributor",
+              "organization": "Catalyst Cooperative",
+              "name": "catalyst-cooperative"
+            }
+          ],
+          "doi": "https://doi.org/10.5281/zenodo.15685568",
+          "documentation": "https://docs.catalyst.coop/pudl/en/nightly/data_sources/censusdp1tract.html"
+        },
+        {
+          "name": "eia861",
+          "title": "EIA Form 861 -- Annual Electric Power Industry Report",
+          "path": "https://www.eia.gov/electricity/data/eia861",
+          "email": "infoelectric@eia.gov",
+          "description": "EIA Form 861 Annual Electric Power Industry Report, detailed data files.",
+          "keywords": [
+            "MW",
+            "MWh",
+            "advanced metering infrastructure",
+            "annual",
+            "balancing authority"
+          ],
+          "concept_doi": "https://doi.org/10.5281/zenodo.4127028",
+          "license_raw": {
+            "name": "other-pd",
+            "title": "U.S. Government Works",
+            "path": "https://www.usa.gov/publicdomain/label/1.0/"
+          },
+          "license_pudl": {
+            "name": "CC-BY-4.0",
+            "title": "Creative Commons Attribution 4.0",
+            "path": "https://creativecommons.org/licenses/by/4.0"
+          },
+          "contributors": [
+            {
+              "title": "Catalyst Cooperative",
+              "path": "https://catalyst.coop/",
+              "email": "pudl@catalyst.coop",
+              "roles": [
+                "publisher"
+              ],
+              "zenodo_role": "distributor",
+              "organization": "Catalyst Cooperative",
+              "name": "catalyst-cooperative"
+            }
+          ],
+          "doi": "https://doi.org/10.5281/zenodo.17846580",
+          "documentation": "https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia861.html"
+        }
+      ],
+      "path": "out_ferc714__georeferenced_respondents.parquet",
+      "scheme": "file",
+      "format": "parquet",
+      "mediatype": "application/parquet",
+      "schema": {
+        "fields": [
+          {
+            "name": "report_date",
+            "type": "date",
+            "description": "Date reported.",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "respondent_id_ferc714",
+            "type": "integer",
+            "description": "PUDL-assigned identifying a respondent to FERC Form 714. This ID associates natively reported respondent IDs from the original CSV and XBRL data sources.",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "geometry",
+            "type": "string",
+            "description": "Geospatial representation of the feature.",
+            "geometry_format": "wkt"
+          },
+          {
+            "name": "eia_code",
+            "type": "integer",
+            "description": "EIA utility or balancing area authority ID associated with this FERC Form 714 respondent. Note that many utilities are also balancing authorities and in many cases EIA uses the same integer ID to identify a utility in its role as a balancing authority AND as a utility, but there is no requirement that these IDs be the same, and in a number of cases they are different."
+          },
+          {
+            "name": "respondent_type",
+            "type": "string",
+            "description": "Whether a respondent to the FERC form 714 is a utility or a balancing authority.",
+            "constraints": {
+              "enum": [
+                "utility",
+                "balancing_authority"
+              ]
+            }
+          },
+          {
+            "name": "respondent_name_ferc714",
+            "type": "string",
+            "description": "Name of the utility, balancing area authority, or planning authority responding to FERC Form 714."
+          },
+          {
+            "name": "balancing_authority_id_eia",
+            "type": "integer",
+            "description": "EIA balancing authority ID. This is often (but not always!) the same as the utility ID associated with the same legal entity."
+          },
+          {
+            "name": "balancing_authority_code_eia",
+            "type": "string",
+            "description": "EIA short code identifying a balancing authority. May include Canadian and Mexican BAs."
+          },
+          {
+            "name": "balancing_authority_name_eia",
+            "type": "string",
+            "description": "Name of the balancing authority."
+          },
+          {
+            "name": "utility_id_eia",
+            "type": "integer",
+            "description": "The EIA Utility Identification number."
+          },
+          {
+            "name": "utility_name_eia",
+            "type": "string",
+            "description": "The name of the utility."
+          },
+          {
+            "name": "population",
+            "type": "integer",
+            "description": "County population, sourced from Census DP1 data.",
+            "unit": "count"
+          },
+          {
+            "name": "area_km2",
+            "type": "number",
+            "description": "County area in km2.",
+            "unit": "km**2"
+          },
+          {
+            "name": "demand_annual_mwh",
+            "type": "number",
+            "description": "Annual electricity demand in a given report year.",
+            "unit": "MWh"
+          }
+        ],
+        "primaryKey": [
+          "respondent_id_ferc714",
+          "report_date"
+        ]
+      },
+      "keywords": [
+        "MW",
+        "MWh",
+        "advanced metering infrastructure",
+        "age",
+        "annual"
+      ],
+      "contributors": [
+        {
+          "title": "Catalyst Cooperative",
+          "path": "https://catalyst.coop/",
+          "email": "pudl@catalyst.coop",
+          "roles": [
+            "publisher"
+          ],
+          "zenodo_role": "distributor",
+          "organization": "Catalyst Cooperative",
+          "name": "catalyst-cooperative"
+        }
+      ]
+    }
+  ]
+}

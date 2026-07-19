@@ -15,7 +15,7 @@ from typing import Any
 
 import pytest
 
-from conftest import (
+from .conftest import (
     EXAMPLES,
     READING_COLUMNS,
     RESOURCE_NAMES,

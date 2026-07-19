@@ -1,0 +1,827 @@
+[
+  {
+    "title": "Identification and Verification",
+    "description": "Identifies the oil pipeline company filing the FERC Form 6, including its exact legal name, address, contact person information, reporting period, and whether the filing is an original or resubmission. Also includes the certification of a principal officer verifying the accuracy and completeness of all statements in the report.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "annual_corporate_officer_certification_001_duration",
+      "annual_corporate_officer_certification_001_instant",
+      "identification_001_duration",
+      "identification_001_instant"
+    ],
+    "dbf_tables": [
+      "f6_ident_attsttn"
+    ],
+    "schedule": "1",
+    "ferc_accounts": []
+  },
+  {
+    "title": "List of Schedules",
+    "description": "A table of contents listing all schedules included in the FERC Form 6 annual report, with reference page numbers, revision dates, and a remarks column where filers may note which schedules are not applicable or have no data. Also includes checkboxes regarding whether two copies of the Annual Report to Stockholders will be submitted or whether no such report has been prepared.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "list_of_schedule_002_duration",
+      "list_of_schedule_002_instant"
+    ],
+    "dbf_tables": [
+      "f6_list_of_sched",
+      "f6_list_of_sched_add"
+    ],
+    "schedule": "2",
+    "ferc_accounts": []
+  },
+  {
+    "title": "General Information",
+    "description": "Provides detailed corporate information about the oil pipeline company, including date of incorporation, reference to governing laws and charter, a listing of constituent or merged companies, dates and authorities for consolidations and mergers effected during the year, reorganization history, and whether business was conducted under any other name during the year. Filers must cite specific legal references and explain all corporate combinations.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "general_information_101_duration",
+      "general_information_101_instant"
+    ],
+    "dbf_tables": [
+      "f6_general_info"
+    ],
+    "schedule": "101",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Control Over Respondent",
+    "description": "Identifies all companies that exercise control over the reporting oil pipeline company, whether directly or indirectly, listing the controlling company name, direct parent, and percentage of stock held. Control includes power to direct management through stock ownership, common directors, officers, contracts, or other means, as defined in 18 C.F.R. Part 352.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "control_over_respondent_102_duration",
+      "control_over_respondent_102_instant"
+    ],
+    "dbf_tables": [
+      "f6_cntrl_over_resp"
+    ],
+    "schedule": "102",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Companies Controlled by Respondent",
+    "description": "Lists all companies controlled by the reporting oil pipeline company, the kind of business each controlled company conducts, and the percentage of stock held by the respondent. This schedule is the outward-facing counterpart to Schedule 102, together documenting the full ownership and control structure of the respondent's corporate family.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "companies_controlled_by_respondent_103_duration",
+      "companies_controlled_by_respondent_103_instant"
+    ],
+    "dbf_tables": [
+      "f6_ctrl_by_resp"
+    ],
+    "schedule": "103",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Principal General Officers",
+    "description": "Lists the principal general officers of the oil pipeline company at the end of the reporting period, including their titles, names, and office addresses. This schedule documents the senior executive leadership responsible for overseeing the company's regulated pipeline operations and financial reporting.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "principal_general_officers_104_duration",
+      "principal_general_officers_104_instant"
+    ],
+    "dbf_tables": [
+      "f6_principal_officers"
+    ],
+    "schedule": "104",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Directors",
+    "description": "Lists all members of the board of directors of the oil pipeline company at the end of the reporting period, including their names, titles, and addresses. The schedule provides transparency about the governance structure of FERC-regulated oil pipeline companies and complements Schedule 104 on executive officers.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "directors_105_duration",
+      "directors_105_instant"
+    ],
+    "dbf_tables": [
+      "f6_directors"
+    ],
+    "schedule": "105",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Important Changes During the Quarter/Year",
+    "description": "Describes significant events and changes that occurred during the reporting period affecting the oil pipeline company's structure, operations, or finances. Required disclosures include changes to capital stock, long-term debt, franchises, mergers, consolidations, rate changes, major operational developments, and other material events that affect the financial condition or operations of the respondent. Both annual and quarterly filers must complete this schedule.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "important_changes_during_the_quarter_year_108_duration",
+      "important_changes_during_the_quarter_year_108_instant"
+    ],
+    "dbf_tables": [
+      "f6_important_changes"
+    ],
+    "schedule": "108",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Comparative Balance Sheet Statement",
+    "description": "Presents the oil pipeline company's balance sheet in comparative format showing assets, liabilities, and equity at the end of the current and prior reporting periods. Prepared in conformity with the Uniform System of Accounts (18 C.F.R. Part 352). References the supporting schedules on pages 200-254 for detailed breakdowns of specific balance sheet line items. For quarterly filings, includes both current period end and the prior December 31 year-end balance.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "comparative_balance_sheet_110_duration",
+      "comparative_balance_sheet_110_instant"
+    ],
+    "dbf_tables": [
+      "f6_comp_bal_sheet"
+    ],
+    "schedule": "110",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Income Statement",
+    "description": "Reports the oil pipeline company's operating and non-operating income and expenses for both year-to-date and quarterly periods. Includes carrier operating revenues (Account 600), operating expenses (Account 610), net carrier operating income, income from noncarrier property (Account 620), interest and dividend income (Account 630), miscellaneous income (Account 640), unusual or infrequent credits and charges (Account 645), and net income. Cross-references supporting schedules (301, 302, 335, 336, 337) for each line item.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "income_statement_114_duration",
+      "income_statement_114_instant"
+    ],
+    "dbf_tables": [
+      "f6_income_stmnt"
+    ],
+    "schedule": "114",
+    "ferc_accounts": [
+      "600",
+      "610",
+      "620",
+      "630",
+      "640",
+      "645"
+    ]
+  },
+  {
+    "title": "Statement of Accumulated Other Comprehensive Income and Hedging Activities",
+    "description": "Reports accumulated other comprehensive income items on a net-of-tax basis, including unrealized gains and losses on available-for-sale securities, minimum pension liability adjustments, foreign currency hedges, other adjustments, and other cash flow hedge categories such as interest rate swaps. For fair value hedges, filers must provide in footnotes the affected accounts and related amounts. The schedule also reports net income from the income statement and total comprehensive income.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "statement_of_accumulated_other_comprehensive_income_and_hedging_activities_116_duration",
+      "statement_of_accumulated_other_comprehensive_income_and_hedging_activities_116_instant"
+    ],
+    "dbf_tables": [
+      "f6_cmpinc_hedge",
+      "f6_cmpinc_hedge_a"
+    ],
+    "schedule": "116",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Appropriated Retained Income",
+    "description": "Provides an analysis of the balance in Account 74, Appropriated Retained Income, at end of year, showing each class of appropriation with the balance at end of the current year and the balance at end of the previous year. Common appropriation classes include additions to property through retained income, debt service reserves, and sinking fund requirements.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "appropriated_retained_income_118_duration",
+      "appropriated_retained_income_118_instant",
+      "appropriated_retained_income_other_appropriations_118_duration",
+      "appropriated_retained_income_other_appropriations_118_instant"
+    ],
+    "dbf_tables": [
+      "f6_approp_ret_inc"
+    ],
+    "schedule": "118",
+    "ferc_accounts": [
+      "74"
+    ]
+  },
+  {
+    "title": "Unappropriated Retained Income Statement",
+    "description": "Reports items of the retained income accounts classified in accordance with the Uniform System of Accounts for both the current and prior year-to-date periods. Includes beginning retained income balance, net income, dividends declared, other debits and credits, and ending balance. Also reports assigned Federal income tax consequences (Accounts 710 and 720) and equity in undistributed earnings of affiliated companies (equity method). Line 18 must agree with Line 12 of the Income Statement (Schedule 114).",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "unappropriated_retained_income_statement_119_duration",
+      "unappropriated_retained_income_statement_119_instant"
+    ],
+    "dbf_tables": [
+      "f6_unapprop_ret_inc"
+    ],
+    "schedule": "119",
+    "ferc_accounts": [
+      "710",
+      "720"
+    ]
+  },
+  {
+    "title": "Statement of Cash Flows",
+    "description": "Presents cash flows from operating, investing, and financing activities for current and prior year-to-date periods. Coding conventions specify treatment of proceeds vs. payments, bond types, commercial paper, and specific investing items. Non-cash investing and financing activities must be disclosed in Notes to Financial Statements (Schedule 122). Operating activities include only gains and losses pertaining to operations; investing and financing activity gains and losses are reported in their respective sections.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "statement_of_cash_flows_120_duration",
+      "statement_of_cash_flows_120_instant",
+      "statement_of_cash_flows_cash_provided_by_other_sources_120_duration",
+      "statement_of_cash_flows_cash_provided_by_other_sources_120_instant",
+      "statement_of_cash_flows_construction_and_acquisition_of_plant_120_duration",
+      "statement_of_cash_flows_construction_and_acquisition_of_plant_120_instant",
+      "statement_of_cash_flows_non_cash_charges_120_duration",
+      "statement_of_cash_flows_non_cash_charges_120_instant",
+      "statement_of_cash_flows_other_adjustment_to_short_term_debt_120_duration",
+      "statement_of_cash_flows_other_adjustment_to_short_term_debt_120_instant",
+      "statement_of_cash_flows_other_adjustments_to_financing_activities_120_duration",
+      "statement_of_cash_flows_other_adjustments_to_financing_activities_120_instant",
+      "statement_of_cash_flows_other_adjustments_to_investing_cash_flows_120_duration",
+      "statement_of_cash_flows_other_adjustments_to_investing_cash_flows_120_instant",
+      "statement_of_cash_flows_other_adjustments_to_operating_cash_charges_120_duration",
+      "statement_of_cash_flows_other_adjustments_to_operating_cash_charges_120_instant",
+      "statement_of_cash_flows_other_payment_for_retirement_to_financing_acitivities_120_duration",
+      "statement_of_cash_flows_other_payment_for_retirement_to_financing_acitivities_120_instant"
+    ],
+    "dbf_tables": [
+      "f6_stmnt_cash_flow"
+    ],
+    "schedule": "120",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Notes to Financial Statements",
+    "description": "Provides important disclosures supporting the four basic financial statements. For annual filings, covers: accounting principles and estimates, significant commitments and contingencies (including IRS assessments and refund claims), pension and postretirement benefit accounting changes and details, income tax accounting methods, rate and regulatory matters, and effects of any business acquisitions or divestitures. For quarterly filings, provides disclosures sufficient to prevent the interim information from being misleading, focusing on significant changes since the most recent annual report.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "notes_to_financial_statements_122_duration",
+      "notes_to_financial_statements_122_instant"
+    ],
+    "dbf_tables": [
+      "f6_note_fin_stmnt"
+    ],
+    "schedule": "122",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Receivables from Affiliated Companies",
+    "description": "Details the various affiliated company debtors and the character of transactions constituting the current asset Account 13, Receivables from Affiliated Companies, at year end. Items amounting to $500,000 or more must be listed individually; smaller balances may be combined under a 'Minor accounts, less than $500,000' caption.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "receivables_from_affiliated_companies_200_duration",
+      "receivables_from_affiliated_companies_200_instant",
+      "receivables_from_affiliated_companies_totals_200_duration",
+      "receivables_from_affiliated_companies_totals_200_instant"
+    ],
+    "dbf_tables": [
+      "f6_recv_affiliated"
+    ],
+    "schedule": "200",
+    "ferc_accounts": [
+      "13"
+    ]
+  },
+  {
+    "title": "Investments in Affiliated Companies",
+    "description": "Details investments in affiliated companies classified by security type under Account 20 (Investments in Affiliated Companies) and Account 22 (Investments in Sinking and Other Funds). Investment categories include stock, bonds (including U.S. government bonds), unsecured notes, investment advances, and other secured obligations. For equity method investments, reports beginning balance, equity adjustments, undistributed earnings, amortization, and disposals. Also details the extent of control the respondent exercises over each affiliate.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "investments_in_affiliated_companies_202_duration",
+      "investments_in_affiliated_companies_202_instant",
+      "investments_in_affiliated_companies_bonds_including_u_s_government_bonds_202_duration",
+      "investments_in_affiliated_companies_bonds_including_u_s_government_bonds_202_instant",
+      "investments_in_affiliated_companies_investment_advances_202_duration",
+      "investments_in_affiliated_companies_investment_advances_202_instant",
+      "investments_in_affiliated_companies_other_secured_obligations_202_duration",
+      "investments_in_affiliated_companies_other_secured_obligations_202_instant",
+      "investments_in_affiliated_companies_stock_202_duration",
+      "investments_in_affiliated_companies_stock_202_instant",
+      "investments_in_affiliated_companies_totals_202_duration",
+      "investments_in_affiliated_companies_totals_202_instant",
+      "investments_in_affiliated_companies_unsecured_notes_202_duration",
+      "investments_in_affiliated_companies_unsecured_notes_202_instant",
+      "investments_in_sinking_and_other_funds_202_duration",
+      "investments_in_sinking_and_other_funds_202_instant"
+    ],
+    "dbf_tables": [
+      "f6_invest_affil",
+      "f6_invest_affiliated"
+    ],
+    "schedule": "202",
+    "ferc_accounts": [
+      "20",
+      "22"
+    ]
+  },
+  {
+    "title": "Investments in Common Stocks of Affiliated Companies / Companies Controlled Directly by Respondent Other than through Title to Securities",
+    "description": "Two related schedules presented on facing pages. Schedule 204 details equity method investments in common stocks of affiliated companies (Account 20), showing beginning balance, adjustments for equity in earnings, undistributed earnings, amortization, disposals, and ending balance for each carrier and noncarrier affiliate. The companion schedule lists companies controlled directly by the respondent through means other than stock title, identifying the means of establishment, whether control is sole or joint, and any other parties sharing control.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "companies_controlled_directly_by_respondent_other_than_through_title_to_securities_204_duration",
+      "companies_controlled_directly_by_respondent_other_than_through_title_to_securities_204_instant",
+      "investments_in_common_stocks_of_affiliated_companies_204_duration",
+      "investments_in_common_stocks_of_affiliated_companies_204_instant",
+      "investments_in_common_stocks_of_affiliated_companies_total_204_duration",
+      "investments_in_common_stocks_of_affiliated_companies_total_204_instant"
+    ],
+    "dbf_tables": [
+      "f6_invest_affil",
+      "f6_invest_affil_a"
+    ],
+    "schedule": "204",
+    "ferc_accounts": [
+      "20"
+    ]
+  },
+  {
+    "title": "Carrier Property",
+    "description": "Provides an analysis of changes during the year in Account 30, Carrier Property, by carrier property accounts, excluding undivided joint interest property (reported in Schedule 214). Reports beginning balance, expenditures for new construction and improvements (including transfers from Account 187, Construction Work in Progress), expenditures for existing property purchased or acquired, property sold or retired, other adjustments and transfers, net change, and ending balance. Acquisitions or sales exceeding $250,000 must be footnoted with company name, mileage, date, and original cost. Transfers to or from Account 34 (Noncarrier Property) must be explained in Schedule 220.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "carrier_property_212_duration",
+      "carrier_property_212_instant"
+    ],
+    "dbf_tables": [
+      "f6_carrier_property"
+    ],
+    "schedule": "212",
+    "ferc_accounts": [
+      "30",
+      "34",
+      "187"
+    ]
+  },
+  {
+    "title": "Undivided Joint Interest Property",
+    "description": "Provides an analysis of changes during the year in Account 30, Carrier Property, specifically for the respondent's proportionate interest in undivided joint interest pipelines. Each undivided joint interest pipeline in which the respondent has an interest is reported separately by pipeline name, using the same column structure as Schedule 212. The total carrier property from Schedule 212 and the sum of all undivided joint interest properties from Schedule 214 together represent all carrier property owned by the reporting entity at year end.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "undivided_joint_interest_property_214_duration",
+      "undivided_joint_interest_property_214_instant"
+    ],
+    "dbf_tables": [
+      "f6_undiv_joint_int_prop"
+    ],
+    "schedule": "214",
+    "ferc_accounts": [
+      "30"
+    ]
+  },
+  {
+    "title": "Accrued Depreciation - Carrier Property",
+    "description": "Reports the accrued depreciation on carrier property, exclusive of depreciation on undivided joint interest property (which is reported separately in Schedule 217). For each carrier property account category (gathering lines, trunk lines, etc.), shows balance at beginning of year, depreciation charges to Account 540 and 541, net charges for property retirements, other debits, balance at end of year, and annual composite depreciation rates.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "accrued_depreciation_carrier_property_216_duration",
+      "accrued_depreciation_carrier_property_216_instant"
+    ],
+    "dbf_tables": [
+      "f6_acc_depr_carrier",
+      "f6_depr_carrier_prop"
+    ],
+    "schedule": "216",
+    "ferc_accounts": [
+      "540",
+      "541"
+    ]
+  },
+  {
+    "title": "Accrued Depreciation - Undivided Joint Interest Property",
+    "description": "Reports accrued depreciation for carrier property owned as undivided joint interest pipeline property, corresponding to the property investments reported in Schedule 214. Reports by system or pipeline name to distinguish multiple undivided joint interest pipeline interests. Uses the same column structure as Schedule 216, including charges to Accounts 540 and 541, retirement credits, and annual composite rates.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "accrued_depreciation_undivided_joint_interest_property_217_duration",
+      "accrued_depreciation_undivided_joint_interest_property_217_instant"
+    ],
+    "dbf_tables": [
+      "f6_acc_depr_system",
+      "f6_depr_sys_prop"
+    ],
+    "schedule": "217",
+    "ferc_accounts": [
+      "540",
+      "541"
+    ]
+  },
+  {
+    "title": "Amortization Base and Reserve",
+    "description": "Provides an analysis of the amortization base (Account 32, Carrier Property - Intangible Assets) and its corresponding amortization reserve (Account 540/541 for intangible asset depreciation). Reports beginning balances, debits and credits to the base account and the reserve account, and ending balances for each category of intangible carrier property being amortized.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "amortization_base_and_reserve_218_duration",
+      "amortization_base_and_reserve_218_instant",
+      "amortization_base_and_reserve_totals_218_duration",
+      "amortization_base_and_reserve_totals_218_instant"
+    ],
+    "dbf_tables": [
+      "f6_amort_base"
+    ],
+    "schedule": "218",
+    "ferc_accounts": [
+      "32",
+      "540",
+      "541"
+    ]
+  },
+  {
+    "title": "Noncarrier Property",
+    "description": "Lists each item of noncarrier property included in Account 34, Noncarrier Property, at year end. For each item, provides a general description of the property, the date it was first included in Account 34, and the book cost. Relates directly to Schedule 335 (Income from Noncarrier Property), which reports revenues and expenses generated by these assets. Transfers to or from Account 34 from Carrier Property (Schedule 212) must be explained here.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "noncarrier_property_220_duration",
+      "noncarrier_property_220_instant",
+      "noncarrier_property_totals_220_duration",
+      "noncarrier_property_totals_220_instant"
+    ],
+    "dbf_tables": [
+      "f6_noncarrier_prop"
+    ],
+    "schedule": "220",
+    "ferc_accounts": [
+      "34"
+    ]
+  },
+  {
+    "title": "Other Deferred Charges",
+    "description": "Details each type of deferred charge included in Account 44, Other Deferred Charges, at year end. Reports the description of each deferred charge type and the balance at end of year. Deferred charges represent costs paid or accrued that are to be allocated to future accounting periods, such as unamortized debt issuance costs, deferred regulatory assets, or other items awaiting future amortization.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "other_deferred_charges_221_duration",
+      "other_deferred_charges_221_instant",
+      "other_deferred_charges_totals_221_duration",
+      "other_deferred_charges_totals_221_instant"
+    ],
+    "dbf_tables": [
+      "f6_other_defer_chrgs"
+    ],
+    "schedule": "221",
+    "ferc_accounts": [
+      "44"
+    ]
+  },
+  {
+    "title": "Payables to Affiliated Companies",
+    "description": "Details payables to affiliated companies constituting Account 51, Payables to Affiliated Companies, at year end. Reports the name of each affiliated company creditor, the nature of the liability, and the balance at end of year. Items under $500,000 may be combined. This schedule is the liability counterpart to Schedule 200 (Receivables from Affiliated Companies).",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "payables_to_affiliated_companies_225_duration",
+      "payables_to_affiliated_companies_225_instant",
+      "payables_to_affiliated_companies_totals_225_duration",
+      "payables_to_affiliated_companies_totals_225_instant"
+    ],
+    "dbf_tables": [
+      "f6_payables_affil"
+    ],
+    "schedule": "225",
+    "ferc_accounts": [
+      "51"
+    ]
+  },
+  {
+    "title": "Long-Term Debt",
+    "description": "Provides detailed information on all long-term debt obligations, classified into categories: mortgage bonds, collateral trust bonds, income bonds, debt to affiliated companies, and miscellaneous obligations. For each issuance, reports nominal date of issue, maturity date, amounts held in treasury and sinking funds, amounts pledged, amounts due within one year, amounts due after one year, annual interest rate, interest payment dates, interest accrued, interest charged, and interest paid. Corresponds to long-term debt accounts (Account 57-series) in the Uniform System of Accounts.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "long_term_debt_collateral_trust_bonds_226_duration",
+      "long_term_debt_collateral_trust_bonds_226_instant",
+      "long_term_debt_collateral_trust_bonds_totals_226_duration",
+      "long_term_debt_collateral_trust_bonds_totals_226_instant",
+      "long_term_debt_debt_to_affiliated_companies_226_duration",
+      "long_term_debt_debt_to_affiliated_companies_226_instant",
+      "long_term_debt_debt_to_affiliated_companies_totals_226_duration",
+      "long_term_debt_debt_to_affiliated_companies_totals_226_instant",
+      "long_term_debt_income_bonds_226_duration",
+      "long_term_debt_income_bonds_226_instant",
+      "long_term_debt_income_bonds_totals_226_duration",
+      "long_term_debt_income_bonds_totals_226_instant",
+      "long_term_debt_miscellaneous_obligations_226_duration",
+      "long_term_debt_miscellaneous_obligations_226_instant",
+      "long_term_debt_miscellaneous_obligations_totals_226_duration",
+      "long_term_debt_miscellaneous_obligations_totals_226_instant",
+      "long_term_debt_mortgage_bonds_226_duration",
+      "long_term_debt_mortgage_bonds_226_instant",
+      "long_term_debt_mortgage_bonds_totals_226_duration",
+      "long_term_debt_mortgage_bonds_totals_226_instant",
+      "long_term_debt_total_226_duration",
+      "long_term_debt_total_226_instant"
+    ],
+    "dbf_tables": [
+      "f6_long_term_debt"
+    ],
+    "schedule": "226",
+    "ferc_accounts": [
+      "57"
+    ]
+  },
+  {
+    "title": "Analysis of Federal Income and Other Taxes Deferred",
+    "description": "Reports current and noncurrent deferred income tax accounts, showing items causing temporary differences between financial reporting and tax reporting. Current deferred taxes correspond to Account 19-5 (Deferred Income Tax Assets) and Account 59 (Deferred Income Tax Liabilities); noncurrent accumulated deferred taxes correspond to Account 45 (Accumulated Deferred Income Tax Assets) and Account 64 (Accumulated Deferred Income Tax Liabilities). Tracks beginning balance, net change for current year temporary differences, adjustments for loss carryforwards and carry-backs, and ending balance. Net credits/debits must agree with Account 671 (Provision for Deferred Taxes) and Account 696 (Provision for Deferred Taxes-Extraordinary Items).",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "analysis_of_federal_income_and_other_taxes_deferred_230_duration",
+      "analysis_of_federal_income_and_other_taxes_deferred_230_instant",
+      "analysis_of_federal_income_and_other_taxes_deferred_totals_230_duration",
+      "analysis_of_federal_income_and_other_taxes_deferred_totals_230_instant"
+    ],
+    "dbf_tables": [
+      "f6_analysis_inc_tax"
+    ],
+    "schedule": "230",
+    "ferc_accounts": [
+      "19",
+      "45",
+      "59",
+      "64",
+      "671",
+      "696"
+    ]
+  },
+  {
+    "title": "Capital Stock (Account 70)",
+    "description": "Details all classes and series of capital stock (Account 70) outstanding at year end, including both preferred and common stock. Reports for each class: shares authorized by charter, par or stated value per share, call price, shares and dollar amounts outstanding per balance sheet, shares and cost of reacquired (treasury) stock, and shares and amounts held in sinking and other funds. References to SEC 10-K filings are permitted for applicable stock exchange reporting information if fiscal years are compatible.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "capital_stock_account_70_250_duration",
+      "capital_stock_account_70_250_instant",
+      "capital_stock_account_70_totals_250_duration",
+      "capital_stock_account_70_totals_250_instant",
+      "capital_stock_common_stock_250_duration",
+      "capital_stock_common_stock_250_instant",
+      "capital_stock_common_stock_totals_250_duration",
+      "capital_stock_common_stock_totals_250_instant",
+      "capital_stock_preferred_stock_250_duration",
+      "capital_stock_preferred_stock_totals_250_instant"
+    ],
+    "dbf_tables": [
+      "f6_capital_stock"
+    ],
+    "schedule": "250",
+    "ferc_accounts": [
+      "70"
+    ]
+  },
+  {
+    "title": "Capital Stock Changes During the Year",
+    "description": "Details all stock actually or nominally issued and all stock reacquired or canceled during the year. For each issuance reports: class of stock, date of issue, purpose and regulatory authorization, number of shares, net proceeds received, cash value of other property or services received as consideration, discounts or premiums, and issuance expenses. For reacquisitions, reports number of shares and purchase price. Nominally issued stock requires only class, date, purpose, and number of shares.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "capital_stock_changes_during_the_year_252_duration",
+      "capital_stock_changes_during_the_year_252_instant"
+    ],
+    "dbf_tables": [
+      "f6_cap_stk_chgs"
+    ],
+    "schedule": "252",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Additional Paid-in Capital",
+    "description": "Details additions to and deductions from Account 73, Additional Paid-in Capital, during the year. Reports each item, the contra account credited or debited for each transaction, and the dollar amount. Additional paid-in capital arises from capital contributions in excess of par value, gains on treasury stock transactions, donated capital, and other equity transactions not charged to retained income.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "additional_paid_in_capital_254_duration",
+      "additional_paid_in_capital_254_instant",
+      "additional_paid_in_capital_additions_254_duration",
+      "additional_paid_in_capital_additions_254_instant",
+      "additional_paid_in_capital_deductions_254_duration",
+      "additional_paid_in_capital_deductions_254_instant"
+    ],
+    "dbf_tables": [
+      "f6_paid_in_cap"
+    ],
+    "schedule": "254",
+    "ferc_accounts": [
+      "73"
+    ]
+  },
+  {
+    "title": "Operating Revenues",
+    "description": "Reports the oil pipeline company's total pipeline operating revenues year-to-date, broken out by crude oil and products for each revenue sub-account: Gathering Revenues (200), Trunk Revenues (210), Delivery Revenues (220), Allowance Oil Revenue (230), Storage and Demurrage Revenue (240), Rental Revenue (250), and Incidental Revenue (260). This quarterly summary schedule covers only current-period throughput revenues; Schedule 301 provides the detailed annual Account 600 data with prior-year comparisons.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "operating_revenues_300_duration",
+      "operating_revenues_300_instant"
+    ],
+    "dbf_tables": [
+      "f6_300_op_revenues"
+    ],
+    "schedule": "300",
+    "ferc_accounts": [
+      "200",
+      "210",
+      "220",
+      "230",
+      "240",
+      "250",
+      "260"
+    ]
+  },
+  {
+    "title": "Operating Revenue Accounts (Account 600)",
+    "description": "Reports the respondent's annual pipeline operating revenues classified under Account 600 in accordance with the Uniform System of Accounts. Revenues are reported separately for crude oil and products across gathering, trunk, and delivery services. For revenue sub-accounts 200 (Gathering Revenues), 210 (Trunk Revenues), and 220 (Delivery Revenues), the amounts derived from interstate transportation and intrastate transportation of oil must be separately identified, with the two figures summing to the total for each sub-account.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "operating_revenue_accounts_account_600_301_duration",
+      "operating_revenue_accounts_account_600_301_instant",
+      "operating_revenue_accounts_account_600_interstate_301_duration",
+      "operating_revenue_accounts_account_600_interstate_301_instant"
+    ],
+    "dbf_tables": [
+      "f6_op_rev_accts",
+      "f6_op_rev_accts_a"
+    ],
+    "schedule": "301",
+    "ferc_accounts": [
+      "200",
+      "210",
+      "220",
+      "230",
+      "240",
+      "250",
+      "260",
+      "600"
+    ]
+  },
+  {
+    "title": "Operating Expense Accounts (Account 610)",
+    "description": "States the pipeline operating expenses classified under Account 610 in accordance with the Uniform System of Accounts. Expenses are broken out separately for crude oil (gathering, trunk, and delivery) and products (trunk and delivery) pipelines, with grand totals. Expense categories include operations and maintenance (salaries and wages 300, materials and supplies 310, outside services 320, operating fuel and power 330), general and administrative categories (500-570 range), depreciation (540), amortization (541), pipeline taxes (580), and other operating expenses (590-592).",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "operating_expense_accounts_account_610_302_duration",
+      "operating_expense_accounts_account_610_302_instant"
+    ],
+    "dbf_tables": [
+      "f6_op_exp_accts"
+    ],
+    "schedule": "302",
+    "ferc_accounts": [
+      "300",
+      "310",
+      "320",
+      "330",
+      "340",
+      "350",
+      "390",
+      "500",
+      "510",
+      "520",
+      "530",
+      "540",
+      "541",
+      "550",
+      "560",
+      "570",
+      "580",
+      "590",
+      "591",
+      "592",
+      "610"
+    ]
+  },
+  {
+    "title": "Pipeline Taxes (Other than Income Taxes)",
+    "description": "Details taxes accrued and charged to Account 580, Pipeline Taxes, in the respondent's income account for the year, exclusive of income taxes. Reports separately: (A) state, local, and other taxes listed by state name with dollar amounts; and (B) U.S. government taxes by kind of tax. If an important adjustment was made in Account 580 for taxes applicable to a prior year, the full particulars must be disclosed in a footnote.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "pipeline_taxes_other_than_income_taxes_305_duration",
+      "pipeline_taxes_other_than_income_taxes_305_instant",
+      "pipeline_taxes_other_than_income_taxes_other_us_taxes_305_duration",
+      "pipeline_taxes_other_than_income_taxes_other_us_taxes_305_instant",
+      "pipeline_taxes_other_than_income_taxes_us_government_taxes_305_duration",
+      "pipeline_taxes_other_than_income_taxes_us_government_taxes_305_instant"
+    ],
+    "dbf_tables": [
+      "f6_pipeline_tax",
+      "f6_pipeline_tax_a"
+    ],
+    "schedule": "305",
+    "ferc_accounts": [
+      "580"
+    ]
+  },
+  {
+    "title": "Income from Noncarrier Property",
+    "description": "Reports revenues, expenses, and net income or loss from each class of noncarrier property included in Account 620, Income (net) from Noncarrier Property, during the year. For each property class, provides a general description, total revenues, total expenses, and net income. If income from a property relates to only part of the year, the particulars must be explained in a footnote. The underlying noncarrier property assets are inventoried in Schedule 220.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "income_from_noncarrier_property_335_duration",
+      "income_from_noncarrier_property_335_instant",
+      "income_from_noncarrier_property_totals_335_duration",
+      "income_from_noncarrier_property_totals_335_instant"
+    ],
+    "dbf_tables": [
+      "f6_inc_noncarrier"
+    ],
+    "schedule": "335",
+    "ferc_accounts": [
+      "620"
+    ]
+  },
+  {
+    "title": "Interest and Dividend Income",
+    "description": "Details individual items of interest and dividend income from investments accounted for under the cost method, corresponding to Account 630 (Interest and Dividend Income) and Account 640 (Miscellaneous Income). For each item, reports dividend income and interest income amounts. This schedule supports the income statement for returns on cost-method investments, as distinguished from the equity method investment income reported in Schedule 204.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "interest_and_dividend_income_336_duration",
+      "interest_and_dividend_income_336_instant",
+      "interest_and_dividend_income_table_336_duration",
+      "interest_and_dividend_income_table_336_instant"
+    ],
+    "dbf_tables": [
+      "f6_int_div_inc"
+    ],
+    "schedule": "336",
+    "ferc_accounts": [
+      "630",
+      "640"
+    ]
+  },
+  {
+    "title": "Miscellaneous Items in Income and Retained Income Accounts for the Year",
+    "description": "Itemizes non-routine items affecting income and retained income during the year, including: miscellaneous income items (Account 640), miscellaneous income charges (Account 660), extraordinary income credits and charges (Account 645), income taxes on extraordinary items, and other credits and debits to retained income. This schedule provides transparency for all items outside of normal operating income that affect the income statement and retained earnings, requiring account number and descriptive detail for each entry.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "miscellaneous_items_in_income_and_retained_income_accounts_for_the_year_337_duration",
+      "miscellaneous_items_in_income_and_retained_income_accounts_for_the_year_337_instant",
+      "miscellaneous_items_in_income_and_retained_income_accounts_for_the_year_income_taxes_on_extraordinary_items_337_duration",
+      "miscellaneous_items_in_income_and_retained_income_accounts_for_the_year_income_taxes_on_extraordinary_items_337_instant",
+      "miscellaneous_items_in_income_and_retained_income_accounts_for_the_year_miscellaneous_income_337_duration",
+      "miscellaneous_items_in_income_and_retained_income_accounts_for_the_year_miscellaneous_income_337_instant",
+      "miscellaneous_items_in_income_and_retained_income_accounts_for_the_year_miscellaneous_income_charges_337_duration",
+      "miscellaneous_items_in_income_and_retained_income_accounts_for_the_year_miscellaneous_income_charges_337_instant",
+      "miscellaneous_items_in_income_and_retained_income_accounts_for_the_year_miscellaneous_income_extraordinary_items_337_duration",
+      "miscellaneous_items_in_income_and_retained_income_accounts_for_the_year_miscellaneous_income_extraordinary_items_337_instant",
+      "miscellaneous_items_in_income_and_retained_income_accounts_for_the_year_other_credits_to_retained_income_337_duration",
+      "miscellaneous_items_in_income_and_retained_income_accounts_for_the_year_other_credits_to_retained_income_337_instant",
+      "miscellaneous_items_in_income_and_retained_income_accounts_for_the_year_other_debits_to_retained_income_337_duration",
+      "miscellaneous_items_in_income_and_retained_income_accounts_for_the_year_other_debits_to_retained_income_337_instant",
+      "miscellaneous_items_in_income_and_retained_income_accounts_for_the_year_totals_337_duration",
+      "miscellaneous_items_in_income_and_retained_income_accounts_for_the_year_totals_337_instant"
+    ],
+    "dbf_tables": [
+      "f6_misc_ret_inc"
+    ],
+    "schedule": "337",
+    "ferc_accounts": [
+      "640",
+      "645",
+      "660"
+    ]
+  },
+  {
+    "title": "Payments for Services Rendered by Other than Employees",
+    "description": "Lists payments made during the year to individuals or organizations other than employees in exchange for services rendered to the oil pipeline company. Reports the name of each recipient, the nature of the services provided, and the amount paid. This schedule provides transparency about significant contracted services, consulting arrangements, legal services, and other professional services.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "payments_for_services_rendered_by_other_than_employees_351_duration",
+      "payments_for_services_rendered_by_other_than_employees_351_instant",
+      "payments_for_services_rendered_by_other_than_employees_totals_351_duration",
+      "payments_for_services_rendered_by_other_than_employees_totals_351_instant"
+    ],
+    "dbf_tables": [
+      "f6_pay_oth_emp"
+    ],
+    "schedule": "351",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Statistics of Operations",
+    "description": "Reports oil pipeline throughput statistics for pipeline owned and operated by the respondent, as well as for pipeline owned by the respondent but operated by others (Schedule 600a). Details barrels received and delivered, by state of origin for crude oil and by product type for refined products, categorized as received from connecting carriers, from gathering lines, and into trunk lines. Also reports total barrel-miles for crude oil and products on trunk lines on an annual basis only. Barrel-miles are calculated as the sum of barrels per segment multiplied by segment miles.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "statistics_of_operations_600_duration",
+      "statistics_of_operations_600_instant",
+      "statistics_of_operations_operator_600a_duration",
+      "statistics_of_operations_operator_600a_instant",
+      "statistics_of_operations_totals_600_duration",
+      "statistics_of_operations_totals_600_instant",
+      "statistics_of_operations_totals_operator_600a_duration",
+      "statistics_of_operations_totals_operator_600a_instant",
+      "statistics_of_operations_totals_operator_totals_600a_duration",
+      "statistics_of_operations_totals_operator_totals_600a_instant"
+    ],
+    "dbf_tables": [
+      "f6_stats_oper",
+      "f6_stats_oper_a"
+    ],
+    "schedule": "600",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Miles of Pipeline Operated at End of Year",
+    "description": "Reports the miles of pipeline operated by the respondent at year end, categorized by four ownership and operating arrangements: (A) owned and operated by respondent, (B) owned in undivided joint interest and operated by respondent, (C) owned in undivided joint interest and operated by others, and (D) owned by others but operated by respondent. For each category, reports each pipeline by name and termini, with miles of gathering lines and trunk lines (crude and products separately) at beginning of year, increases, decreases, and end of year.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "miles_of_pipeline_operated_at_end_of_year_602_duration",
+      "miles_of_pipeline_operated_at_end_of_year_602_instant",
+      "miles_of_pipeline_operated_at_end_of_year_subtotal_602_duration",
+      "miles_of_pipeline_operated_at_end_of_year_subtotal_602_instant",
+      "miles_of_pipeline_operated_at_end_of_year_total_602_duration",
+      "miles_of_pipeline_operated_at_end_of_year_total_602_instant"
+    ],
+    "dbf_tables": [
+      "f6_miles_pipe_a",
+      "f6_miles_pipe_b",
+      "f6_miles_pipe_c",
+      "f6_miles_pipe_d",
+      "f6_miles_pipeline"
+    ],
+    "schedule": "602",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Annual Cost of Service Based Analysis Schedule",
+    "description": "Provides a cost-of-service based analysis for oil pipeline rate regulation under FERC Opinion No. 154-B et seq. methodology. Reports operating and maintenance expenses, depreciation expense, AFUDC depreciation, amortization of deferred earnings, rate base components (original cost, unamortized starting rate base write-up, accumulated net deferred earnings, and total trended original cost rate base), rate of return percentage, dollar return, income tax allowance, and total cost of service. Also reports total interstate operating revenues (from Schedule 301), interstate throughput in barrels, and interstate throughput in barrel-miles. Any material changes in application of the methodology must be described in a footnote with recalculated values.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "annual_cost_of_service_based_analysis_schedule_700_duration",
+      "annual_cost_of_service_based_analysis_schedule_700_instant"
+    ],
+    "dbf_tables": [
+      "f6_annual_cost_serv"
+    ],
+    "schedule": "700",
+    "ferc_accounts": []
+  }
+]

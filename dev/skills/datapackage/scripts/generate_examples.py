@@ -254,7 +254,7 @@ def write_descriptor(
     directory: Path, package_meta: dict[str, Any], resources: list[dict[str, Any]]
 ) -> None:
     descriptor = {**package_meta, "resources": resources}
-    (directory / "datapackage.json").write_text(json.dumps(descriptor, indent=4) + "\n")
+    (directory / "datapackage.json").write_text(json.dumps(descriptor, indent=2) + "\n")
 
 
 def write_data_files(out: Path) -> None:

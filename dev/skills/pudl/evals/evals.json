@@ -1,0 +1,35 @@
+{
+  "skill_name": "pudl",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm trying to understand what data PUDL has on coal plant retirements. What tables would I look at, and are there any caveats I should know about before using them?",
+      "expected_output": "Agent searches metadata for relevant tables (e.g. core_eia860__scd_generators or out_eia860__yearly_generators), explains what they contain, surfaces any usage warnings from the metadata, and recommends out_* tables over _core_* tables. Should note table naming conventions and which tier is appropriate.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I want to load the out_eia923__generation table in a script. I don't have PUDL installed locally \u2014 can I get it from S3? Show me the code.",
+      "expected_output": "Agent provides clean, working pandas (or DuckDB) code to read the table from the public S3 bucket (s3://pudl.catalyst.coop/nightly/out_eia923__generation.parquet) with no credentials needed. Code should not import any pudl package. Optionally shows column projection for efficiency.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "What does the unit_id_pudl column mean, and should I use it as a join key across PUDL versions?",
+      "expected_output": "Agent queries the metadata to find the column description and its usage warning ('WARNING: This ID is not guaranteed to be static long term'), explains in plain language why it's risky to use as a durable join key, and suggests safer alternatives if any are mentioned.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "I downloaded some PUDL parquet files to ~/Downloads/pudl_data/ and I want to explore them. I see a file called _core_eia860__cooling_equipment.parquet \u2014 what does that table contain and is it safe to use?",
+      "expected_output": "Agent explains the _core_* tier (preliminary, may be removed without notice), describes what the cooling equipment table contains, surfaces the specific warnings from its metadata ('Published only temporarily and may be removed without notice', 'not been harvested'), and recommends the user be cautious and check whether a more stable out_* or core_* table covers their needs.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "I'm analyzing hourly electricity generation by fuel type. Can you help me get started with the right PUDL data?",
+      "expected_output": "Agent identifies the right table(s) for hourly generation (e.g. EPA CEMS or EIA hourly tables), notes that hourly tables are Parquet-only, shows DuckDB or polars code for efficient access (since hourly data is large), and surfaces any warnings.",
+      "files": []
+    }
+  ]
+}

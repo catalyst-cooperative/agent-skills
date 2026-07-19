@@ -34,13 +34,13 @@ access without downloading. SQLite files **must be local** (see below).
 ## DuckDB (preferred)
 
 DuckDB is the preferred tool for data querying. It is a standalone CLI tool — no Python
-environment required. If DuckDB is not installed, use `/duckdb-skills:install-duckdb` to
+environment required. If DuckDB is not installed, use `/install-duckdb` to
 install it before proceeding. It handles Parquet, CSV, and DuckDB files with a unified
 SQL interface, reads remote files over HTTPS or S3 without downloading them, and can
 combine descriptor metadata queries with data queries in a single session.
 
-Use `/duckdb-skills:query` to run SQL or natural language queries through it, and
-`/duckdb-skills:attach-db` to register database files.
+Use `/query` to run SQL or natural language queries through it, and
+`/attach-db` to register database files.
 
 You are not limited to `read_parquet` — DuckDB can query any supported format
 directly:
@@ -110,7 +110,7 @@ find the right one.
 
 Always start with a small `LIMIT` — **10 to 100 rows** is enough to understand
 structure, spot nulls, and get a feel for the data. Only increase the limit once you
-know what you're working with. The `/duckdb-skills:query` skill warns before executing
+know what you're working with. The `/query` skill warns before executing
 queries that would return more than 1M rows, but that is a safety ceiling, not a
 target. To interrupt a running query, press `Ctrl+C` in the terminal.
 
@@ -138,6 +138,57 @@ import duckdb
 
 df = duckdb.sql("SELECT * FROM read_parquet('my_table.parquet') LIMIT 100").df()
 ```
+
+---
+
+## Joining tables safely
+
+`schema.primaryKey` and `schema.foreignKeys` are standard Frictionless fields that
+describe how a resource's rows are uniquely identified and how they relate to other
+resources. When a user's question needs data from more than one table, read these
+fields rather than guessing a join column from name similarity — a shared or
+plausible-looking column name is not a guarantee that the values line up, and a real
+`foreignKeys` entry can name a composite key or a differently-named reference field that
+naming alone would never reveal.
+
+```bash
+# Does this resource declare a primary key, and what other resource does it reference?
+jq '.resources[] | select(.name == "daily-readings") | {primaryKey: .schema.primaryKey, foreignKeys: .schema.foreignKeys}' datapackage.json
+```
+
+```json
+{
+  "primaryKey": ["station_id", "date"],
+  "foreignKeys": [
+    {
+      "fields": ["station_id"],
+      "reference": { "resource": "stations", "fields": ["station_id"] }
+    }
+  ]
+}
+```
+
+Each `foreignKeys` entry names the local `fields` and the `reference.resource` /
+`reference.fields` they point to. Both `fields` arrays are equal-length lists — for a
+composite key, join on every corresponding pair, not just the first.
+
+Use those field names directly in the join, whether the resources are plain files or
+tables in an attached database:
+
+```sql
+-- Column names come from the foreignKeys lookup above, not from guessing
+SELECT r.station_id, r.date, r.temp_max_c, s.station_name, s.elevation_m
+FROM read_csv('daily-readings.csv') AS r
+JOIN read_csv('stations.csv') AS s
+  ON r.station_id = s.station_id
+LIMIT 10;
+```
+
+Not every descriptor declares `foreignKeys` even where a real relationship exists — the
+field is optional, and plenty of publishers omit it. Its absence isn't proof that two
+tables *can't* be joined, only that the descriptor doesn't tell you how; in that case,
+confirm the join column by reading both resources' field descriptions before writing
+the query, rather than assuming a name match is safe.
 
 ---
 
@@ -203,7 +254,7 @@ DuckDB formats if the dataset offers them.
 curl -O https://example.com/data/my_database.sqlite
 ```
 
-Via DuckDB (preferred — use `/duckdb-skills:attach-db`):
+Via DuckDB (preferred — use `/attach-db`):
 
 ```sql
 -- attach-db handles this; shown here for reference
@@ -228,10 +279,10 @@ con.close()
 
 ## Quick reference
 
-- **Any format, SQL or natural language** — `/duckdb-skills:query`
-- **Attach a .duckdb or .sqlite file for session queries** — `/duckdb-skills:attach-db`
-- **Remote Parquet/CSV (HTTPS/S3), no download** — `/duckdb-skills:query`
-- **Metadata + data in one session** — `/duckdb-skills:query` with `read_json` + data query
+- **Any format, SQL or natural language** — `/query`
+- **Attach a .duckdb or .sqlite file for session queries** — `/attach-db`
+- **Remote Parquet/CSV (HTTPS/S3), no download** — `/query`
+- **Metadata + data in one session** — `/query` with `read_json` + data query
 - **Large dataset in Python** — polars (convert to pandas at the end if needed)
 - **SQLite** — download first, then DuckDB `ATTACH` or `sqlite3`
 - **Typed, reproducible loading** — Parquet > DuckDB > CSV > SQLite

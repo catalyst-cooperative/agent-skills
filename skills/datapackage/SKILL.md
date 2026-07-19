@@ -11,14 +11,14 @@ description: >
   dataset-specific skills (like `pudl`) that layer domain knowledge on top.
 license: CC-BY-4.0
 compatibility: |
-  Required CLI tools: jq >= 1.7
-  Optional CLI tools: frictionless >= 5.18 (with fastparquet for Parquet support)
-  Required skills: duckdb-skills (install-duckdb, attach-db, query)
-  Optional Python packages: marimo, pandas, polars, duckdb (for DataFrame work)
+  Required CLI tools: jq >= 1.8
+  Optional CLI tools: frictionless >= 5.19 (with fastparquet for Parquet support)
+  Required skills: attach-db, query (optional: install-duckdb)
+  Optional Python packages: pandas, polars, duckdb (for DataFrame work)
 metadata:
   - author: Catalyst Cooperative
   - email: hello@catalyst.coop
-  - last-updated: 2026-04-03
+  - last-updated: 2026-07-19
 ---
 
 # Frictionless Data Package Guide
@@ -60,13 +60,13 @@ If not found, tell the user how to install it:
 - Linux (conda): `conda install jq`
 - Windows: `winget install jqlang.jq`
 
-For data loading and SQL queries, the `attach-db`, and `query` skills from
-`duckdb-skills` must be installed. Install them from `duckdb/duckdb-skills`.
+For data loading and SQL queries, the `attach-db` and `query` skills must be
+installed (optionally `install-duckdb` too). Install them from `duckdb/duckdb-skills`.
 
 ## Workflow overview
 
 1. **Locate the descriptor** — find or download `datapackage.json` (see below).
-1. **Query metadata selectively** — use jq or DuckDB to extract only what you need.
+1. **Query metadata selectively** — use jq to extract only what you need.
     See [Metadata Querying](./references/metadata-querying.md).
 1. **Surface warnings** — always check for usage warnings before presenting a resource.
 1. **Validate** *(optional)* — if the user wants to know whether the data actually
@@ -80,7 +80,7 @@ For data loading and SQL queries, the `attach-db`, and `query` skills from
 ## Reference index
 
 - [Metadata Querying](./references/metadata-querying.md) — locate the descriptor,
-    query it selectively with jq or DuckDB, surface usage warnings
+    query it selectively with jq, surface usage warnings
 - [Storage Backends](./references/storage-backends.md) — load data from Parquet,
     DuckDB, SQLite, or CSV files referenced by the descriptor
 - [Frictionless Validate](./references/frictionless-validate.md) — use the `frictionless`
@@ -96,7 +96,7 @@ Two conventions are worth knowing immediately:
 - **Custom fields** — non-standard keys added by publishers are common and valid.
     The `_` prefix convention marks system-generated or platform-specific keys (e.g.
     `_cache`, `_platformVersion`). Some publishers add custom keys without the prefix
-    (e.g. PUDL adds `duckdb_table`, `sqlite_table` on database-backed resources). Treat
+    (e.g. a package-level unit registry, or per-resource provenance metadata). Treat
     unknown fields as informational metadata, not errors.
 - **Compressed resources** — a resource with a `.gz` or `.zip` path may have an
     explicit `"compression": "gz"` field. The `bytes` and `hash` fields apply to the
@@ -116,9 +116,9 @@ matches the descriptor version you're working with.
 
 This skill delegates actual data querying to:
 
-- **`/duckdb-skills:attach-db`** — attach a `.duckdb` or `.sqlite` database file and
+- **`/attach-db`** — attach a `.duckdb` or `.sqlite` database file and
     set up a persistent session for querying
-- **`/duckdb-skills:query`** — run SQL or natural language queries against attached
+- **`/query`** — run SQL or natural language queries against attached
     databases, ad-hoc files (Parquet, CSV, remote HTTPS/S3), and JSON files including
     `datapackage.json` itself (via DuckDB's `read_json`)
 

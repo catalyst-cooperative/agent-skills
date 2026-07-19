@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
+  merge_group:
 
 jobs:
   test-datapackage:
@@ -17,6 +18,18 @@ jobs:
 
       - name: Run datapackage tests
         run: pixi run test-datapackage
+
+  test-pudl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: prefix-dev/setup-pixi@v0.10.0
+        with:
+          frozen: true
+
+      - name: Run pudl tests
+        run: pixi run test-pudl
 
   check-datapackage-catalog-urls:
     runs-on: ubuntu-latest

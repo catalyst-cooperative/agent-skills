@@ -27,7 +27,7 @@ site_author = "Zane Selvans"
 # The site_url is the canonical URL for your site. When building online
 # documentation you should set this.
 # Read more: https://zensical.org/docs/setup/basics/#site_url
-site_url = "https://docs.catalyst.coop/skills"
+site_url = "https://docs.catalyst.coop/agent-skills"
 
 # The copyright notice appears in the page footer and can contain an HTML
 # fragment.
@@ -44,10 +44,18 @@ Copyright &copy; 2026 Catalyst COoperative
 # can be defined using TOML syntax.
 #
 # Read more: https://zensical.org/docs/setup/navigation/
-# nav = [
-#   { "Get started" = "index.md" },
-#   { "Markdown in 5min" = "markdown.md" },
-# ]
+nav = [
+  { "Home" = "index.md" },
+  { "Using the Skills" = [
+    { "Datapackage Skill" = "datapackage-skill.md" },
+    { "PUDL Skill" = "pudl-skill.md" },
+  ] },
+  { "Development" = [
+    { "Agent Sandbox" = "agent-sandbox.md" },
+    { "Datapackage Evals" = "datapackage-evals.md" },
+    { "Skill Evals" = "skill-evals.md" },
+  ] },
+]
 
 # With the "extra_css" option you can add your own CSS styling to customize
 # your Zensical project according to your needs. You can add any number of
@@ -93,7 +101,7 @@ Copyright &copy; 2026 Catalyst COoperative
 # - https://zensical.org/docs/setup/logo-and-icons/#favicon
 # - https://developer.mozilla.org/en-US/docs/Glossary/Favicon
 #
-#favicon = "images/favicon.png"
+favicon = "_static/favicon.ico"
 
 # Zensical supports more than 60 different languages. This means that the
 # labels and tooltips that Zensical's templates produce are translated.
@@ -254,7 +262,7 @@ features = [
 # option in the "theme" subsection. The logo must be a relative path to a file
 # in your "docs_dir", e.g., to use `docs/assets/logo.png` you would set:
 # ----------------------------------------------------------------------------
-#logo = "assets/logo.png"
+logo = "_static/catalyst_logo-200x200.png"
 
 # ----------------------------------------------------------------------------
 # If you don't have a dedicated project logo, you can use a built-in icon from
@@ -300,6 +308,23 @@ toggle.name = "Switch to light mode"
 # ----------------------------------------------------------------------------
 # The "extra" section contains miscellaneous settings.
 # ----------------------------------------------------------------------------
-#[[project.extra.social]]
-#icon = "fontawesome/brands/github"
-#link = "https://github.com/user/repo"
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = "https://github.com/catalyst-cooperative/agent-skills"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/bluesky"
+link = "https://bsky.app/profile/catalyst.coop"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/mastodon"
+link = "https://mastodon.energy/@CatalystCoop"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/linkedin"
+link = "https://www.linkedin.com/company/catalyst-cooperative/"
+
+[[project.extra.social]]
+icon = "fontawesome/solid/donate"
+link = "https://opencollective.com/pudl"
+name = "Support us on Open Collective"

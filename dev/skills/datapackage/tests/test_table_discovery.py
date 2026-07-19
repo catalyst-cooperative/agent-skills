@@ -28,7 +28,7 @@ import json
 
 import duckdb
 import pytest
-from conftest import EXAMPLES, READING_COUNT, RESOURCE_NAMES, STATION_COUNT
+from .conftest import EXAMPLES, READING_COUNT, RESOURCE_NAMES, STATION_COUNT
 
 # ---------------------------------------------------------------------------
 # Helpers

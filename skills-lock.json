@@ -25,18 +25,6 @@
       "skillPath": "skills/install-duckdb/SKILL.md",
       "computedHash": "ce264b48e369a23adbda39804fc65c7e9fdffe182f6dfbc9f4e2fdf88b027b9e"
     },
-    "marimo-notebook": {
-      "source": "marimo-team/skills",
-      "sourceType": "github",
-      "skillPath": "skills/marimo-notebook/SKILL.md",
-      "computedHash": "56c73bca1669181c2e0c970f2276e119960b6c68d7301fd66fe33107142a89e3"
-    },
-    "marimo-pair": {
-      "source": "marimo-team/marimo-pair",
-      "sourceType": "github",
-      "skillPath": "SKILL.md",
-      "computedHash": "396db49c339fdeaef3d81ca117e80218fec7caf5d8dfedb02050cddf7511a7de"
-    },
     "query": {
       "source": "duckdb/duckdb-skills",
       "sourceType": "github",

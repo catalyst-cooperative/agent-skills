@@ -1,0 +1,1474 @@
+[
+  {
+    "title": "Identification",
+    "description": "Respondent's legal name, address, contact person, and whether the filing is an original or resubmission.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "corporate_officer_certification_001_duration",
+      "identification_001_duration"
+    ],
+    "dbf_tables": [
+      "f2_001_ident_attsttn",
+      "f2a_001_ident_attsttn"
+    ],
+    "schedule": "1",
+    "ferc_accounts": []
+  },
+  {
+    "title": "List of Schedules (Natural Gas Company)",
+    "description": "Index of all Form 2 schedules; filer marks each as complete or not applicable.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "list_of_schedules_002_duration"
+    ],
+    "dbf_tables": [
+      "f2_002_list_schedules",
+      "f2_002_list_schedules_a",
+      "f2a_002_list_schedules"
+    ],
+    "schedule": "2",
+    "ferc_accounts": []
+  },
+  {
+    "title": "General Information",
+    "description": "Corporate organization details: officer responsible for books, state and date of incorporation, fiscal year, and number of employees.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "general_information_101_duration"
+    ],
+    "dbf_tables": [
+      "f2_101_general_info"
+    ],
+    "schedule": "101",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Control Over Respondent",
+    "description": "Identifies any corporation or organization that held controlling interest in the respondent, with the chain of ownership or control.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "control_over_respondent_102_duration",
+      "control_over_respondent_102_instant"
+    ],
+    "dbf_tables": [
+      "f2_102_ctrl_over_resp"
+    ],
+    "schedule": "102",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Corporations Controlled by Respondent",
+    "description": "Lists all corporations, business trusts, and similar organizations controlled directly or indirectly by the respondent, including ownership percentage and type of business.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "corporations_controlled_by_respondent_103_duration",
+      "corporations_controlled_by_respondent_103_instant"
+    ],
+    "dbf_tables": [
+      "f2_103_co_ctrl_by_resp"
+    ],
+    "schedule": "103",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Security Holders and Voting Powers",
+    "description": "Names, addresses, and voting power of the 10 largest security holders at the most recent stock book closing date.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "security_holders_and_voting_powers_107_duration",
+      "security_holders_and_voting_powers_107_instant",
+      "security_holders_and_voting_powers_sequence_107_duration",
+      "security_holders_and_voting_powers_sequence_107_instant"
+    ],
+    "dbf_tables": [
+      "f2_107_security_holder",
+      "f2_107_security_holder_a"
+    ],
+    "schedule": "107",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Important Changes During the Year",
+    "description": "Narrative disclosures of significant events during the year, including changes in corporate structure, regulatory actions, and other material matters.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "important_changes_during_the_quarter_year_108_1_duration"
+    ],
+    "dbf_tables": [
+      "f2_108_important_changes"
+    ],
+    "schedule": "108",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Comparative Balance Sheet (Assets And Other Debits)",
+    "description": "Comparative balance sheet showing assets and other debits for the current and prior year-end, organized by utility plant, investments, current assets, and deferred debits; also includes liabilities and other credits.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "comparative_balance_sheet_assets_and_other_debits_110_instant",
+      "comparative_balance_sheet_liabilities_and_other_credits_110_instant"
+    ],
+    "dbf_tables": [
+      "f2_110_comp_bal_debit"
+    ],
+    "schedule": "110",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Comparative Balance Sheet (Liabilities and Other Credits)",
+    "description": "Comparative balance sheet showing liabilities and other credits for the current and prior year-end, organized by capital, long-term debt, current liabilities, and deferred credits.",
+    "pudl_tables": [],
+    "xbrl_tables": [],
+    "dbf_tables": [
+      "f2_112_comp_bal_credit"
+    ],
+    "schedule": "112",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Statement of Income for the Year",
+    "description": "Income statement showing operating revenues, operating expenses, and net income for the current and prior year, with quarterly breakdowns by utility function.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "statement_of_income_114_duration"
+    ],
+    "dbf_tables": [
+      "f2_114_stmt_income"
+    ],
+    "schedule": "114",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Statement of Accumulated Comprehensive Income and Hedging Activities",
+    "description": "Accumulated other comprehensive income components (net of tax) and cash flow hedging activity for the year.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "statement_of_accumulated_other_comprehensive_income_and_hedging_activities_117_duration",
+      "statement_of_accumulated_other_comprehensive_income_and_hedging_activities_117_instant"
+    ],
+    "dbf_tables": [
+      "f2_117_cmpinc_hedge",
+      "f2_117_cmpinc_hedge_a"
+    ],
+    "schedule": "117",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Statement of Retained Earnings for the Year",
+    "description": "Changes in appropriated and unappropriated retained earnings during the year, including dividends, adjustments, and subsidiary earnings.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "retained_earnings_118_duration",
+      "retained_earnings_118_instant",
+      "retained_earnings_adjustments_to_retained_earnings_118_duration",
+      "retained_earnings_appropriations_of_retained_earnings_118_duration",
+      "retained_earnings_common_stock_118_duration",
+      "retained_earnings_preferred_stock_118_duration",
+      "retained_earnings_unappropriated_undistributed_subsidiary_earnings_118_duration"
+    ],
+    "dbf_tables": [
+      "f2_118_stmnt_ret_earn"
+    ],
+    "schedule": "118",
+    "ferc_accounts": [
+      "433",
+      "436",
+      "437",
+      "438",
+      "439"
+    ]
+  },
+  {
+    "title": "Statement of Cash Flows",
+    "description": "Cash flows from operating, investing, and financing activities for the year.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "statement_of_cash_flows_120_duration",
+      "statement_of_cash_flows_120_instant",
+      "statement_of_cash_flows_cash_provided_by_outside_sources_120_duration",
+      "statement_of_cash_flows_noncash_adjustments_to_cash_flows_from_operating_activities_120_duration",
+      "statement_of_cash_flows_other_adjustments_from_financing_activities_120_duration",
+      "statement_of_cash_flows_other_adjustments_from_investing_activities_120_duration",
+      "statement_of_cash_flows_other_adjustments_from_operating_activities_120_duration",
+      "statement_of_cash_flows_other_cash_outflows_for_plant_120_duration",
+      "statement_of_cash_flows_other_payment_for_retirement_to_financing_acitivities_120_duration"
+    ],
+    "dbf_tables": [
+      "f2_120_stmnt_cash_flow"
+    ],
+    "schedule": "120",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Notes to Financial Statements",
+    "description": "Supplemental disclosures related to the balance sheet, income statement, retained earnings, and cash flow statements.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "notes_to_financial_statements_122_1_duration"
+    ],
+    "dbf_tables": [
+      "f2_122_note_fin_stmnt"
+    ],
+    "schedule": "122.1",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Summary of Utility Plant and Accumulated Provisions for Depreciation, Amortization, and Depletion",
+    "description": "High-level summary of gas utility plant original cost and accumulated depreciation, amortization, and depletion by functional category.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "summary_of_utility_plant_and_accumulated_provisions_for_depreciation_amortization_and_depletion_200_instant"
+    ],
+    "dbf_tables": [
+      "f2_200_sum_util_plant"
+    ],
+    "schedule": "200",
+    "ferc_accounts": [
+      "101",
+      "102",
+      "103",
+      "106",
+      "107",
+      "108"
+    ]
+  },
+  {
+    "title": "Gas Plant in Service",
+    "description": "Original cost of classified gas plant in service by account, with additions and retirements during the year.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "gas_plant_in_services_204_duration",
+      "gas_plant_in_services_204_instant"
+    ],
+    "dbf_tables": [
+      "f2_204_gas_plant_in_srv"
+    ],
+    "schedule": "204",
+    "ferc_accounts": [
+      "101",
+      "102",
+      "103",
+      "106"
+    ]
+  },
+  {
+    "title": "Gas Plant in Service and Accumulated Provision for Depreciation by Function",
+    "description": "",
+    "pudl_tables": [],
+    "xbrl_tables": [],
+    "dbf_tables": [
+      "f2_210_plant_in_svc"
+    ],
+    "schedule": "210",
+    "ferc_accounts": []
+  },
+  {
+    "title": "",
+    "description": "",
+    "pudl_tables": [],
+    "xbrl_tables": [],
+    "dbf_tables": [
+      "f2a_211_gen_info_plant_op"
+    ],
+    "schedule": "211",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Gas Property and Capacity Leased from Others",
+    "description": "Gas property and pipeline capacity leased from other companies for gas operations, including lease terms and annual payments.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "gas_property_and_capacity_leased_from_others_212_duration",
+      "gas_property_and_capacity_leased_from_others_totals_212_duration"
+    ],
+    "dbf_tables": [
+      "f2_212_prop_cap_lease_from"
+    ],
+    "schedule": "212",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Gas Property and Capacity Leased to Others",
+    "description": "Gas property and pipeline capacity leased to other companies, including lease income received and property descriptions.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "gas_property_and_capacity_leased_to_others_213_duration",
+      "gas_property_and_capacity_leased_to_others_totals_213_duration"
+    ],
+    "dbf_tables": [
+      "f2_213_prop_cap_lease_to"
+    ],
+    "schedule": "213",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Gas Plant Held for Future Use",
+    "description": "Gas plant properties held for future use but not currently in service, itemized for properties over $1 million.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "gas_plant_held_for_future_use_214_duration",
+      "gas_plant_held_for_future_use_214_instant",
+      "gas_plant_held_for_future_use_totals_214_instant"
+    ],
+    "dbf_tables": [
+      "f2_214_gas_held_future"
+    ],
+    "schedule": "214",
+    "ferc_accounts": [
+      "104"
+    ]
+  },
+  {
+    "title": "Construction Work in Progress-Gas",
+    "description": "Gas utility plant construction projects in progress at year-end, with descriptions and balances by project.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "construction_work_in_progress_gas_216_instant",
+      "construction_work_in_progress_gas_details_216_duration",
+      "construction_work_in_progress_gas_details_216_instant"
+    ],
+    "dbf_tables": [
+      "f2_216_const_work_gas"
+    ],
+    "schedule": "216",
+    "ferc_accounts": [
+      "107"
+    ]
+  },
+  {
+    "title": "Non-Traditional Rate Treatment Afforded New Projects",
+    "description": "New projects receiving non-traditional FERC rate treatment, including financial support terms and rationale.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "non_traditional_rate_treatment_afforded_new_projects_217_duration",
+      "non_traditional_rate_treatment_afforded_new_projects_217_instant",
+      "non_traditional_rate_treatment_afforded_new_projects_totals_217_duration",
+      "non_traditional_rate_treatment_afforded_new_projects_totals_217_instant"
+    ],
+    "dbf_tables": [
+      "f2_217_nontradrate_newproj"
+    ],
+    "schedule": "217",
+    "ferc_accounts": []
+  },
+  {
+    "title": "General Description of Construction Overhead Procedure",
+    "description": "Description of methods used to determine and allocate construction overhead costs to gas plant accounts.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "general_description_of_construction_overhead_procedure_rate_218_instant",
+      "general_description_of_construction_overhead_procedure_table_218_duration",
+      "general_description_of_construction_overhead_procedure_table_218_instant"
+    ],
+    "dbf_tables": [
+      "f2_218_oh_formula_cmpnts",
+      "f2_218_oh_general",
+      "f2_218_oh_rates"
+    ],
+    "schedule": "218",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Accumulated Provision for Depreciation of Gas Utility Plant",
+    "description": "Changes in the accumulated depreciation reserve (Account 108) for gas utility plant during the year, including charges, retirements, and adjustments.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "accumulated_provision_for_depreciation_of_gas_utility_plant_account_108_other_accounts_219_duration",
+      "accumulated_provision_for_depreciation_of_gas_utility_plant_account_108_other_debit_or_credit_items_219_duration",
+      "accumulated_provision_for_depreciation_of_gas_utility_plant_account_108_section_a_219_duration",
+      "accumulated_provision_for_depreciation_of_gas_utility_plant_account_108_section_a_219_instant",
+      "accumulated_provision_for_depreciation_of_gas_utility_plant_account_108_section_b_219_instant"
+    ],
+    "dbf_tables": [
+      "f2_219_depr_util_plant"
+    ],
+    "schedule": "219",
+    "ferc_accounts": [
+      "108"
+    ]
+  },
+  {
+    "title": "Gas Stored",
+    "description": "Quantities and dollar values of natural gas held in storage by type (underground, LNG, other) at beginning and end of year.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "gas_stored_220_duration",
+      "gas_stored_220_instant"
+    ],
+    "dbf_tables": [
+      "f2_220_gas_stored"
+    ],
+    "schedule": "220",
+    "ferc_accounts": [
+      "117.1",
+      "117.2",
+      "117.3",
+      "117.4",
+      "164"
+    ]
+  },
+  {
+    "title": "Investments",
+    "description": "Details of investments in associated companies (Account 123), other investments (Account 124), and temporary cash investments (Account 136).",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "investments_account_123_124_and_136_222_duration",
+      "investments_account_123_124_and_136_222_instant",
+      "investments_account_123_124_and_136_totals_222_duration",
+      "investments_account_123_124_and_136_totals_222_instant",
+      "investments_in_associated_companies_account_123_222_duration",
+      "investments_in_associated_companies_account_123_222_instant",
+      "investments_in_associated_companies_account_123_totals_222_duration",
+      "investments_in_associated_companies_account_123_totals_222_instant",
+      "investments_in_other_investments_account_124_222_duration",
+      "investments_in_other_investments_account_124_222_instant",
+      "investments_in_other_investments_account_124_totals_222_duration",
+      "investments_in_other_investments_account_124_totals_222_instant",
+      "temporary_cash_investments_account_136_222_duration",
+      "temporary_cash_investments_account_136_222_instant",
+      "temporary_cash_investments_account_136_totals_222_duration",
+      "temporary_cash_investments_account_136_totals_222_instant"
+    ],
+    "dbf_tables": [
+      "f2_222_investments"
+    ],
+    "schedule": "222",
+    "ferc_accounts": [
+      "123",
+      "124",
+      "136"
+    ]
+  },
+  {
+    "title": "Investments In Subsidiary Companies",
+    "description": "Details of investments in subsidiary companies (Account 123.1), including securities owned, advances, and equity in earnings.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "investments_in_subsidiary_companies_account_123_1_224_duration",
+      "investments_in_subsidiary_companies_account_123_1_224_instant",
+      "investments_in_subsidiary_companies_account_123_1_totals_224_duration",
+      "investments_in_subsidiary_companies_account_123_1_totals_224_instant"
+    ],
+    "dbf_tables": [
+      "f2_224_123_1_total",
+      "f2_224_subsid_invest"
+    ],
+    "schedule": "224",
+    "ferc_accounts": [
+      "123.1"
+    ]
+  },
+  {
+    "title": "Prepayments",
+    "description": "Itemized prepaid expenses (Account 165) by nature of payment.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "prepayments_account_165_230a_instant"
+    ],
+    "dbf_tables": [
+      "f2_230_prepayments"
+    ],
+    "schedule": "230a",
+    "ferc_accounts": [
+      "165"
+    ]
+  },
+  {
+    "title": "Extraordinary Property Losses",
+    "description": "Extraordinary property losses (Account 182.1) deferred with FERC authorization, with amortization periods.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "extraordinary_property_losses_account_182_1_230b_duration",
+      "extraordinary_property_losses_account_182_1_230b_instant",
+      "extraordinary_property_losses_account_182_1_totals_230b_instant"
+    ],
+    "dbf_tables": [
+      "f2_230_extra_losses"
+    ],
+    "schedule": "230b",
+    "ferc_accounts": [
+      "182.1"
+    ]
+  },
+  {
+    "title": "Unrecovered Plant And Regulatory Study Costs",
+    "description": "Unrecovered plant and regulatory study costs (Account 182.2) deferred with FERC authorization, with amortization periods.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "unrecovered_plant_and_regulatory_study_costs_account_182_2_230c_duration",
+      "unrecovered_plant_and_regulatory_study_costs_account_182_2_230c_instant",
+      "unrecovered_plant_and_regulatory_study_costs_account_182_2_totals_230c_duration",
+      "unrecovered_plant_and_regulatory_study_costs_account_182_2_totals_230c_instant"
+    ],
+    "dbf_tables": [
+      "f2_230_unrec_costs"
+    ],
+    "schedule": "230c",
+    "ferc_accounts": [
+      "182.2"
+    ]
+  },
+  {
+    "title": "Other Regulatory Assets",
+    "description": "Regulatory assets (Account 182.3) created through ratemaking actions and not captured in other accounts, with amortization details.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "other_regulatory_assets_account_182_3_232_duration",
+      "other_regulatory_assets_account_182_3_232_instant",
+      "other_regulatory_assets_account_182_3_totals_232_duration",
+      "other_regulatory_assets_account_182_3_totals_232_instant"
+    ],
+    "dbf_tables": [
+      "f2_232_othr_reg_assets"
+    ],
+    "schedule": "232",
+    "ferc_accounts": [
+      "182.3"
+    ]
+  },
+  {
+    "title": "Miscellaneous Deferred Debits",
+    "description": "Itemized miscellaneous deferred debit balances (Account 186) with amortization periods where applicable.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "miscellaneous_deferred_debits_account_186_233_duration",
+      "miscellaneous_deferred_debits_account_186_233_instant",
+      "miscellaneous_deferred_debits_account_186_totals_233_duration",
+      "miscellaneous_deferred_debits_account_186_totals_233_instant"
+    ],
+    "dbf_tables": [
+      "f2_233_misc_dfrrd_db"
+    ],
+    "schedule": "233",
+    "ferc_accounts": [
+      "186"
+    ]
+  },
+  {
+    "title": "Accumulated Deferred Income Taxes",
+    "description": "Accumulated deferred income taxes (Account 190) classified by business activity and tax type.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "accumulated_deferred_income_taxes_account_190_classified_by_business_activities_234_duration",
+      "accumulated_deferred_income_taxes_account_190_classified_by_business_activities_234_instant",
+      "accumulated_deferred_income_taxes_account_190_classified_by_tax_types_234_duration",
+      "accumulated_deferred_income_taxes_account_190_classified_by_tax_types_234_instant"
+    ],
+    "dbf_tables": [
+      "f2_234_accum_dfrrd_tax"
+    ],
+    "schedule": "234",
+    "ferc_accounts": [
+      "190"
+    ]
+  },
+  {
+    "title": "Capital Stock",
+    "description": "Details of authorized, issued, and outstanding common and preferred stock (Accounts 201 and 204) by class and series.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "capital_stock_accounts_201_and_204_250_duration",
+      "capital_stock_accounts_201_and_204_250_instant",
+      "capital_stock_accounts_201_and_204_totals_250_instant",
+      "capital_stock_common_stock_account_201_250_duration",
+      "capital_stock_common_stock_account_201_250_instant",
+      "capital_stock_common_stock_account_201_totals_250_instant",
+      "capital_stock_preferred_stock_account_204_250_duration",
+      "capital_stock_preferred_stock_account_204_250_instant",
+      "capital_stock_preferred_stock_account_204_totals_250_instant"
+    ],
+    "dbf_tables": [
+      "f2_250_capital_stock",
+      "f2a_250_capital_stock",
+      "f2a_250_long_term_debt"
+    ],
+    "schedule": "250",
+    "ferc_accounts": [
+      "201",
+      "204"
+    ]
+  },
+  {
+    "title": "Capital Stock Subscribed, Capital Stock Liability for Conversion, Premium on Capital Stock, and Installments Recieved on Capital Stock",
+    "description": "Balances in subscribed, converted, premium, installment, and liability-for-conversion accounts (202, 203, 205, 206, 207, 212) for common and preferred stock.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "capital_stock_common_stock_converted_account_203_252_duration",
+      "capital_stock_common_stock_converted_account_203_252_instant",
+      "capital_stock_common_stock_subscribed_account_202_252_duration",
+      "capital_stock_common_stock_subscribed_account_202_252_instant",
+      "capital_stock_installments_on_capital_stock_account_212_252_duration",
+      "capital_stock_installments_on_capital_stock_account_212_252_instant",
+      "capital_stock_installments_on_capital_stock_account_212_totals_252_instant",
+      "capital_stock_preferred_stock_liability_for_conversion_account_206_252_duration",
+      "capital_stock_preferred_stock_liability_for_conversion_account_206_252_instant",
+      "capital_stock_preferred_stock_subscribed_account_205_252_duration",
+      "capital_stock_preferred_stock_subscribed_account_205_252_instant",
+      "capital_stock_premium_on_capital_stock_account_207_252_duration",
+      "capital_stock_premium_on_capital_stock_account_207_252_instant",
+      "capital_stock_premium_on_capital_stock_account_207_totals_252_instant",
+      "capital_stock_subscribed_liability_for_conversion_premium_on_and_installments_recieved_on_accts_202_203_205_206_207_and_212_252_duration",
+      "capital_stock_subscribed_liability_for_conversion_premium_on_and_installments_recieved_on_accts_202_203_205_206_207_and_212_252_instant",
+      "capital_stock_subscribed_liability_for_conversion_premium_on_and_installments_recieved_on_accts_202_203_205_206_207_and_212_totals_252_instant"
+    ],
+    "dbf_tables": [
+      "f2_252_cap_stock"
+    ],
+    "schedule": "252",
+    "ferc_accounts": [
+      "202",
+      "203",
+      "205",
+      "206",
+      "207",
+      "212"
+    ]
+  },
+  {
+    "title": "Other Paid-In Capital",
+    "description": "Balances in other paid-in capital accounts (208\u2013211), including donations from stockholders, reduction in par value, and miscellaneous paid-in capital.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "other_paid_in_capital_accounts_208_211_253_duration",
+      "other_paid_in_capital_accounts_208_211_donations_received_from_stockholders_253_duration",
+      "other_paid_in_capital_accounts_208_211_miscellaneous_paid_in_capital_253_duration",
+      "other_paid_in_capital_accounts_208_211_reduction_in_par_or_stated_value_of_capital_stock_253_duration",
+      "other_paid_in_capital_accounts_208_211_required_capital_stock_253_duration",
+      "other_paid_in_capital_accounts_208_211_total_253_duration",
+      "other_paid_in_capital_accounts_208_211_total_253_instant"
+    ],
+    "dbf_tables": [
+      "f2_253_other_capital"
+    ],
+    "schedule": "253",
+    "ferc_accounts": [
+      "208",
+      "209",
+      "210",
+      "211"
+    ]
+  },
+  {
+    "title": "Discount on Capital Stock",
+    "description": "Unamortized discount on capital stock (Account 213) and capital stock issuance expense (Account 214) by class and series.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "capital_stock_expense_account_214_254_duration",
+      "capital_stock_expense_account_214_254_instant",
+      "capital_stock_expense_account_214_totals_254_instant",
+      "discount_on_capital_stock_account_213_254_duration",
+      "discount_on_capital_stock_account_213_254_instant",
+      "discount_on_capital_stock_account_213_totals_254_instant"
+    ],
+    "dbf_tables": [
+      "f2_254_cap_stk_expense",
+      "f2_254_discount_cap_stk"
+    ],
+    "schedule": "254",
+    "ferc_accounts": [
+      "213",
+      "214"
+    ]
+  },
+  {
+    "title": "Securities Issued Or Assumed And Securities Refunded Or Retired During The Year",
+    "description": "Summary of debt and equity security financing transactions during the year, including new issuances, assumptions, refundings, and retirements.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "securities_issued_or_assumed_and_securities_refunded_or_retired_during_the_year_255_1_duration"
+    ],
+    "dbf_tables": [
+      "f2_255_securities"
+    ],
+    "schedule": "255.1",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Long-Term Debt",
+    "description": "Details of long-term debt instruments (bonds, reacquired bonds, advances from associated companies, other long-term debt) including terms, amounts, and maturities.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "long_term_debt_accounts_221_222_223_and_224_256_duration",
+      "long_term_debt_accounts_221_222_223_and_224_256_instant",
+      "long_term_debt_accounts_221_222_223_and_224_totals_256_duration",
+      "long_term_debt_accounts_221_222_223_and_224_totals_256_instant",
+      "long_term_debt_advances_from_associated_companies_223_256_duration",
+      "long_term_debt_advances_from_associated_companies_223_256_instant",
+      "long_term_debt_advances_from_associated_companies_223_totals_256_duration",
+      "long_term_debt_advances_from_associated_companies_223_totals_256_instant",
+      "long_term_debt_bonds_221_256_duration",
+      "long_term_debt_bonds_221_256_instant",
+      "long_term_debt_bonds_221_totals_256_duration",
+      "long_term_debt_bonds_221_totals_256_instant",
+      "long_term_debt_other_long_term_debt_224_256_duration",
+      "long_term_debt_other_long_term_debt_224_256_instant",
+      "long_term_debt_other_long_term_debt_224_totals_256_duration",
+      "long_term_debt_other_long_term_debt_224_totals_256_instant",
+      "long_term_debt_reacquired_bonds_222_256_duration",
+      "long_term_debt_reacquired_bonds_222_256_instant",
+      "long_term_debt_reacquired_bonds_222_totals_256_duration",
+      "long_term_debt_reacquired_bonds_222_totals_256_instant"
+    ],
+    "dbf_tables": [
+      "f2_256_long_term_debt"
+    ],
+    "schedule": "256",
+    "ferc_accounts": [
+      "221",
+      "222",
+      "223",
+      "224"
+    ]
+  },
+  {
+    "title": "Unamortized Debt Expense, Premium And Discount On Long-Term Debt",
+    "description": "Unamortized debt issuance expense (Account 181), premium (Account 225), and discount (Account 226) on long-term debt by instrument.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "discount_on_long_term_debt_account_226_258_duration",
+      "discount_on_long_term_debt_account_226_258_instant",
+      "premium_on_long_term_debt_account_225_258_duration",
+      "premium_on_long_term_debt_account_225_258_instant",
+      "unamortized_debt_expense_account_181_258_duration",
+      "unamortized_debt_expense_account_181_258_instant",
+      "unamortized_debt_expense_premium_and_discount_on_long_term_debt_accounts_181_225_226_258_duration",
+      "unamortized_debt_expense_premium_and_discount_on_long_term_debt_accounts_181_225_226_258_instant"
+    ],
+    "dbf_tables": [
+      "f2_258_unamort_debt"
+    ],
+    "schedule": "258",
+    "ferc_accounts": [
+      "181",
+      "225",
+      "226"
+    ]
+  },
+  {
+    "title": "Unamortized Loss And Gain On Reacquired Debt",
+    "description": "Unamortized losses (Account 189) and gains (Account 257) from reacquisition of long-term debt, by instrument.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "unamortized_gain_account_257_260_duration",
+      "unamortized_gain_account_257_260_instant",
+      "unamortized_loss_account_189_260_duration",
+      "unamortized_loss_account_189_260_instant",
+      "unamortized_loss_and_gain_on_reacquired_debt_account_189_257_260_duration",
+      "unamortized_loss_and_gain_on_reacquired_debt_account_189_257_260_instant"
+    ],
+    "dbf_tables": [
+      "f2_260_unamort_loss_gain"
+    ],
+    "schedule": "260",
+    "ferc_accounts": [
+      "189",
+      "257"
+    ]
+  },
+  {
+    "title": "Reconciliation of Reported Net Income with Taxable Income for Federal Income Taxes",
+    "description": "Reconciliation of book net income to federal taxable income, with temporary and permanent differences itemized and tax computation shown.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "reconciliation_of_reported_net_income_with_taxable_income_for_federal_income_taxes_261_duration",
+      "reconciliation_of_reported_net_income_with_taxable_income_for_federal_income_taxes_deductions_on_return_not_charged_against_book_income_261_duration",
+      "reconciliation_of_reported_net_income_with_taxable_income_for_federal_income_taxes_deductions_recorded_on_books_not_deducted_for_return_261_duration",
+      "reconciliation_of_reported_net_income_with_taxable_income_for_federal_income_taxes_income_recorded_on_books_not_included_in_return_261_duration",
+      "reconciliation_of_reported_net_income_with_taxable_income_for_federal_income_taxes_show_computation_of_tax_261_duration",
+      "reconciliation_of_reported_net_income_with_taxable_income_for_federal_income_taxes_taxable_income_not_reported_on_books_261_duration"
+    ],
+    "dbf_tables": [
+      "f2_261_reconcil_net_inc"
+    ],
+    "schedule": "261",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Taxes Accrued, Prepaid And Charged During Year, Distribution Of Taxes Charged",
+    "description": "Accrued and prepaid tax balances by tax type, and distribution of taxes charged to operating and other accounts during the year.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "taxes_accrued_prepaid_and_charged_during_year_distribution_of_taxes_charged_show_utility_dept_where_applicable_and_acct_charged_262_duration",
+      "taxes_accrued_prepaid_and_charged_during_year_distribution_of_taxes_charged_show_utility_dept_where_applicable_and_acct_charged_262_instant",
+      "taxes_accrued_prepaid_and_charged_during_year_distribution_of_taxes_charged_total_262_duration",
+      "taxes_accrued_prepaid_and_charged_during_year_distribution_of_taxes_charged_total_262_instant"
+    ],
+    "dbf_tables": [
+      "f2_262_taxes_accrued"
+    ],
+    "schedule": "262",
+    "ferc_accounts": [
+      "408",
+      "409"
+    ]
+  },
+  {
+    "title": "Miscellaneous Current And Accrued Liabilities",
+    "description": "Itemized other current and accrued liabilities (Account 242) not captured elsewhere in the balance sheet.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "miscellaneous_current_and_accrued_liabilities_account_242_268_duration",
+      "miscellaneous_current_and_accrued_liabilities_account_242_268_instant",
+      "miscellaneous_current_and_accrued_liabilities_account_242_totals_268_instant"
+    ],
+    "dbf_tables": [
+      "f2_268_misc_curr_liab"
+    ],
+    "schedule": "268",
+    "ferc_accounts": [
+      "242"
+    ]
+  },
+  {
+    "title": "Other Deferred Credits",
+    "description": "Itemized other deferred credit balances (Account 253) with amortization periods where applicable.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "other_deferred_credits_account_253_269_duration",
+      "other_deferred_credits_account_253_269_instant",
+      "other_deferred_credits_account_253_totals_269_duration",
+      "other_deferred_credits_account_253_totals_269_instant"
+    ],
+    "dbf_tables": [
+      "f2_269_other_dfrrd_cr"
+    ],
+    "schedule": "269",
+    "ferc_accounts": [
+      "253"
+    ]
+  },
+  {
+    "title": "Accumulated Deferred Income Taxes-Other Property (Account 282)",
+    "description": "Accumulated deferred income taxes on property not subject to accelerated amortization (Account 282), classified by business activity and tax type.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "accumulated_deferred_income_taxes_other_property_account_282_classified_by_business_activities_274_duration",
+      "accumulated_deferred_income_taxes_other_property_account_282_classified_by_business_activities_274_instant",
+      "accumulated_deferred_income_taxes_other_property_account_282_classified_by_tax_types_274_duration",
+      "accumulated_deferred_income_taxes_other_property_account_282_classified_by_tax_types_274_instant"
+    ],
+    "dbf_tables": [
+      "f2_274_dfrrd_tax_prop"
+    ],
+    "schedule": "274",
+    "ferc_accounts": [
+      "282"
+    ]
+  },
+  {
+    "title": "Accumulated Deferred Income Taxes-Other (Account 283)",
+    "description": "Accumulated deferred income taxes for all other items (Account 283), classified by business activity and tax type.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "accumulated_deferred_income_taxes_other_account_283_classified_by_business_activities_276_duration",
+      "accumulated_deferred_income_taxes_other_account_283_classified_by_business_activities_276_instant",
+      "accumulated_deferred_income_taxes_other_account_283_classified_by_tax_types_276_duration",
+      "accumulated_deferred_income_taxes_other_account_283_classified_by_tax_types_276_instant"
+    ],
+    "dbf_tables": [
+      "f2_276_dfrrd_tax_other"
+    ],
+    "schedule": "276",
+    "ferc_accounts": [
+      "283"
+    ]
+  },
+  {
+    "title": "Other Regulatory Liabilities",
+    "description": "Regulatory liabilities (Account 254) created through ratemaking actions, with descriptions and amortization periods.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "other_regulatory_liabilities_278_duration",
+      "other_regulatory_liabilities_278_instant",
+      "other_regulatory_liabilities_totals_278_duration",
+      "other_regulatory_liabilities_totals_278_instant"
+    ],
+    "dbf_tables": [
+      "f2_278_other_reg_liab"
+    ],
+    "schedule": "278",
+    "ferc_accounts": [
+      "254"
+    ]
+  },
+  {
+    "title": "Monthly Quantity & Revenue Data",
+    "description": "Monthly gas revenues and volumes by rate schedule, broken out by transportation and storage services.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "monthly_quantity_revenue_data_by_rate_schedule_299_duration",
+      "monthly_quantity_revenue_data_by_rate_schedule_storage_299_duration",
+      "monthly_quantity_revenue_data_by_rate_schedule_transportation_299_duration"
+    ],
+    "dbf_tables": [
+      "f2_299_mthqtr_rev_sched"
+    ],
+    "schedule": "299",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Gas Operating Revenues",
+    "description": "Summary of natural gas operating revenues by prescribed account, for current and prior year.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "gas_operating_revenues_300_duration"
+    ],
+    "dbf_tables": [
+      "f2_300_gas_op_rev"
+    ],
+    "schedule": "300",
+    "ferc_accounts": [
+      "480",
+      "481",
+      "482",
+      "483",
+      "484",
+      "485",
+      "486",
+      "487",
+      "488",
+      "489",
+      "489.1",
+      "489.2",
+      "489.3",
+      "489.4",
+      "490",
+      "491",
+      "492",
+      "493",
+      "494",
+      "495"
+    ]
+  },
+  {
+    "title": "Revenues From Transportation Of Gas Of Others Through Gathering Facilities",
+    "description": "Revenues and gas volumes (Dth) from transporting third-party gas through gathering facilities, by zone of receipt.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "revenues_from_transporation_of_gas_of_others_through_gathering_facilities_account_489_1_302_duration"
+    ],
+    "dbf_tables": [
+      "f2_302_rev_gas_gather"
+    ],
+    "schedule": "302",
+    "ferc_accounts": [
+      "489.1"
+    ]
+  },
+  {
+    "title": "Revenues From Transportation Of Gas Of Others Through Transmission Facilities",
+    "description": "Revenues and gas volumes (Dth) from transporting third-party gas through transmission facilities, by delivery zone and rate schedule.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "revenues_from_transportation_of_gas_of_others_through_transmission_facilities_account_489_2_304_duration",
+      "revenues_from_transportation_of_gas_of_others_through_transmission_facilities_account_489_2_by_rate_schedule_304_duration",
+      "revenues_from_transportation_of_gas_of_others_through_transmission_facilities_account_489_2_by_zone_304_duration"
+    ],
+    "dbf_tables": [
+      "f2_304_rev_gas_trans"
+    ],
+    "schedule": "304",
+    "ferc_accounts": [
+      "489.2"
+    ]
+  },
+  {
+    "title": "Revenues From Storing Gas Of Others",
+    "description": "Revenues and volumes from storing gas on behalf of others (Account 489.4), by rate schedule.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "revenues_from_storing_gas_of_others_account_489_4_306_duration"
+    ],
+    "dbf_tables": [
+      "f2_306_rev_store_gas"
+    ],
+    "schedule": "306",
+    "ferc_accounts": [
+      "489.4"
+    ]
+  },
+  {
+    "title": "Other Gas Revenues",
+    "description": "Individual transactions of $250,000 or more included in other gas revenues (Account 495), such as penalties and hub service fees.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "other_gas_revenues_account_495_308_duration",
+      "other_gas_revenues_account_495_breakdown_308_duration"
+    ],
+    "dbf_tables": [
+      "f2_308_other_gas_rev"
+    ],
+    "schedule": "308",
+    "ferc_accounts": [
+      "495"
+    ]
+  },
+  {
+    "title": "Natural Gas Company Gas Revenues and Dekatherms",
+    "description": "Natural gas operating revenues and dekatherms of gas sold for each prescribed account.",
+    "pudl_tables": [],
+    "xbrl_tables": [],
+    "dbf_tables": [
+      "f2_309_gas_rev_and_deks"
+    ],
+    "schedule": "309",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Gas Production and Other Gas Supply Expenses",
+    "description": "Gas production and other gas supply expenses.",
+    "pudl_tables": [],
+    "xbrl_tables": [],
+    "dbf_tables": [
+      "f2_310_gas_prod_sply_exp"
+    ],
+    "schedule": "310",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Natural Gas Storage, Terminaling, Processing Services",
+    "description": "Natural gas storage, terminaling, processing, transmission and distribution expenses.",
+    "pudl_tables": [],
+    "xbrl_tables": [],
+    "dbf_tables": [
+      "f2_311_gas_stor_exp"
+    ],
+    "schedule": "311",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Gas Customer Accounts, Service, Sales, Administrative and General Expenses",
+    "description": "Customer accounts, service, sales, and administrative and general expenses.",
+    "pudl_tables": [],
+    "xbrl_tables": [],
+    "dbf_tables": [
+      "f2_312_gas_admin_exp"
+    ],
+    "schedule": "312",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Discounted Rate Services And Negotiated Rate Services",
+    "description": "Revenues and volumes from discounted-rate and negotiated-rate gas transportation and storage services.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "discounted_rate_services_and_negotiated_rate_services_313_duration",
+      "discounted_rate_services_and_negotiated_rate_services_totals_313_duration"
+    ],
+    "dbf_tables": [
+      "f2_313_disc_neg_rate_serv"
+    ],
+    "schedule": "313",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Gas Operation And Maintenance Expenses",
+    "description": "Gas operation and maintenance expenses by account for current and prior year.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "gas_operation_and_maintenance_expense_317_duration"
+    ],
+    "dbf_tables": [
+      "f2_317_gas_op_maint"
+    ],
+    "schedule": "317",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Exchange And Imbalance Transactions",
+    "description": "Gas quantity imbalances from system balancing and no-notice service, and certificated natural gas exchange transactions, by zone and rate schedule.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "exchange_and_imbalance_transactions_328_duration",
+      "exchange_and_imbalance_transactions_totals_328_duration"
+    ],
+    "dbf_tables": [
+      "f2_328_exchange_imbalance"
+    ],
+    "schedule": "328",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Gas Used In Utility Operations",
+    "description": "Credits to gas supply accounts (810\u2013812) for natural gas consumed in the respondent's own utility operations, by purpose.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "gas_used_in_utility_operations_331_duration",
+      "gas_used_in_utility_operations_totals_331_duration"
+    ],
+    "dbf_tables": [
+      "f2_331_gas_utility_op"
+    ],
+    "schedule": "331",
+    "ferc_accounts": [
+      "810",
+      "811",
+      "812"
+    ]
+  },
+  {
+    "title": "Transmission And Compression Of Gas By Others",
+    "description": "Payments to third parties for transporting or compressing gas on behalf of the respondent, for volumes exceeding 1,000,000 Dth.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "transmission_and_compression_of_gas_by_others_account_858_332_duration",
+      "transmission_and_compression_of_gas_by_others_account_858_totals_332_duration"
+    ],
+    "dbf_tables": [
+      "f2_332_trans_comp_other"
+    ],
+    "schedule": "332",
+    "ferc_accounts": [
+      "858"
+    ]
+  },
+  {
+    "title": "Other Gas Supply Expenses",
+    "description": "Itemized other gas supply expenses (Account 813), including maintenance, imbalance settlements, and gas losses.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "other_gas_supply_expenses_account_813_334_duration",
+      "other_gas_supply_expenses_account_813_totals_334_duration"
+    ],
+    "dbf_tables": [
+      "f2_334_oth_spply_expns"
+    ],
+    "schedule": "334",
+    "ferc_accounts": [
+      "813"
+    ]
+  },
+  {
+    "title": "Miscellaneous General Expenses-Gas",
+    "description": "Miscellaneous gas general expenses (Account 930.2) itemized by recipient and purpose for amounts over $250,000.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "miscellaneous_general_expenses_account_930_2_335_duration",
+      "miscellaneous_general_expenses_account_930_2_breakdown_335_duration"
+    ],
+    "dbf_tables": [
+      "f2_335_misc_gen_expense"
+    ],
+    "schedule": "335",
+    "ferc_accounts": [
+      "930.2"
+    ]
+  },
+  {
+    "title": "Section A. Summary of Depreciation, Depletion, and Amortization Charges",
+    "description": "Depreciation expense, depletion, and amortization charges by plant functional group (Section A), and depreciable plant balances with composite depreciation rates (Section B).",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "depreciation_depletion_and_amortization_of_gas_plant_section_a_336_duration",
+      "depreciation_depletion_and_amortization_of_gas_plant_section_b_336_duration",
+      "depreciation_depletion_and_amortization_of_gas_plant_section_b_details_336_duration"
+    ],
+    "dbf_tables": [
+      "f2_336_depr_depl_amort_a"
+    ],
+    "schedule": "336",
+    "ferc_accounts": [
+      "403",
+      "404",
+      "405",
+      "406",
+      "407"
+    ]
+  },
+  {
+    "title": "Section B. Factors Used in Estimating Depreciation Charges",
+    "description": "Depreciable plant balances to which depreciation rates are applied and the composite depreciation rates used for each functional group.",
+    "pudl_tables": [],
+    "xbrl_tables": [],
+    "dbf_tables": [
+      "f2_338_depr_depl_amort_b"
+    ],
+    "schedule": "338",
+    "ferc_accounts": [
+      "403",
+      "404",
+      "405",
+      "406",
+      "407"
+    ]
+  },
+  {
+    "title": "Depreciation, Depletion and Amortization of Gas Plant Except Amortization of Acquisition Adjustments",
+    "description": "Year to date amounts of depreciation expense, asset retirement cost depreciation, depletion and amortization, except amortization of acquisition adjustments for the accounts indicated and classified according to the plant functional groups described",
+    "pudl_tables": [],
+    "xbrl_tables": [],
+    "dbf_tables": [
+      "f2_339_depr_gas_plant"
+    ],
+    "schedule": "339",
+    "ferc_accounts": [
+      "403",
+      "403.1",
+      "404.1",
+      "404.2",
+      "404.3",
+      "405"
+    ]
+  },
+  {
+    "title": "Particulars Concerning Certain Income Deductions And Interest Charges Accounts",
+    "description": "Itemized breakdown of selected income deduction and interest charge accounts: miscellaneous amortization, donations, life insurance, political activities, penalties, interest on associated-company debt, and other items.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "particulars_concerning_certain_income_deductions_and_interest_charges_accounts_340_duration",
+      "particulars_concerning_certain_income_deductions_and_interest_charges_accounts_donations_340_duration",
+      "particulars_concerning_certain_income_deductions_and_interest_charges_accounts_donations_totals_340_duration",
+      "particulars_concerning_certain_income_deductions_and_interest_charges_accounts_interest_on_debt_to_associated_companies_340_duration",
+      "particulars_concerning_certain_income_deductions_and_interest_charges_accounts_interest_on_debt_to_associated_companies_totals_340_duration",
+      "particulars_concerning_certain_income_deductions_and_interest_charges_accounts_life_insurance_340_duration",
+      "particulars_concerning_certain_income_deductions_and_interest_charges_accounts_life_insurance_totals_340_duration",
+      "particulars_concerning_certain_income_deductions_and_interest_charges_accounts_miscellaneous_amortization_340_duration",
+      "particulars_concerning_certain_income_deductions_and_interest_charges_accounts_miscellaneous_amortization_totals_340_duration",
+      "particulars_concerning_certain_income_deductions_and_interest_charges_accounts_other_deductions_340_duration",
+      "particulars_concerning_certain_income_deductions_and_interest_charges_accounts_other_deductions_totals_340_duration",
+      "particulars_concerning_certain_income_deductions_and_interest_charges_accounts_other_interest_expense_340_duration",
+      "particulars_concerning_certain_income_deductions_and_interest_charges_accounts_other_interest_expense_totals_340_duration",
+      "particulars_concerning_certain_income_deductions_and_interest_charges_accounts_penalties_340_duration",
+      "particulars_concerning_certain_income_deductions_and_interest_charges_accounts_penalties_totals_340_duration",
+      "particulars_concerning_certain_income_deductions_and_interest_charges_accounts_political_and_related_activities_340_duration",
+      "particulars_concerning_certain_income_deductions_and_interest_charges_accounts_political_and_related_activities_totals_340_duration"
+    ],
+    "dbf_tables": [
+      "f2_340_partic_inc_int"
+    ],
+    "schedule": "340",
+    "ferc_accounts": [
+      "425",
+      "426.1",
+      "426.2",
+      "426.3",
+      "426.4",
+      "426.5",
+      "427",
+      "428",
+      "429",
+      "430",
+      "431"
+    ]
+  },
+  {
+    "title": "Regulatory Commission Expenses",
+    "description": "Expenses incurred in formal regulatory proceedings, including case descriptions, amounts assessed or incurred, and amortization details.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "regulatory_commission_expenses_account_928_350_duration",
+      "regulatory_commission_expenses_account_928_350_instant",
+      "regulatory_commission_expenses_account_928_total_350_duration",
+      "regulatory_commission_expenses_account_928_total_350_instant"
+    ],
+    "dbf_tables": [
+      "f2_350_reg_comm_expense"
+    ],
+    "schedule": "350",
+    "ferc_accounts": [
+      "928"
+    ]
+  },
+  {
+    "title": "Employee Pensions And Benefits (Account 926)",
+    "description": "Itemized employee pension and benefit expenses included in Account 926.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "employee_pensions_and_benefits_account_926_352_duration",
+      "employee_pensions_and_benefits_account_926_breakdown_352_duration"
+    ],
+    "dbf_tables": [
+      "f2_352_emp_benefits"
+    ],
+    "schedule": "352",
+    "ferc_accounts": [
+      "926"
+    ]
+  },
+  {
+    "title": "Distribution Of Salaries And Wages",
+    "description": "Total salaries and wages distributed among utility departments, construction, plant removals, and other accounts.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "distribution_of_salaries_and_wages_354_duration",
+      "distribution_of_salaries_and_wages_other_account_details_354_duration"
+    ],
+    "dbf_tables": [
+      "f2_354_dist_wages"
+    ],
+    "schedule": "354",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Charges For Outside Professional And Other Consultative Services",
+    "description": "Payments over $250,000 to external consultants and professionals (legal, engineering, financial, etc.) for services provided to the respondent.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "charges_for_outside_professional_and_other_consultative_services_357_duration",
+      "charges_for_outside_professional_and_other_consultative_services_totals_357_duration"
+    ],
+    "dbf_tables": [
+      "f2_357_chrgs_services"
+    ],
+    "schedule": "357",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Transactions With Associated (Affiliated) Companies",
+    "description": "Goods and services valued over $250,000 received from or provided to affiliated companies, with description and amount.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "transactions_with_associated_affiliated_companies_provided_by_affiliated_company_358_duration",
+      "transactions_with_associated_affiliated_companies_provided_by_affiliated_company_totals_358_duration"
+    ],
+    "dbf_tables": [
+      "f2_358_trans_affil"
+    ],
+    "schedule": "358",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Compressor Stations",
+    "description": "Physical details of compressor stations by functional type (field, products extraction, underground storage, transmission, distribution, other), including installed capacity and horsepower.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "compressor_stations_508_duration",
+      "compressor_stations_total_508_duration"
+    ],
+    "dbf_tables": [
+      "f2_508_comp_stations"
+    ],
+    "schedule": "508",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Gas Storage Projects",
+    "description": "Monthly injections into and withdrawals from each gas storage project, for gas belonging to the respondent and for others.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "gas_storage_projects_by_months_gas_delivered_to_storage_512_duration",
+      "gas_storage_projects_by_months_gas_withdrawn_from_storage_512_duration"
+    ],
+    "dbf_tables": [
+      "f2_512_gas_storage"
+    ],
+    "schedule": "512",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Gas Storage Projects",
+    "description": "Storage capacity data for each gas storage project, including FERC-certificated capacity, base gas, and working gas volumes.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "gas_storage_projects_by_capacities_513_duration"
+    ],
+    "dbf_tables": [
+      "f2_513_gas_storage_cont"
+    ],
+    "schedule": "513",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Transmission Lines",
+    "description": "Miles of transmission pipeline operated by the respondent at year-end, by state and ownership type.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "transmission_lines_514_duration",
+      "transmission_lines_514_instant",
+      "transmission_lines_total_514_duration",
+      "transmission_lines_total_514_instant"
+    ],
+    "dbf_tables": [
+      "f2_514_trans_lines"
+    ],
+    "schedule": "514",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Transmission System Peak Deliveries",
+    "description": "Peak single-day and three-day transmission system deliveries and related gas transported, withdrawn, and other operational data during the heating season.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "transmission_system_peak_deliveries_single_day_gas_transported_518_duration",
+      "transmission_system_peak_deliveries_single_day_gas_withdrawn_518_duration",
+      "transmission_system_peak_deliveries_single_day_other_operational_activities_518_duration",
+      "transmission_system_peak_deliveries_single_day_peak_deliveries_518_duration",
+      "transmission_system_peak_deliveries_three_day_gas_transported_518_duration",
+      "transmission_system_peak_deliveries_three_day_gas_withdrawn_518_duration",
+      "transmission_system_peak_deliveries_three_day_other_operational_activities_518_duration",
+      "transmission_system_peak_deliveries_three_day_peak_deliveries_518_duration"
+    ],
+    "dbf_tables": [
+      "f2_518_trans_peak"
+    ],
+    "schedule": "518",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Auxiliary Peaking Facilities",
+    "description": "Auxiliary facilities used to meet seasonal peak demands (underground storage, LNG installations, gas liquefaction plants, oil-gas sets, etc.).",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "auxiliary_peaking_facilities_519_duration"
+    ],
+    "dbf_tables": [
+      "f2_519_aux_peak"
+    ],
+    "schedule": "519",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Gas Account - Natural Gas",
+    "description": "Total natural gas received and delivered by the respondent during the year, reconciling all receipts and dispositions by source and type.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "gas_account_natural_gas_520_duration",
+      "gas_account_natural_gas_delivered_for_other_operations_520_duration",
+      "gas_account_natural_gas_received_from_other_operations_520_duration"
+    ],
+    "dbf_tables": [
+      "f2_520_nat_gas"
+    ],
+    "schedule": "520",
+    "ferc_accounts": []
+  },
+  {
+    "title": "Shipper Supplied Gas for the Current Quarter",
+    "description": "Monthly tracking of shipper-supplied gas, pipeline fuel consumption, excess gas disposition, and sources used to meet deficiencies, reported for each month of the current quarter.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "shipper_supplied_gas_for_the_current_quarter_521_m1_duration",
+      "shipper_supplied_gas_for_the_current_quarter_521_m2_duration",
+      "shipper_supplied_gas_for_the_current_quarter_521_m3_duration",
+      "shipper_supplied_gas_for_the_current_quarter_other_disposition_of_excess_gas_521_m1_duration",
+      "shipper_supplied_gas_for_the_current_quarter_other_disposition_of_excess_gas_521_m2_duration",
+      "shipper_supplied_gas_for_the_current_quarter_other_disposition_of_excess_gas_521_m3_duration",
+      "shipper_supplied_gas_for_the_current_quarter_other_gas_acquired_to_meet_deficiency_521_m1_duration",
+      "shipper_supplied_gas_for_the_current_quarter_other_gas_acquired_to_meet_deficiency_521_m2_duration",
+      "shipper_supplied_gas_for_the_current_quarter_other_gas_acquired_to_meet_deficiency_521_m3_duration"
+    ],
+    "dbf_tables": [
+      "f2_521_fwd_bck_haul",
+      "f2_521_month_1",
+      "f2_521_month_2",
+      "f2_521_month_3",
+      "f2_521_ship_supplied_gas"
+    ],
+    "schedule": "521",
+    "ferc_accounts": []
+  },
+  {
+    "title": "System Maps",
+    "description": "Certification that system maps of the respondent's production, gathering, transmission, and gas sales facilities have been filed with FERC.",
+    "pudl_tables": [],
+    "xbrl_tables": [
+      "system_map_522_duration"
+    ],
+    "dbf_tables": [
+      "f2_522_sys_map_files",
+      "f2_522_system_maps"
+    ],
+    "schedule": "522.1",
+    "ferc_accounts": []
+  }
+]
