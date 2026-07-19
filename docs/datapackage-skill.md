@@ -51,38 +51,38 @@ installation methods.
 
 ## Example prompts
 
-=== "Discovering what's in a dataset"
+### Discovering what's in a dataset
 
-    > "I've got a `datapackage.json` at `~/data/census/datapackage.json` — what tables
-    > does this dataset contain, and what are they about?"
+> "I've got a `datapackage.json` at `~/data/census/datapackage.json` — what tables does
+> this dataset contain, and what are they about?"
 
-    The agent queries the descriptor selectively with `jq`, listing resource names and
-    descriptions without ever loading the raw file into context.
+The agent queries the descriptor selectively with `jq`, listing resource names and
+descriptions without ever loading the raw file into context.
 
-=== "Understanding a column"
+### Understanding a column
 
-    > "What does the `population_estimate` column mean, and is there anything I should
-    > watch out for before using it?"
+> "What does the `population_estimate` column mean, and is there anything I should
+> watch out for before using it?"
 
-    The agent reads the field's description and surfaces any usage warnings verbatim,
-    explaining the practical implication before you build an analysis on top of it.
+The agent reads the field's description and surfaces any usage warnings verbatim,
+explaining the practical implication before you build an analysis on top of it.
 
-=== "Loading data"
+### Loading data
 
-    > "This dataset ships its tables as Parquet files. Can you load the `sales` table
-    > into a dataframe?"
+> "This dataset ships its tables as Parquet files. Can you load the `sales` table into
+> a dataframe?"
 
-    The agent picks an appropriate tool (DuckDB, pandas, or polars, depending on the
-    format and likely size) and returns working, copy-pasteable code.
+The agent picks an appropriate tool (DuckDB, pandas, or polars, depending on the format
+and likely size) and returns working, copy-pasteable code.
 
-=== "Joining tables safely"
+### Joining tables safely
 
-    > "I need to combine the `orders` and `customers` tables — what's the right join
-    > column?"
+> "I need to combine the `orders` and `customers` tables — what's the right join
+> column?"
 
-    The agent reads `schema.primaryKey`/`foreignKeys` from the descriptor to find the
-    declared relationship rather than guessing from column names, and tells you plainly
-    if the descriptor doesn't declare one.
+The agent reads `schema.primaryKey`/`foreignKeys` from the descriptor to find the
+declared relationship rather than guessing from column names, and tells you plainly if
+the descriptor doesn't declare one.
 
 ## What it won't do
 

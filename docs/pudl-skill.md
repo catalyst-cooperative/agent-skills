@@ -49,40 +49,40 @@ for other installation methods.
 
 ## Example prompts
 
-=== "Finding data on a topic"
+### Finding data on a topic
 
-    > "I'm trying to understand what data PUDL has on coal plant retirements. What
-    > tables would I look at, and are there any caveats I should know about?"
+> "I'm trying to understand what data PUDL has on coal plant retirements. What tables
+> would I look at, and are there any caveats I should know about?"
 
-    The agent searches the metadata for matching tables, explains what each one
-    contains, and surfaces any usage warnings before recommending one — preferring
-    `out_*` tables over lower-tier alternatives.
+The agent searches the metadata for matching tables, explains what each one contains,
+and surfaces any usage warnings before recommending one — preferring `out_*` tables
+over lower-tier alternatives.
 
-=== "Loading data"
+### Loading data
 
-    > "I want to load `out_eia923__yearly_generation` in a script. I don't have PUDL
-    > installed locally — can I get it from S3?"
+> "I want to load `out_eia923__yearly_generation` in a script. I don't have PUDL
+> installed locally — can I get it from S3?"
 
-    The agent returns working pandas or DuckDB code reading straight from the public
-    S3 bucket, with no PUDL package import required, and shows column projection for
-    large tables.
+The agent returns working pandas or DuckDB code reading straight from the public S3
+bucket, with no PUDL package import required, and shows column projection for large
+tables.
 
-=== "Understanding a column"
+### Understanding a column
 
-    > "What does the `unit_id_pudl` column mean, and should I use it as a join key
-    > across PUDL versions?"
+> "What does the `unit_id_pudl` column mean, and should I use it as a join key across
+> PUDL versions?"
 
-    The agent looks up the field's description and warning text, and explains — in
-    plain language — why that particular ID isn't guaranteed to be stable long-term.
+The agent looks up the field's description and warning text, and explains — in plain
+language — why that particular ID isn't guaranteed to be stable long-term.
 
-=== "FERC Form 1 lookups"
+### FERC Form 1 lookups
 
-    > "Which FERC Form 1 schedule covers plant-in-service accounting, and which PUDL
-    > tables does it map to?"
+> "Which FERC Form 1 schedule covers plant-in-service accounting, and which PUDL
+> tables does it map to?"
 
-    The agent resolves the schedule by title or account number and reports the PUDL
-    table names it has been integrated into (or tells you plainly if it hasn't been
-    integrated yet).
+The agent resolves the schedule by title or account number and reports the PUDL table
+names it has been integrated into (or tells you plainly if it hasn't been integrated
+yet).
 
 ## What it won't do
 
