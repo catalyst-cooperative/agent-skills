@@ -27,7 +27,7 @@ arrays; `schedule` is the page key.
 
 ```bash
 # Find schedules whose description mentions a specific account
-jq '[.[] | select(.description | test("182\.3"))] | .[] | {schedule, title}' \
+jq '[.[] | select(.description | test("182\\.3"))] | .[] | {schedule, title}' \
     assets/ferc1_schedules.json
 
 # List all schedules that have PUDL integrated tables

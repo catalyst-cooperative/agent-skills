@@ -194,6 +194,8 @@ Useful repo tasks:
 
 - `pixi run install-skills` - install the external skills pinned in `skills-lock.json`
 - `pixi run test-datapackage` - run the datapackage reference-example test suite
+- `pixi run test-pudl` - run the pudl reference-example test suite
+- `pixi run test` - run every skill's test suite in one command
 
 This repository targets modern Python only; do not add `from __future__ import annotations`.
 
@@ -303,3 +305,7 @@ pixi run prek run pretty-format-json --all-files  # reformat generated descripto
 
 Datapackage repository-maintainer notes (example corpus layout, regeneration workflow, and other dev-only context) are documented in `dev/skills/datapackage/datapackage-dev-guide.md`.
 See [Generated Content](#generated-content) above for the test/regeneration workflow.
+
+## PUDL Skill Rules
+
+PUDL repository-maintainer notes (test fixture layout and the offline descriptor sample's regeneration workflow) are documented in `dev/skills/pudl/pudl-dev-guide.md`.

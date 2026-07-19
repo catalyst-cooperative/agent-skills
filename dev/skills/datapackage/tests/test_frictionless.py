@@ -16,7 +16,7 @@ import pytest
 
 # pytest injects conftest during test collection; static analyzers may still
 # flag this as unresolved-import outside the pytest runtime context.
-from conftest import (
+from .conftest import (
     EXAMPLES,
     READING_COUNT,
     RESOURCE_NAMES,

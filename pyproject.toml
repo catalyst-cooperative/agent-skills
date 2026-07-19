@@ -15,6 +15,14 @@ description = "Install external skills from skills-lock.json into .agents/skills
 cmd = "pytest dev/skills/datapackage/tests/ -v"
 description = "Run the datapackage skill test suite"
 
+[tool.pixi.tasks.test-pudl]
+cmd = "pytest dev/skills/pudl/tests/ -v"
+description = "Run the pudl skill test suite"
+
+[tool.pixi.tasks.test]
+depends-on = ["test-datapackage", "test-pudl"]
+description = "Run every skill's test suite. Add new per-skill test tasks to depends-on here."
+
 [tool.pixi.tasks.docs-build]
 cmd = "zensical build"
 description = "Build the Zensical documentation site into site/"
