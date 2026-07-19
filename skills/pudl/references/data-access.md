@@ -255,6 +255,11 @@ df = con.execute(
 
 ## Loading PUDL Parquet tables
 
+**Summing or joining quantity columns?** Check each field's `unit` first — a matching
+column name doesn't guarantee a matching unit, and mismatched-scale units (e.g. `Mcf` vs
+`MMcf`) combine silently into a wrong-but-plausible number. See
+[Using units safely when combining data](./metadata-and-querying.md#using-units-safely-when-combining-data).
+
 ### With pandas
 
 ```python

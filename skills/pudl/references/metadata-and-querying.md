@@ -103,8 +103,7 @@ The top-level descriptor carries a `unit_registry` object defining non-SI units 
 }
 ```
 
-If a field's `unit` (e.g. `MMBtu`, `Mcf`, `VAr`) isn't a familiar SI unit, look it up here
-rather than guessing:
+To look up what an unfamiliar `unit` value (e.g. `MMBtu`, `Mcf`, `VAr`) means:
 
 ```bash
 # Show all custom unit definitions
@@ -112,6 +111,62 @@ jq -r '.unit_registry.definitions[]' "$PKG"
 
 # Find the definition for a specific unit
 jq -r --arg u "MMBtu" '.unit_registry.definitions[] | select(startswith($u + " ="))' "$PKG"
+```
+
+**Most `unit` values need no lookup at all.** Things like `MW`, `MWh`, `foot`, `acre`,
+`gallon / minute`, and `percent` are units [Pint](https://pint.readthedocs.io/) already
+understands out of the box from a plain `pint.UnitRegistry()` — `unit_registry` exists
+only for the smaller set of non-standard abbreviations Pint doesn't know natively:
+`MMBtu`, `Mcf`, `MMcf`, `TBtu`, `VAr`, `MVAr`, and the currency unit `USD` (Pint has no
+built-in notion of currency at all). Notably, the oil-and-gas convention of doubling the
+prefix letter for "million" (`MM` in `MMcf`, `MMBtu`) is **not** the same as SI's single
+`M` for "mega" — a real source of confusion if you guess a conversion instead of
+resolving it against the registry.
+
+### Using units safely when combining data
+
+Two fields can look combinable — same rough topic, plausible-looking column names — and
+still be in different units. Before summing, averaging, or joining quantity columns
+drawn from more than one field or resource, check each one's `unit`. Don't assume a
+matching or similar-looking column name implies a matching unit.
+
+Load all of `unit_registry.definitions` into your Pint registry unconditionally, every
+time — don't try to first judge whether a given field's unit "looks standard enough" to
+skip it. The definitions are few, defining them is essentially free, and none of them
+collide with anything Pint already knows: there's no upside to guessing which fields
+need the lookup when you can just always have it available.
+
+**Worked failure mode**: `unit_registry` defines both `Mcf` (thousand cubic feet) and
+`MMcf` (million cubic feet) for natural gas volumes — a 1,000x difference. Add a
+quantity reported in `Mcf` to one reported in `MMcf` without converting first, and the
+total is silently off by a factor of 1,000 — no error, no warning, just a wrong number
+that still looks plausible.
+
+```bash
+# Check the unit for every field you're about to combine, on every resource involved
+jq '.resources[] | select(.name == "TABLE_A") | .schema.fields[] | select(.name == "FIELD_A") | {name, unit}' "$PKG"
+jq '.resources[] | select(.name == "TABLE_B") | .schema.fields[] | select(.name == "FIELD_B") | {name, unit}' "$PKG"
+```
+
+If the two `unit` values differ, convert onto a common basis before combining. Build the
+Pint registry once, up front, from the default registry plus all of
+`unit_registry.definitions` (as above), then let Pint track the conversion:
+
+```python
+import pint
+
+ureg = pint.UnitRegistry()  # already parses MW, foot, gallon / minute, percent, ...
+for definition in descriptor["unit_registry"]["definitions"]:
+    ureg.define(definition)  # adds MMBtu, Mcf, MMcf, TBtu, VAr, MVAr, USD on top
+
+gas_a = 1_200 * ureg.Mcf  # table A reports in Mcf
+gas_b = 1.5 * ureg.MMcf  # table B reports in MMcf
+
+# Wrong: adding raw magnitudes treats 1.5 (MMcf) as if it were 1.5 Mcf
+wrong_total = gas_a.magnitude + gas_b.magnitude  # 1_201.5 -- silently ~1,000x too low
+
+# Right: convert onto a common unit first, then combine
+right_total = gas_a + gas_b.to(ureg.Mcf)  # 2_700 Mcf
 ```
 
 ---

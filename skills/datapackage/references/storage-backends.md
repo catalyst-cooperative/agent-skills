@@ -141,6 +141,57 @@ df = duckdb.sql("SELECT * FROM read_parquet('my_table.parquet') LIMIT 100").df()
 
 ---
 
+## Joining tables safely
+
+`schema.primaryKey` and `schema.foreignKeys` are standard Frictionless fields that
+describe how a resource's rows are uniquely identified and how they relate to other
+resources. When a user's question needs data from more than one table, read these
+fields rather than guessing a join column from name similarity — a shared or
+plausible-looking column name is not a guarantee that the values line up, and a real
+`foreignKeys` entry can name a composite key or a differently-named reference field that
+naming alone would never reveal.
+
+```bash
+# Does this resource declare a primary key, and what other resource does it reference?
+jq '.resources[] | select(.name == "daily-readings") | {primaryKey: .schema.primaryKey, foreignKeys: .schema.foreignKeys}' datapackage.json
+```
+
+```json
+{
+  "primaryKey": ["station_id", "date"],
+  "foreignKeys": [
+    {
+      "fields": ["station_id"],
+      "reference": { "resource": "stations", "fields": ["station_id"] }
+    }
+  ]
+}
+```
+
+Each `foreignKeys` entry names the local `fields` and the `reference.resource` /
+`reference.fields` they point to. Both `fields` arrays are equal-length lists — for a
+composite key, join on every corresponding pair, not just the first.
+
+Use those field names directly in the join, whether the resources are plain files or
+tables in an attached database:
+
+```sql
+-- Column names come from the foreignKeys lookup above, not from guessing
+SELECT r.station_id, r.date, r.temp_max_c, s.station_name, s.elevation_m
+FROM read_csv('daily-readings.csv') AS r
+JOIN read_csv('stations.csv') AS s
+  ON r.station_id = s.station_id
+LIMIT 10;
+```
+
+Not every descriptor declares `foreignKeys` even where a real relationship exists — the
+field is optional, and plenty of publishers omit it. Its absence isn't proof that two
+tables *can't* be joined, only that the descriptor doesn't tell you how; in that case,
+confirm the join column by reading both resources' field descriptions before writing
+the query, rather than assuming a name match is safe.
+
+---
+
 ## Polars (preferred for large Python workflows)
 
 Polars is preferred over pandas for large datasets — it is faster, more

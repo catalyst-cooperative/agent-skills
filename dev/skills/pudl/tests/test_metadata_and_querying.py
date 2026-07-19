@@ -12,6 +12,9 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
+import pint
+import pytest
+
 from .conftest import SAMPLE_DESCRIPTOR
 
 
@@ -117,6 +120,80 @@ def test_unit_registry_lookup_for_specific_unit():
         r'.unit_registry.definitions[] | select(startswith("MMBtu" + " ="))'
     )
     assert definition.startswith("MMBtu =")
+
+
+def test_field_unit_lookup_before_combining_columns():
+    """The two-field unit check from 'Using units safely when combining data'."""
+    fuel_unit = jq(
+        '.resources[] | select(.name == "out_ferc1__yearly_steam_plants_fuel_by_plant_sched402")'
+        ' | .schema.fields[] | select(.name == "fuel_mmbtu") | {name, unit}'
+    )
+    assert fuel_unit["unit"] == "MMBtu"
+
+
+def test_default_pint_registry_parses_standard_units_unaided():
+    """Pint's plain UnitRegistry() already understands common PUDL units.
+
+    No unit_registry.definitions needed for units like MW or foot -- confirms
+    the "Most unit values need no lookup at all" claim.
+    """
+    ureg = pint.UnitRegistry()
+    for unit_string in ("MW", "foot", "acre", "gallon / minute", "percent"):
+        ureg.parse_expression(unit_string)  # raises if Pint can't parse it
+
+
+def test_default_pint_registry_rejects_pudls_custom_units():
+    """Pint's plain UnitRegistry() cannot parse PUDL's non-standard unit names.
+
+    Confirms these genuinely need unit_registry.definitions loaded first --
+    the doc's central claim about which units require the extra step.
+    """
+    ureg = pint.UnitRegistry()
+    for unit_string in ("MMBtu", "Mcf", "MMcf", "VAr", "MVAr", "USD"):
+        with pytest.raises(pint.errors.UndefinedUnitError):
+            ureg.parse_expression(unit_string)
+
+
+def test_unit_registry_definition_names_match_custom_units_documented():
+    """Every unit named in unit_registry.definitions is one Pint can't parse by default."""
+    definitions = jq(".unit_registry.definitions[]")
+    custom_unit_names = [d.split(" ")[0] for d in definitions]
+    assert set(custom_unit_names) == {
+        "MMBtu",
+        "Mcf",
+        "MMcf",
+        "TBtu",
+        "VAr",
+        "MVAr",
+        "USD",
+    }
+
+
+def test_mmbtu_and_mcf_worked_failure_mode():
+    """The doc's worked failure mode: Pint converts correctly; raw magnitudes don't.
+
+    Loads the real unit_registry definitions (as an agent would) and reproduces
+    both the wrong (magnitude-only) and right (unit-aware) totals documented in
+    metadata-and-querying.md's "Using units safely when combining data" section.
+    """
+    descriptor = json.loads(SAMPLE_DESCRIPTOR.read_text(encoding="utf-8"))
+    ureg = pint.UnitRegistry()
+    for definition in descriptor["unit_registry"]["definitions"]:
+        ureg.define(definition)
+
+    gas_a = 1_200 * ureg.Mcf
+    gas_b = 1.5 * ureg.MMcf
+
+    wrong_total = gas_a.magnitude + gas_b.magnitude
+    assert wrong_total == 1_201.5
+
+    right_total = gas_a + gas_b.to(ureg.Mcf)
+    assert right_total.to(ureg.Mcf).magnitude == 2_700
+    # gas_b's real contribution (1,500 Mcf) is what the wrong total collapsed down
+    # to its raw magnitude (1.5) -- a 1,000x understatement of that component.
+    gas_b_real_contribution_mcf = right_total.to(ureg.Mcf).magnitude - gas_a.magnitude
+    gas_b_raw_magnitude = wrong_total - gas_a.magnitude
+    assert gas_b_real_contribution_mcf / gas_b_raw_magnitude == 1_000
 
 
 # ---------------------------------------------------------------------------

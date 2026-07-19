@@ -159,6 +159,57 @@ def test_duckdb_attach_duckdb_file(version, resource_name, expected_count):
 
 
 # ---------------------------------------------------------------------------
+# Joining tables via foreignKeys metadata
+# Reference: "Joining tables safely" section
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("version", ["v1", "v2"])
+def test_duckdb_join_driven_by_foreign_keys(version):
+    """The documented join uses column names read from foreignKeys, not guessed ones."""
+    descriptor = load_descriptor(version, "csv")
+    readings = resource_by_name(descriptor, "daily-readings")
+
+    fk = readings["schema"]["foreignKeys"][0]
+    local_field = fk["fields"][0]
+    ref_resource_name = fk["reference"]["resource"]
+    ref_field = fk["reference"]["fields"][0]
+    assert (local_field, ref_resource_name, ref_field) == (
+        "station_id",
+        "stations",
+        "station_id",
+    )
+
+    stations = resource_by_name(descriptor, ref_resource_name)
+    readings_path = str(EXAMPLES / version / "csv" / readings["path"])
+    stations_path = str(EXAMPLES / version / "csv" / stations["path"])
+
+    df = duckdb.sql(f"""
+        SELECT r.{local_field}, r.date, r.temp_max_c, s.station_name, s.elevation_m
+        FROM read_csv('{readings_path}') AS r
+        JOIN read_csv('{stations_path}') AS s
+          ON r.{local_field} = s.{ref_field}
+        LIMIT 10
+    """).df()
+    assert not df.empty
+    assert {"station_id", "date", "temp_max_c", "station_name", "elevation_m"}.issubset(
+        df.columns
+    )
+
+    # Every reading should find its station -- if the foreignKeys fields were wrong,
+    # this join would silently drop rows instead of erroring.
+    joined_count = duckdb.sql(f"""
+        SELECT count(*)
+        FROM read_csv('{readings_path}') AS r
+        JOIN read_csv('{stations_path}') AS s ON r.{local_field} = s.{ref_field}
+    """).fetchall()[0][0]
+    assert joined_count == READING_COUNT, (
+        f"{version}/csv: expected all {READING_COUNT} readings to join to a station, "
+        f"got {joined_count}"
+    )
+
+
+# ---------------------------------------------------------------------------
 # polars — preferred for large Python workflows
 # Reference: "Polars" section
 # ---------------------------------------------------------------------------
