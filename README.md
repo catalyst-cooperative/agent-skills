@@ -2,8 +2,20 @@
 
 This repository contains experimental [agent skills](https://agentskills.io) related to PUDL (the Public Utility Data Liberation Project).
 
-- `datapackage` is for exploring metadata annotations stored in [Frictionless Data Packages](https://specs.frictionlessdata.io/data-package/) generally.
+- `datapackage` provides agents context on how to work with the [Frictionless Datapackage](https://datapackage.org/) metadata standard
 - `pudl` is for exploring and working with [PUDL open energy data and metadata](https://data.catalyst.coop)
+
+## Installing
+
+Most LLM agents support skills, but depending on the agent there are many different ways that skills are installed and activated.
+One fairly generic, agent-agnostic method of installing them is `npx skills`.
+If you have `npm` installed you should be able to do:
+
+```bash
+npx skills install catalyst-cooperative/agent-skills -s datapackage
+npx skills install catalyst-cooperative/agent-skills -s pudl
+npx skills install catalyst-cooperative/agent-skills -s pudl-dev
+```
 
 ## Agent Skills Resources
 
