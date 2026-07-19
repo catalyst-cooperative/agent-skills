@@ -2,9 +2,8 @@
 
 [![tests](https://github.com/catalyst-cooperative/agent-skills/actions/workflows/tests.yml/badge.svg)](https://github.com/catalyst-cooperative/agent-skills/actions/workflows/tests.yml)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/catalyst-cooperative/agent-skills/main.svg)](https://results.pre-commit.ci/latest/github/catalyst-cooperative/agent-skills/main)
-[![Documentation](https://img.shields.io/github/deployments/catalyst-cooperative/agent-skills/github-pages?style=flat&logo=githubpages&label=docs)](https://docs.catalyst.coop/agent-skills)
-[![License: MIT](https://img.shields.io/github/license/catalyst-cooperative/agent-skills?style=flat)](LICENSE)
-[![GitHub last commit](https://img.shields.io/github/last-commit/catalyst-cooperative/agent-skills?style=flat&logo=github)](https://github.com/catalyst-cooperative/agent-skills/commits/main)
+[![docs](https://github.com/catalyst-cooperative/agent-skills/actions/workflows/docs.yml/badge.svg)](https://docs.catalyst.coop/agent-skills)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat)](LICENSE)
 
 This repository contains experimental [agent skills](https://agentskills.io) related to PUDL (the Public Utility Data Liberation Project).
 
