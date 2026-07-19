@@ -1,5 +1,11 @@
 # [Catalyst Cooperative](http://github.com/catalyst-cooperative) Agent Skills
 
+[![tests](https://github.com/catalyst-cooperative/agent-skills/actions/workflows/tests.yml/badge.svg)](https://github.com/catalyst-cooperative/agent-skills/actions/workflows/tests.yml)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/catalyst-cooperative/agent-skills/main.svg)](https://results.pre-commit.ci/latest/github/catalyst-cooperative/agent-skills/main)
+[![Documentation](https://img.shields.io/github/deployments/catalyst-cooperative/agent-skills/github-pages?style=flat&logo=githubpages&label=docs)](https://docs.catalyst.coop/agent-skills)
+[![License: MIT](https://img.shields.io/github/license/catalyst-cooperative/agent-skills?style=flat)](LICENSE)
+[![GitHub last commit](https://img.shields.io/github/last-commit/catalyst-cooperative/agent-skills?style=flat&logo=github)](https://github.com/catalyst-cooperative/agent-skills/commits/main)
+
 This repository contains experimental [agent skills](https://agentskills.io) related to PUDL (the Public Utility Data Liberation Project).
 
 - `datapackage` provides agents context on how to work with the [Frictionless Datapackage](https://datapackage.org/) metadata standard
@@ -12,9 +18,8 @@ One fairly generic, agent-agnostic method of installing them is `npx skills`.
 If you have `npm` installed you should be able to do:
 
 ```bash
-npx skills install catalyst-cooperative/agent-skills -s datapackage
-npx skills install catalyst-cooperative/agent-skills -s pudl
-npx skills install catalyst-cooperative/agent-skills -s pudl-dev
+npx skills add catalyst-cooperative/agent-skills -s datapackage
+npx skills add catalyst-cooperative/agent-skills -s pudl
 ```
 
 ## Agent Skills Resources

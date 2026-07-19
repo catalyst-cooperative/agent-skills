@@ -25,3 +25,6 @@ __pycache__
 
 # Longer commit message scratch file
 commit.txt
+
+# Longer PR description scratch file
+pr-description.md
