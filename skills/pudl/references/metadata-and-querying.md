@@ -1,117 +1,145 @@
-# Metadata and Querying
+# PUDL Datapackage Extensions
 
 ## Use this when
 
-- You need table, field, or source definitions programmatically.
-- Generated docs are missing from a local checkout.
-- You need machine-queryable metadata for discovery or validation.
+- Reading or querying `description` fields on a PUDL resource or field.
+- Looking up a resource's provenance (source dataset, license, documentation link).
+- Interpreting a field's `unit` value.
+- Deciding whether something you're seeing in a PUDL descriptor is a PUDL-specific
+    extension or standard Frictionless Data Package structure.
 
-## Preferred metadata strategy
+For the generic mechanics of locating a descriptor, querying it with jq or DuckDB, and
+loading the data it describes, use the `datapackage` skill — this reference covers only
+what PUDL adds on top of that standard.
 
-Use these sources in order:
+---
 
-1. In-repo metadata APIs (`Package`, `Resource`, `Field`, `DataSource`).
-1. Metadata embedded in Parquet schema.
-1. Generated docs and rendered HTML for prose context.
+## Descriptions: RST, docstrings, and structured sections
 
-## Programmatic metadata APIs
+**PUDL descriptions are ReStructuredText (RST), not plain text or Markdown.** When
+reading `description` fields, apply these rules:
 
-```python
-from pudl.metadata import PUDL_PACKAGE
-from pudl.metadata.classes import DataSource, Field
+- Sphinx inline roles like `:py:class:`, `:py:func:`, `:py:attr:` — extract the name
+    inside the backticks (e.g. `` :py:func:`pudl.helpers.fix_eia_na` `` → `fix_eia_na`).
+- `` :ref:`label` `` cross-references do not resolve to accessible URLs; treat them as
+    internal documentation pointers only — do not attempt to construct a URL.
+- Underlined headers (e.g. `Usage Warnings` followed by a line of `^^^^^^^^^^^^^^`) mark
+    RST sections within the description body. See
+    [Data Quality and Context](./data-quality-and-context.md) for what the `Usage Warnings`
+    section means and how to surface it.
 
-resource = PUDL_PACKAGE.get_resource("out_eia923__generation")
-print(resource.description)
-print([f.name for f in resource.schema.fields][:10])
+**Resource descriptions also follow a docstring convention**: every PUDL resource
+description begins with a single-line summary, followed by a blank line, followed by a
+longer body (identical to the Python docstring convention). The body is often a
+structured RST field list (`Most-recent data:`, `Processing:`, `Source:`, `Primary key:`)
+followed by RST sections such as `Usage Warnings` or `Additional Details`. Some
+descriptions are hundreds of words long. **To decide whether a table is relevant without
+loading the full description into context, read only the first line first** — if the
+summary looks promising, then fetch the full description.
 
-field = Field.from_id("plant_id_eia")
-print(field.description)
-
-source = DataSource.from_id("eia923")
-print(source.title)
-print(source.description)
-```
-
-## Export Frictionless datapackage JSON
-
-```python
-from pathlib import Path
-from pudl.metadata.classes import PUDL_PACKAGE
-
-out = Path("/tmp/pudl_datapackage.json")
-out.write_text(PUDL_PACKAGE.to_frictionless().to_json())
-print(out)
-```
-
-## Query metadata with jq
+**With jq (local file):**
 
 ```bash
-jq '.resources | length' /tmp/pudl_datapackage.json
-jq -r '.resources[] | select(.name=="out_eia923__generation") | .schema.fields[].name' /tmp/pudl_datapackage.json
-jq -r '.resources[] | select(.name=="out_eia923__generation") | .schema.fields[] | select(.name=="plant_id_eia") | .description' /tmp/pudl_datapackage.json
+# List all resource names with just the first line of their description
+jq -r '.resources[] | "\(.name): \(.description | split("\n")[0])"' "$PKG"
+
+# Scan first-line summaries for a keyword (e.g. "generator")
+jq -r '.resources[] | select(.description | split("\n")[0] | test("generator"; "i"))
+     | "\(.name): \(.description | split("\n")[0])"' "$PKG"
+
+# Once a table looks relevant, fetch the full description
+jq -r '.resources[] | select(.name == "core_eia860__scd_generators") | .description' "$PKG"
 ```
 
-## Query metadata with DuckDB
+**With DuckDB (local or remote):**
 
-```python
-import duckdb
+```sql
+-- List resource names with just the first-line summary
+SELECT
+    r->>'$.name' AS name,
+    split_part(r->>'$.description', chr(10), 1) AS summary
+FROM (SELECT unnest(resources) AS r FROM read_json('pudl_parquet_datapackage.json', format='auto'));
 
-con = duckdb.connect()
-q = """
-SELECT json_extract_string(r.value, '$.name') AS resource_name
-FROM read_json('/tmp/pudl_datapackage.json') t,
-     json_each(t.resources) r
-ORDER BY resource_name
-LIMIT 10
-"""
-print(con.execute(q).fetchall())
+-- Filter by keyword in the first-line summary only
+SELECT
+    r->>'$.name' AS name,
+    split_part(r->>'$.description', chr(10), 1) AS summary
+FROM (SELECT unnest(resources) AS r FROM read_json('pudl_parquet_datapackage.json', format='auto'))
+WHERE summary ILIKE '%generator%';
+
+-- Once a table looks relevant, fetch its full description
+SELECT r->>'$.description' AS description
+FROM (SELECT unnest(resources) AS r FROM read_json('pudl_parquet_datapackage.json', format='auto'))
+WHERE r->>'$.name' = 'core_eia860__scd_generators';
 ```
 
-## Parquet-embedded metadata
+---
 
-```python
-import pyarrow.parquet as pq
-from pudl.workspace.setup import PudlPaths
+## Per-resource provenance: `sources`
 
-table_name = "out_eia923__generation"
-path = PudlPaths().parquet_path(table_name)
-schema = pq.read_schema(path)
+Each resource carries a `sources` array (a standard Frictionless field, but PUDL
+populates it with dataset-specific provenance beyond the spec's minimal `name`/`title`):
 
-table_meta = schema.metadata
-plant_field_meta = schema.field("plant_id_eia").metadata
+```jsonc
+{
+  "name": "eia860",
+  "title": "EIA Form 860 -- Annual Electric Generator Report",
+  "concept_doi": "https://doi.org/10.5281/zenodo.4127026",
+  "license_raw": { "name": "other-pd", "title": "U.S. Government Works", "path": "..." },
+  "license_pudl": { "name": "CC-BY-4.0", "title": "Creative Commons Attribution 4.0", "path": "..." },
+  "documentation": "https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia860.html",
+}
 ```
 
-## If generated docs are missing
-
-- Metadata-driven docs are generated via `docs/conf.py` custom build operations:
-    - `data_dictionary_metadata_to_rst()`
-    - `data_sources_metadata_to_rst()`
-    - `static_dfs_to_rst()`
-- Rebuild and retain generated intermediates:
+- `concept_doi` — the Zenodo **concept DOI** for the raw source dataset's archive
+    lineage (not a specific version). See
+    [Data Quality and Context](./data-quality-and-context.md#raw-input-archives-zenodo)
+    for how this relates to the concrete-DOI S3 archive path.
+- `license_raw` vs `license_pudl` — the license the *original* agency published the data
+    under, versus the license PUDL republishes it under (almost always CC-BY-4.0). Cite
+    `license_pudl` when telling a user how they may use PUDL's output; mention
+    `license_raw` only if they ask about the original source's terms.
+- `documentation` — a direct link to that source's PUDL docs page. Prefer this over
+    constructing a docs URL from the short code.
 
 ```bash
-PUDL_DOCS_KEEP_GENERATED_FILES=1 pixi run docs-build
+# Get provenance for every source dataset behind the current descriptor
+jq -r '.resources[0].sources[] | "\(.name): \(.documentation)"' "$PKG"
+
+# Find the license PUDL republishes a specific source under
+jq '.resources[] | select(.name == "core_eia860__cooling_equipment") | .sources[0].license_pudl' "$PKG"
 ```
 
-- Retained files appear under:
-    - `docs/data_sources/**/*.rst`
-    - `docs/data_dictionaries/**/*.rst`
-    - `docs/data_dictionaries/**/*.csv`
+---
 
-## Templates and schema
+## Package-level unit registry: `unit_registry`
 
-- Docs templates: `docs/templates/`
-- Vendored datapackage schema: `.github/skills/pudl-dev/references/datapackage.schema.json`
-- Upstream schema URL: `https://datapackage.org/profiles/2.0/datapackage.json`
+The top-level descriptor carries a `unit_registry` object defining non-SI units used in
+`schema.fields[].unit` values, in [Pint](https://pint.readthedocs.io/) format:
 
-## Canonical sources
+```jsonc
+{
+  "format": "pint",
+  "definitions": ["MMBtu = 1e6 * BTU = MMBTU", "Mcf = 1000 * cubic_foot", "USD = [currency]"]
+}
+```
 
-- `src/pudl/metadata/classes.py`
-- `src/pudl/metadata/resources/*.py`
-- `src/pudl/metadata/fields.py`
-- `src/pudl/metadata/sources.py`
-- `docs/conf.py`
-- `docs/templates/`
-- `docs/data_dictionaries/index.rst`
-- `docs/data_sources/index.rst`
-- `docs/dev/build_docs.rst`
+If a field's `unit` (e.g. `MMBtu`, `Mcf`, `VAr`) isn't a familiar SI unit, look it up here
+rather than guessing:
+
+```bash
+# Show all custom unit definitions
+jq -r '.unit_registry.definitions[]' "$PKG"
+
+# Find the definition for a specific unit
+jq -r --arg u "MMBtu" '.unit_registry.definitions[] | select(startswith($u + " ="))' "$PKG"
+```
+
+---
+
+## Other field-level extensions
+
+Some schema fields carry a `geometry_format` key (e.g. on spatial/geometry columns) in
+addition to the standard `name`/`type`/`description`/`constraints`/`unit`. Treat it, like
+any other non-standard field, as informational metadata describing how to interpret the
+column's values — not as an error or a sign of a malformed descriptor.

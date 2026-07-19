@@ -13,7 +13,7 @@ description: >
   FERC Form 1, FERC Form 714, FERC EQR, EPA CEMS, EPA CAMD, etc.).
 license: CC-BY-4.0
 compatibility: |
-  Required skills: datapackage (which requires jq >= 1.7 and duckdb-skills)
+  Required skills: datapackage (which requires jq >= 1.7, attach-db, and query)
   Required Python packages: pandas >= 2.0, s3fs (for S3 access)
   Optional Python packages: polars >= 1.0, marimo (for notebook EDA)
   Optional skills: marimo-pair, dignified-python
@@ -107,6 +107,11 @@ user explicitly asks to load or explore data.
 - [Data Access](./references/data-access.md) — S3 paths, loading patterns
     (pandas/DuckDB/polars/pure SQL), FERC historical database locations, and EQR access;
     read whenever generating data-loading code or explaining how to access any PUDL output
+- [PUDL Datapackage Extensions](./references/metadata-and-querying.md) — PUDL-specific
+    additions to the standard datapackage schema: RST/docstring-formatted descriptions,
+    per-resource provenance fields, and the package-level unit registry; read before
+    querying `description` or other non-standard fields on a PUDL descriptor (for generic
+    descriptor-querying mechanics, use the `datapackage` skill instead)
 - [Data Quality and Context](./references/data-quality-and-context.md) — table tier
     naming conventions (`out_*` vs `core_*` vs raw), warning types, and what each tier
     means for analysis reliability; read when a user asks about data quality, when choosing
@@ -190,56 +195,13 @@ user explicitly asks to load or explore data.
     rather than globally. Fall back to `pip` only if `uv` is not available
     (`command -v uv` returns nothing).
 
-- **Descriptor descriptions are ReStructuredText (RST)**, not plain text or Markdown.
-    When reading `description` fields from the datapackage descriptor, apply these rules:
-
-    - Sphinx inline roles like `:py:class:`, `:py:func:`, `:py:attr:` — extract the
-        name inside the backticks (e.g. `:py:func:\`pudl.helpers.fix_eia_na\``→`fix_eia_na\`).
-    - `:ref:\`label\`\` cross-references do not resolve to accessible URLs; treat them
-        as internal documentation pointers only — do not attempt to construct a URL.
-
-- **Resource descriptions follow a docstring convention**: every PUDL resource
-    description begins with a single-line summary, followed by a blank line, followed by
-    a longer description (identical to the Python docstring convention). Some resource
-    descriptions are hundreds of words long. **To decide whether a table is relevant
-    without loading the full description into context, read only the first line first**
-    — if the summary looks promising, then fetch the full description.
-
-    **With jq (local file):**
-
-    ```bash
-    # List all resource names with just the first line of their description
-    jq -r '.resources[] | "\(.name): \(.description | split("\n")[0])"' "$PKG"
-
-    # Scan first-line summaries for a keyword (e.g. "generator")
-    jq -r '.resources[] | select(.description | split("\n")[0] | test("generator"; "i"))
-         | "\(.name): \(.description | split("\n")[0])"' "$PKG"
-
-    # Once a table looks relevant, fetch the full description
-    jq -r '.resources[] | select(.name == "core_eia860__scd_generators") | .description' "$PKG"
-    ```
-
-    **With DuckDB (local or remote):**
-
-    ```sql
-    -- List resource names with just the first-line summary
-    SELECT
-        r->>'$.name' AS name,
-        split_part(r->>'$.description', chr(10), 1) AS summary
-    FROM (SELECT unnest(resources) AS r FROM read_json('pudl_parquet_datapackage.json', format='auto'));
-
-    -- Filter by keyword in the first-line summary only
-    SELECT
-        r->>'$.name' AS name,
-        split_part(r->>'$.description', chr(10), 1) AS summary
-    FROM (SELECT unnest(resources) AS r FROM read_json('pudl_parquet_datapackage.json', format='auto'))
-    WHERE summary ILIKE '%generator%';
-
-    -- Once a table looks relevant, fetch its full description
-    SELECT r->>'$.description' AS description
-    FROM (SELECT unnest(resources) AS r FROM read_json('pudl_parquet_datapackage.json', format='auto'))
-    WHERE r->>'$.name' = 'core_eia860__scd_generators';
-    ```
+- **PUDL's datapackage descriptors extend the standard schema** in several PUDL-specific
+    ways: RST-formatted, docstring-style descriptions, per-resource provenance metadata,
+    and a package-level unit registry. Read
+    [PUDL Datapackage Extensions](./references/metadata-and-querying.md) before writing
+    jq/DuckDB queries against `description` or other non-standard fields — it covers only
+    what's unique to PUDL; for generic descriptor-querying mechanics, use the
+    `datapackage` skill.
 
 ### Cross-referencing FERC Form 1 and Form 2 schedules and accounts
 
@@ -287,11 +249,10 @@ ORDER BY schedule;
 
 ## Delegation
 
-| User intent                        | Hand off to                |
-| ---------------------------------- | -------------------------- |
-| Query datapackage.json metadata    | `/datapackage`             |
-| Attach a .duckdb or .sqlite file   | `/duckdb-skills:attach-db` |
-| Run SQL or NL queries against data | `/duckdb-skills:query`     |
-| Explore/visualize data in Marimo   | `/marimo-pair`             |
-| General Python/pandas help         | `/dignified-python`        |
-| Modify PUDL ETL code or dbt tests  | `/pudl-dev`                |
+| User intent                        | Hand off to         |
+| ---------------------------------- | ------------------- |
+| Query datapackage.json metadata    | `/datapackage`      |
+| Attach a .duckdb or .sqlite file   | `/attach-db`        |
+| Run SQL or NL queries against data | `/query`            |
+| Explore/visualize data in Marimo   | `/marimo-pair`      |
+| General Python/pandas help         | `/dignified-python` |

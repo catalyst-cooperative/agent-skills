@@ -225,8 +225,8 @@ see [`storage-backends.md`](storage-backends.md).
 ## Step 5 handoff: default to DuckDB for data queries
 
 DuckDB is a standalone CLI tool — no Python environment required.
-The `/duckdb-skills:install-duckdb` skill should be used to install it if it is not already installed.
-Use `/duckdb-skills:query` to run queries through it — that skill handles CLI invocation, session state, natural language, and large result warnings.
+The `/install-duckdb` skill should be used to install it if it is not already installed.
+Use `/query` to run queries through it — that skill handles CLI invocation, session state, natural language, and large result warnings.
 Once jq has identified the resource path, switch to DuckDB for the actual data query.
 
 Keep these concerns separate:

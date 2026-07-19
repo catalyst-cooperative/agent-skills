@@ -114,7 +114,7 @@ WHERE report_year = 2023
 LIMIT 1000;
 ```
 
-Use the `/duckdb-skills` skill to run queries against EQR data — DuckDB can scan
+Use the `/query` skill to run queries against EQR data — DuckDB can scan
 Parquet files from S3 without downloading them.
 
 **With polars (memory-efficient Python):**
@@ -222,7 +222,7 @@ base path. There are three known issues with these descriptors:
 
 ### Querying XBRL databases with DuckDB
 
-Use the `/duckdb-skills:attach-db` skill to attach and query an XBRL DuckDB file
+Use the `/attach-db` skill to attach and query an XBRL DuckDB file
 directly from S3 without downloading. Pure SQL (no Python required):
 
 ```sql
@@ -280,7 +280,7 @@ df = pd.read_parquet(
 
 ### With DuckDB (efficient for large tables or SQL-style queries)
 
-Pure SQL (no Python required) — use `/duckdb-skills` to run these:
+Pure SQL (no Python required) — use `/query` to run these:
 
 ```sql
 SELECT plant_id_eia, report_date, net_generation_mwh

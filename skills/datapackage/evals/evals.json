@@ -65,7 +65,7 @@
     {
       "id": 5,
       "prompt": "I want to look at the actual data in the out_eia923__generation table. Can you show me a sample of the data and tell me what the columns mean?",
-      "expected_output": "Agent reads column descriptions from the descriptor (metadata phase) AND queries the actual Parquet file for a data sample (data phase). DuckDB is expected here since it spans both phases. Agent should use /duckdb-skills:query or equivalent for the data portion.",
+      "expected_output": "Agent reads column descriptions from the descriptor (metadata phase) AND queries the actual Parquet file for a data sample (data phase). DuckDB is expected here since it spans both phases. Agent should use /query or equivalent for the data portion.",
       "tool_preference": "metadata+data \u2014 DuckDB expected; jq alone cannot load the data",
       "files": [
         "assets/datapackage.json"
