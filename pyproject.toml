@@ -19,6 +19,10 @@ description = "Run the datapackage skill test suite"
 cmd = "zensical build"
 description = "Build the Zensical documentation site into site/"
 
+[tool.pixi.tasks.prek-update]
+cmd = "prek update"
+description = "Bump the `rev` pins in .pre-commit-config.yaml to their latest tagged versions"
+
 [tool.pixi.tasks.devcontainer-install]
 cmd = """
 pixi install \
