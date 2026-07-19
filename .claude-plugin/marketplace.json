@@ -27,17 +27,6 @@
         "./skills/datapackage",
         "./skills/pudl"
       ]
-    },
-    {
-      "name": "pudl-dev",
-      "description": "Agent support for developers contributing to the Public Utility Data Liberation (PUDL) project.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/datapackage",
-        "./skills/pudl",
-        "./skills/pudl-dev"
-      ]
     }
   ]
 }

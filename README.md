@@ -4,7 +4,6 @@ This repository contains experimental [agent skills](https://agentskills.io) rel
 
 - `datapackage` is for exploring metadata annotations stored in [Frictionless Data Packages](https://specs.frictionlessdata.io/data-package/) generally.
 - `pudl` is for exploring and working with [PUDL open energy data and metadata](https://data.catalyst.coop)
-- `pudl-dev` is for maintaining and contributing to the [PUDL open source project](https://github.com/catalyst-cooperative/pudl)
 
 ## Agent Skills Resources
 

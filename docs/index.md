@@ -34,17 +34,6 @@ For human-readable PUDL data documentation, see the [PUDL Data Documentation](ht
 
 Aimed at energy analysts and data users who want to work with PUDL open data products.
 
-### pudl-dev
-
-!!! warning
-
-    The `pudl-dev` skill is half-baked should not be considered ready for widespread use.
-
-Guidance for agents being used by contributors to the PUDL open source project.
-Covers the contributor workflow, local ETL and Dagster development, schema and metadata changes, dbt models, and validation.
-
-Aimed at PUDL core contributors working on code and data pipeline changes.
-
 ## Installing skills for development
 
 A number of repository level skills intended for use in development in this repo are specified in `skills-lock.json`.

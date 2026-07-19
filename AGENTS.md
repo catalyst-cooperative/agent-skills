@@ -32,7 +32,6 @@ Current first-party skills live under `skills/`
 
 - `datapackage/` - generic Frictionless Data Package exploration skill
 - `pudl/` - PUDL data-user skill
-- `pudl-dev/` - PUDL contributor and developer skill
 
 Python utilities for use by agents in skills live under paths like `skills/<skill>/scripts/`.
 These are small CLI tools not a large application framework.
@@ -62,7 +61,6 @@ agent-skills/
 │   │   ├── scripts/           # utility scripts (Python or shell) for use at runtime by agents
 │   │   └── evals/             # Skill evaluation cases
 │   ├── pudl/            # PUDL data-user skill (read tables, explore metadata)
-│   └── pudl-dev/        # PUDL developer skill (ETL, schema, CI, dbt, pytest)
 ├── docs/                # Zensical documentation site source (markdown)
 ├── .github/workflows/   # CI: test-datapackage.yml, docs.yml
 ├── pyproject.toml       # Pixi workspace: dependencies, tasks, tool config
@@ -121,7 +119,6 @@ In this repository:
 
 - `datapackage` owns generic datapackage querying and loading patterns.
 - `pudl` layers PUDL-specific data and metadata context on top of `datapackage`
-- `pudl-dev` should reference shared `pudl` data and metadata guidance rather than duplicating it.
 
 If a skill depends on another skill conceptually, make that dependency explicit in the skill's frontmatter or instructions.
 Never copy large blocks of text from one skill's references into another skill's references.
