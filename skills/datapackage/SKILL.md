@@ -41,6 +41,10 @@ resources. Each resource represents one table (or file) and includes:
     keys, and usage warnings
 - `path`: filename or URL of the actual data file
 - `schema.fields`: list of columns, each with a `name` and `description`
+- `schema.primaryKey`: the field or fields that uniquely identify a row in this resource
+- `schema.foreignKeys`: declared links from this resource's fields to another
+    resource's primary key — check these before joining or aggregating (see
+    [Metadata Querying](./references/metadata-querying.md))
 
 The file can be large (hundreds of resources, megabytes of JSON). Always query it
 selectively — never load it whole into context.
@@ -69,6 +73,10 @@ installed (optionally `install-duckdb` too). Install them from `duckdb/duckdb-sk
 1. **Query metadata selectively** — use jq to extract only what you need.
     See [Metadata Querying](./references/metadata-querying.md).
 1. **Surface warnings** — always check for usage warnings before presenting a resource.
+1. **Check keys before joining or aggregating** — if the task combines two resources,
+    or rolls one up, look up `schema.primaryKey` and `schema.foreignKeys` on each
+    first, rather than joining on a same-named or similar-looking column. See
+    [Metadata Querying: Joining resources](./references/metadata-querying.md#joining-resources-primary-keys-and-foreign-keys).
 1. **Validate** *(optional)* — if the user wants to know whether the data actually
     matches the descriptor, or if you're diagnosing a suspicious package, use
     `frictionless validate`. See [Frictionless Validate](./references/frictionless-validate.md).

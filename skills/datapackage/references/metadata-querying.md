@@ -188,6 +188,53 @@ jq '[.resources[] | select(.name == "my_table") | .schema.fields[] | keys[]] | u
 jq '.resources[] | {table: .name, fields: [.schema.fields[] | select(.name == "plant_id_eia")]} | select(.fields | length > 0)' "$PKG"
 ```
 
+### Joining resources: primary keys and foreign keys
+
+**Before joining two resources, or aggregating one, check their declared keys —
+don't infer a join column from matching names.** The Table Schema spec gives every
+resource an explicit `schema.primaryKey` (the field or fields that uniquely identify
+a row) and an optional `schema.foreignKeys` array (each entry a `fields` list plus a
+`reference` naming the target resource and field it points to). When both ends of a
+join are declared, you can walk the relationship directly instead of guessing:
+
+```bash
+# Check a resource's primary key and declared foreign keys together
+jq '.resources[] | select(.name == "my_table") | {primaryKey: .schema.primaryKey, foreignKeys: .schema.foreignKeys}' "$PKG"
+
+# Find every resource with at least one declared foreign key
+jq '.resources[] | select(.schema.foreignKeys | length > 0) | .name' "$PKG"
+
+# Find what a specific field's foreign key points to
+jq '.resources[] | select(.name == "my_table") | .schema.foreignKeys[] | select(.fields == ["utility_id"])' "$PKG"
+```
+
+Two columns can share a name and still not be safe to join on — and, more subversively,
+two columns that share a name can refer to *different entities*, not just different
+formats of the same entity. A `name` field on two resources might be one resource's
+row-identifying string and another's free-text label; only the declared `primaryKey`
+tells you which. Never join on a human-readable name/label column (company name,
+site name, description) when an ID column is available, even if the ID column's
+values look opaque — string identity is a coincidence until proven otherwise, ID
+identity is asserted by the schema.
+
+**Not every join path is declared.** `foreignKeys` coverage is often incomplete in
+real-world descriptors — a resource may have an obviously-joinable ID column (same
+name, same apparent meaning as another resource's primary key) with no formal
+`foreignKeys` entry linking them. Treat a missing declaration as "unverified," not
+"no relationship exists": fall back to matching same-named ID columns across
+resources, but confirm the join is sound before trusting its output — spot-check a
+handful of joined rows, or verify a known identity (e.g. component values summing to
+a reported total) rather than assuming a plausible-looking join is a correct one.
+
+**Worked failure mode**: two resources each have a `facility_name` column that looks
+joinable — same rough meaning, similar-looking values. Joining directly on
+`facility_name` silently merges rows for facilities that share a name but are
+different entities (a common company name reused across unrelated sites, or a
+generic name like "Plant 1" reused across operators) — no error, no warning, just
+rows matched to the wrong facility. Checking `schema.primaryKey` on the source
+resource first would have shown the real identifying column (e.g. `facility_id`) to
+join on instead.
+
 Package-level metadata follows the same pattern:
 
 ```bash

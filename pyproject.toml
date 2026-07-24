@@ -104,7 +104,11 @@ ripgrep = ">=15.1.0"
 duckdb-cli = ">=1.5.4"
 
 [tool.ty.environment]
-extra-paths = ["dev/skills/datapackage/scripts", "dev/tools"]
+extra-paths = [
+  "dev/skills/datapackage/scripts",
+  "dev/tools",
+  "skills/pudl/scripts",
+]
 
 [tool.mdformat]
 # Use "no" wrapping so paragraphs stay as single long lines, soft-wrapped in the editor.

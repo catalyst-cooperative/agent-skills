@@ -71,15 +71,25 @@ populates it with dataset-specific provenance beyond the spec's minimal `name`/`
     lineage (not a specific version). See
     [Data Quality and Context](./data-quality-and-context.md#raw-input-archives-zenodo)
     for how this relates to the concrete-DOI S3 archive path.
+
 - `license_raw` vs `license_pudl` — the license the *original* agency published the data
     under, versus the license PUDL republishes it under (almost always CC-BY-4.0). Cite
     `license_pudl` when telling a user how they may use PUDL's output; mention
     `license_raw` only if they ask about the original source's terms.
+
 - `documentation` — a direct link to that source's PUDL docs page. Prefer this over
     constructing a docs URL from the short code. **Append `.md` only when *you* are
-    fetching the page** (PUDL publishes an LLM-optimized markdown mirror of every docs
-    page). If you share this link with the user, give them the plain `.html` URL from
-    the field — the `.md` version is for your own reading, not theirs.
+    fetching the page** resulting in a path ending in `.html.md` (PUDL publishes an
+    LLM-optimized markdown mirror of every docs page). Examples:
+
+    ```text
+    field value:        https://docs.catalyst.coop/pudl/en/nightly/data_sources/ferc1.html
+    fetch this (mirror): https://docs.catalyst.coop/pudl/en/nightly/data_sources/ferc1.html.md   ✓
+    not this:            https://docs.catalyst.coop/pudl/en/nightly/data_sources/ferc1.md        ✗ 404s
+    ```
+
+    If you share this link with the user, give them the plain `.html` URL from
+    the field — the `.html.md` version is for your own reading, not theirs.
 
 ```bash
 # Get provenance for every source dataset behind the current descriptor
@@ -170,6 +180,60 @@ right_total = gas_a + gas_b.to(ureg.Mcf)  # 2_700 Mcf
 ```
 
 ---
+
+---
+
+## Joining PUDL tables: use declared foreign keys, and PUDL's ID crosswalks
+
+**Before joining two PUDL resources, check `schema.foreignKeys` on each — don't join
+on matching column names, and never join on a name/label field when an ID field is
+available.** This is the general `datapackage` skill rule (see its
+[Metadata Querying: Joining resources](../../datapackage/references/metadata-querying.md#joining-resources-primary-keys-and-foreign-keys)),
+and it applies with extra force in PUDL because the same real-world entity (a
+utility, a plant) is reported under **different ID systems by different source
+agencies** — FERC assigns its own utility IDs, EIA assigns its own, and they don't
+match.
+
+```bash
+# Check a table's declared primary key and foreign keys before joining
+jq '.resources[] | select(.name == "out_ferc1__yearly_income_statements_sched114") | {primaryKey: .schema.primaryKey, foreignKeys: .schema.foreignKeys}' "$PKG"
+```
+
+PUDL resolves the multi-agency-ID problem with a **crosswalk hub**:
+`utility_id_pudl` (and `plant_id_pudl` for plants) is PUDL's own surrogate ID, and
+`core_pudl__assn_*` tables declare the links from each source system's ID to it —
+for example `out_ferc1__yearly_income_statements_sched114.utility_id_ferc1` has a
+declared foreign key to `core_pudl__assn_ferc1_pudl_utilities.utility_id_ferc1`,
+and `core_pudl__assn_eia_pudl_utilities.utility_id_pudl` links to the same
+`core_pudl__entity_utilities_pudl` hub. To join a FERC-sourced table to an
+EIA-sourced table, route through `utility_id_pudl`, not through utility name
+strings:
+
+```
+out_ferc1__...(utility_id_ferc1)
+  → core_pudl__assn_ferc1_pudl_utilities (utility_id_ferc1 → utility_id_pudl)
+  → core_pudl__assn_eia_pudl_utilities (utility_id_pudl → utility_id_eia)
+  → core_eia861__... (utility_id_eia)
+```
+
+**Declared `foreignKeys` coverage varies by table and can change over time** — a
+table may carry a `utility_id_eia` or `plant_id_eia` column with no `foreignKeys`
+entry pointing it at the corresponding crosswalk table, even though it's the same
+key. Don't take an undeclared link as evidence no relationship exists: check for it
+with jq first, but if it's absent, still prefer joining on the shared `utility_id_*`
+/ `plant_id_*` column over a name column — the ID system is the reliable part even
+when the formal declaration is missing — and treat the result as unverified until
+you spot-check it (e.g. confirm a handful of joined rows resolve to the entity you
+expect).
+
+**Worked failure mode**: searching a table by utility *name* (e.g.
+`utility_name_eia ILIKE '%tri-state%'`) can return an entirely unrelated company —
+"Tri-State Electric Member Corp," a Georgia/Tennessee/North Carolina cooperative,
+is a false-positive match for a search meant to find Colorado's "Tri-State
+Generation and Transmission Association." Going through the ID crosswalk
+(`utility_id_ferc1` → `utility_id_pudl` → `utility_id_eia`) instead of name
+matching returns the correct entity and would have caught the mismatch immediately,
+since the crosswalked EIA ID and the name-matched EIA ID are different numbers.
 
 ## Other field-level extensions
 

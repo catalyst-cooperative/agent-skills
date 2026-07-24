@@ -67,7 +67,11 @@ user explicitly asks to load or explore data.
     python scripts/fetch_descriptor.py
     ```
 
-    This populates `assets/cache/` with fresh copies of all descriptors above.
+    This populates `assets/cache/`. The script is cache-aware — a cached file
+    younger than a day is reused with no network call, so it's safe to run this
+    every time you need a descriptor rather than checking `assets/cache/` yourself
+    first. Pass `--force` to bypass the cache and refetch regardless of age (e.g. if
+    you suspect PUDL's schema changed today and need the very latest copy).
 
     Raw input archives (for provenance) live at
     `s3://pudl.catalyst.coop/zenodo/<dataset>/<concrete-doi>/datapackage.json`.
@@ -79,8 +83,21 @@ user explicitly asks to load or explore data.
 1. **Query metadata selectively** — use `/datapackage` skill patterns (jq)
     to find relevant tables, read descriptions, and surface warnings.
 
+    For "does PUDL have data on X" questions, don't stop at a match you already
+    recognized by reputation — run a broader keyword sweep across relevant
+    description/code fields first (for FERC accounts, see
+    [Cross-referencing FERC Form 1 and Form 2 schedules and accounts](#cross-referencing-ferc-form-1-and-form-2-schedules-and-accounts);
+    the same habit applies to other sources' `core_*__codes_*` tables). Flag it if
+    an answer came from recalled knowledge rather than the sweep.
+
 1. **Check table tier** — see [Data Quality and Context](./references/data-quality-and-context.md).
     Prefer `out_*` tables; warn users about `_core_*` tables.
+
+1. **Check keys before joining tables** — if the task combines a FERC-sourced table
+    with an EIA-sourced table (or any two tables at all), check `schema.foreignKeys`
+    on each first, and route utility/plant joins through `utility_id_pudl` /
+    `plant_id_pudl`, not through name-string matching. See
+    [PUDL Datapackage Extensions: Joining PUDL tables](./references/metadata-and-querying.md#joining-pudl-tables-use-declared-foreign-keys-and-pudls-id-crosswalks).
 
 1. **Check methodology before implementation details** — if the user is asking how
     PUDL cleans, imputes, allocates, reconciles, estimates, or models data, read
@@ -107,9 +124,11 @@ user explicitly asks to load or explore data.
     read whenever generating data-loading code or explaining how to access any PUDL output
 - [PUDL Datapackage Extensions](./references/metadata-and-querying.md) — PUDL-specific
     additions to the standard datapackage schema: RST/docstring-formatted descriptions,
-    per-resource provenance fields, and the package-level unit registry; read before
-    querying `description` or other non-standard fields on a PUDL descriptor (for generic
-    descriptor-querying mechanics, use the `datapackage` skill instead)
+    per-resource provenance fields, the package-level unit registry, and how to join
+    tables across FERC/EIA ID systems via `utility_id_pudl`/`plant_id_pudl`; read
+    before querying `description` or other non-standard fields on a PUDL descriptor,
+    and before joining any two PUDL tables (for generic descriptor-querying mechanics,
+    use the `datapackage` skill instead)
 - [Data Quality and Context](./references/data-quality-and-context.md) — table tier
     naming conventions (`out_*` vs `core_*` vs raw), warning types, and what each tier
     means for analysis reliability; read when a user asks about data quality, when choosing
@@ -191,7 +210,14 @@ user explicitly asks to load or explore data.
 - **Use `uv` to install Python packages** — prefer `uv add <package>` over
     `pip install <package>`. `uv` is faster and installs into a virtual environment
     rather than globally. Fall back to `pip` only if `uv` is not available
-    (`command -v uv` returns nothing).
+    (`command -v uv` returns nothing) — and if you do, install into a project-local
+    virtual environment (create one with `python -m venv .venv` if none exists), not
+    the system/global Python. **`pip install --user` is not a safe fallback either**
+    — it still writes into the user's global user-site packages, shared across every
+    other project on their machine, rather than scoping the change to this task. If
+    the working directory already has its own environment manager (pixi, poetry, an
+    existing venv or conda env), install through that instead of introducing a second
+    one.
 
 - **PUDL's datapackage descriptors extend the standard schema** in several PUDL-specific
     ways: RST-formatted, docstring-style descriptions, per-resource provenance metadata,
@@ -200,6 +226,15 @@ user explicitly asks to load or explore data.
     jq queries against `description` or other non-standard fields — it covers only
     what's unique to PUDL; for generic descriptor-querying mechanics, use the
     `datapackage` skill.
+
+- **Prefer joining PUDL tables on ID columns over name-string columns**
+    (`utility_name_ferc1`, `utility_name_eia`, plant names, etc.) — same-named
+    entities across FERC and EIA are not guaranteed to be the same company. Route
+    joins through `utility_id_pudl` / `plant_id_pudl` via the `core_pudl__assn_*`
+    crosswalk tables, checking `schema.foreignKeys` first. Name matching is a
+    legitimate fallback when no ID crosswalk is available, but treat its results as
+    unverified until spot-checked. See
+    [PUDL Datapackage Extensions: Joining PUDL tables](./references/metadata-and-querying.md#joining-pudl-tables-use-declared-foreign-keys-and-pudls-id-crosswalks).
 
 ### Cross-referencing FERC Form 1 and Form 2 schedules and accounts
 
