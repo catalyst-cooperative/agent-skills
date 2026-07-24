@@ -109,8 +109,10 @@ Each source with a `documentation` link has a page describing:
 **Always append `.md` to the `documentation` URL before fetching it yourself.** PUDL
 publishes an LLM-optimized markdown mirror of every docs page (the `llms.txt`
 convention), and agents don't discover it automatically unless told — the raw field
-always points at the `.html` page. This `.md` append is for *your* reading only —
+always points at the `.html` page. This `.html.md` URL is for *your* reading only —
 if you share the link with the user, give them the plain `.html` URL from the field.
+See [PUDL Datapackage Extensions: Per-resource provenance](./metadata-and-querying.md#per-resource-provenance-sources)
+for exactly how that append works.
 
 ```bash
 # Fetch a source's docs page (markdown version)
