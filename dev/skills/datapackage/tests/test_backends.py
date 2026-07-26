@@ -14,6 +14,7 @@ import duckdb
 import pandas as pd
 import polars as pl
 import pytest
+
 from .conftest import (
     EXAMPLES,
     READING_COLUMNS,

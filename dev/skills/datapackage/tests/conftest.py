@@ -15,7 +15,7 @@ from pathlib import Path
 # is valid, but static analyzers may still report unresolved-import warnings.
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
-from generate_examples import (  # noqa: E402
+from generate_examples import (
     READINGS_RESOURCE_BASE,
     SAMPLE_PERIODS,
     STATIONS,

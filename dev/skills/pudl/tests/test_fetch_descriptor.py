@@ -39,7 +39,7 @@ sys.path.insert(
     ),
 )
 
-import fetch_descriptor  # noqa: E402
+import fetch_descriptor
 
 SMALLEST_DESCRIPTOR = "ferc714_xbrl_datapackage.json"
 
@@ -134,7 +134,7 @@ def test_force_bypasses_a_fresh_cache(
     _result, data = real_fetch_result
     calls: list[str] = []
 
-    def _fake_urlopen(url, timeout=None):  # noqa: ARG001
+    def _fake_urlopen(url, timeout=None):
         calls.append(url)
         return _FakeResponse(data)
 
@@ -152,7 +152,7 @@ def test_stale_cache_is_refetched(prepopulated_cache, monkeypatch, real_fetch_re
     _result, data = real_fetch_result
     calls: list[str] = []
 
-    def _fake_urlopen(url, timeout=None):  # noqa: ARG001
+    def _fake_urlopen(url, timeout=None):
         calls.append(url)
         return _FakeResponse(data)
 

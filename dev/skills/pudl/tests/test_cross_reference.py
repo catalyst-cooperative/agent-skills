@@ -82,16 +82,16 @@ def test_account_definitions_for_schedule(tmp_path):
 def test_slurpfile_index_join_for_ferc1_topic():
     """--slurpfile + INDEX() join: resolve account descriptions for a topical keyword search."""
     command = (
-        "jq -c --slurpfile accounts '{accounts}' '\n"
+        f"jq -c --slurpfile accounts '{FERC_ELECTRICITY_ACCOUNTS}' '\n"
         "  ($accounts[0] | INDEX(.account)) as $acct_lookup\n"
         "  | .[]\n"
         '  | select(.description | test("regulatory asset"; "i"))\n'
         "  | .schedule as $sched | .title as $title | .pudl_tables as $tables\n"
         "  | .ferc_accounts[]\n"
-        "  | {{schedule: $sched, title: $title, pudl_tables: $tables,\n"
-        "     account: ., account_description: $acct_lookup[.].description}}\n"
-        "' '{schedules}'"
-    ).format(accounts=FERC_ELECTRICITY_ACCOUNTS, schedules=FERC1_SCHEDULES)
+        "  | {schedule: $sched, title: $title, pudl_tables: $tables,\n"
+        "     account: ., account_description: $acct_lookup[.].description}\n"
+        f"' '{FERC1_SCHEDULES}'"
+    )
     stdout = run_shell(command)
     lines = [ln for ln in stdout.strip().splitlines() if ln]
     assert lines, "Expected at least one row for the 'regulatory asset' topic search"

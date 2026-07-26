@@ -3,6 +3,7 @@
 
 import json
 import re
+
 from bs4 import BeautifulSoup
 
 HTML_PATH = (
@@ -356,7 +357,6 @@ def extract_schedule_number(table_name: str) -> str:
         # investments_in_subsidiary_companies_account_123_1_224 -> last is "224"
         # securities_issued...255_1 -> "255.1" (but ends in _1 and is page 255.1)
         # Actually for these cases the LAST part IS the schedule, so let's re-check
-        pass
 
     # Fall through - return last as-is (strip leading zeros)
     if last.isdigit():
