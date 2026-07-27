@@ -21,7 +21,7 @@ from .conftest import (
 def run_shell(command: str) -> str:
     """Run a documented shell one-liner (may include a pipeline) and return stdout."""
     result = subprocess.run(
-        command, shell=True, capture_output=True, text=True, cwd=Path.cwd()
+        command, shell=True, capture_output=True, text=True, cwd=Path.cwd(), check=False
     )
     assert result.returncode == 0, (
         f"Command exited {result.returncode}\ncommand: {command}\nstderr: {result.stderr}"
@@ -31,7 +31,7 @@ def run_shell(command: str) -> str:
 
 def jq(expr: str, path: Path) -> Any:
     result = subprocess.run(
-        ["jq", "-c", expr, str(path)], capture_output=True, text=True
+        ["jq", "-c", expr, str(path)], capture_output=True, text=True, check=False
     )
     assert result.returncode == 0, (
         f"jq exited {result.returncode}\nstderr: {result.stderr}"
@@ -42,7 +42,7 @@ def jq(expr: str, path: Path) -> Any:
     return [json.loads(ln) for ln in lines]
 
 
-def test_find_ferc1_schedules_by_account():
+def test_find_ferc1_schedules_by_account() -> None:
     """Find all Form 1 schedules that reference a specific account number."""
     result = jq(
         f'[.[] | select(.ferc_accounts[] == "{KNOWN_ACCOUNT}")] | .[] | {{schedule, title}}',
@@ -51,7 +51,7 @@ def test_find_ferc1_schedules_by_account():
     assert result, f"Expected at least one FERC1 schedule referencing {KNOWN_ACCOUNT}"
 
 
-def test_find_ferc2_schedules_by_account():
+def test_find_ferc2_schedules_by_account() -> None:
     """Find all Form 2 schedules that reference a specific account number."""
     result = jq(
         '[.[] | select(.ferc_accounts[] == "489.2")] | .[] | {schedule, title}',
@@ -60,7 +60,7 @@ def test_find_ferc2_schedules_by_account():
     assert result, "Expected at least one FERC2 schedule referencing account 489.2"
 
 
-def test_account_definitions_for_schedule(tmp_path):
+def test_account_definitions_for_schedule(tmp_path: Path) -> None:
     """Get all account definitions for a specific Form 1 schedule, via xargs join."""
     sched = "232"
     accounts_path = FERC_ELECTRICITY_ACCOUNTS
@@ -79,19 +79,19 @@ def test_account_definitions_for_schedule(tmp_path):
         assert account["description"]
 
 
-def test_slurpfile_index_join_for_ferc1_topic():
+def test_slurpfile_index_join_for_ferc1_topic() -> None:
     """--slurpfile + INDEX() join: resolve account descriptions for a topical keyword search."""
     command = (
-        "jq -c --slurpfile accounts '{accounts}' '\n"
+        f"jq -c --slurpfile accounts '{FERC_ELECTRICITY_ACCOUNTS}' '\n"
         "  ($accounts[0] | INDEX(.account)) as $acct_lookup\n"
         "  | .[]\n"
         '  | select(.description | test("regulatory asset"; "i"))\n'
         "  | .schedule as $sched | .title as $title | .pudl_tables as $tables\n"
         "  | .ferc_accounts[]\n"
-        "  | {{schedule: $sched, title: $title, pudl_tables: $tables,\n"
-        "     account: ., account_description: $acct_lookup[.].description}}\n"
-        "' '{schedules}'"
-    ).format(accounts=FERC_ELECTRICITY_ACCOUNTS, schedules=FERC1_SCHEDULES)
+        "  | {schedule: $sched, title: $title, pudl_tables: $tables,\n"
+        "     account: ., account_description: $acct_lookup[.].description}\n"
+        f"' '{FERC1_SCHEDULES}'"
+    )
     stdout = run_shell(command)
     lines = [ln for ln in stdout.strip().splitlines() if ln]
     assert lines, "Expected at least one row for the 'regulatory asset' topic search"
@@ -105,7 +105,7 @@ def test_slurpfile_index_join_for_ferc1_topic():
         )
 
 
-def test_ferc2_topic_search_needs_no_join():
+def test_ferc2_topic_search_needs_no_join() -> None:
     """Single-file Form 2 topic search (no account join required)."""
     result = jq(
         '[.[] | select(.description | test("storage"; "i"))] | .[] | {schedule, title, xbrl_tables}',

@@ -21,6 +21,7 @@ def jq(expr: str, path: Path) -> Any:
         ["jq", "-c", expr, str(path)],
         capture_output=True,
         text=True,
+        check=False,
     )
     assert result.returncode == 0, (
         f"jq exited {result.returncode}\nexpression: {expr!r}\nstderr: {result.stderr}"
@@ -31,7 +32,7 @@ def jq(expr: str, path: Path) -> Any:
     return [json.loads(ln) for ln in lines]
 
 
-def test_lookup_specific_account():
+def test_lookup_specific_account() -> None:
     """Look up a specific account by number."""
     account = jq(
         f'.[] | select(.account == "{KNOWN_ACCOUNT}")', FERC_ELECTRICITY_ACCOUNTS
@@ -40,7 +41,7 @@ def test_lookup_specific_account():
     assert isinstance(account["description"], str) and account["description"]
 
 
-def test_find_accounts_in_numeric_range():
+def test_find_accounts_in_numeric_range() -> None:
     """Numeric-range test('^18[0-9]') matches only 18x-prefixed accounts."""
     accounts = jq(
         '[.[] | select(.account | test("^18[0-9]"))] | .[] | {account, description}',
@@ -53,7 +54,7 @@ def test_find_accounts_in_numeric_range():
         )
 
 
-def test_om_transmission_expense_accounts():
+def test_om_transmission_expense_accounts() -> None:
     """chart == 'om_expenses' and section == '2. Transmission Expenses' filters correctly."""
     accounts = jq(
         '[.[] | select(.chart == "om_expenses" and .section == "2. Transmission Expenses")] |'
@@ -65,7 +66,7 @@ def test_om_transmission_expense_accounts():
         assert isinstance(account["account"], str)
 
 
-def test_major_only_accounts():
+def test_major_only_accounts() -> None:
     """select(.major_only) returns only accounts flagged major_only == true."""
     all_accounts = jq(".", FERC_ELECTRICITY_ACCOUNTS)
     expected = {a["account"] for a in all_accounts if a["major_only"]}
@@ -74,7 +75,7 @@ def test_major_only_accounts():
     assert expected, "Expected at least one major_only account"
 
 
-def test_shape_of_the_data():
+def test_shape_of_the_data() -> None:
     """Every record has the documented fields, with the documented types."""
     accounts = jq(".", FERC_ELECTRICITY_ACCOUNTS)
     assert accounts, "ferc_electricity_accounts.json should not be empty"

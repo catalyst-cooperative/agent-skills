@@ -169,14 +169,14 @@ ureg = pint.UnitRegistry()  # already parses MW, foot, gallon / minute, percent,
 for definition in descriptor["unit_registry"]["definitions"]:
     ureg.define(definition)  # adds MMBtu, Mcf, MMcf, TBtu, VAr, MVAr, USD on top
 
-gas_a = 1_200 * ureg.Mcf  # table A reports in Mcf
-gas_b = 1.5 * ureg.MMcf  # table B reports in MMcf
+gas_a = ureg.Quantity(1_200, "Mcf")  # table A reports in Mcf
+gas_b = ureg.Quantity(1.5, "MMcf")  # table B reports in MMcf
 
 # Wrong: adding raw magnitudes treats 1.5 (MMcf) as if it were 1.5 Mcf
 wrong_total = gas_a.magnitude + gas_b.magnitude  # 1_201.5 -- silently ~1,000x too low
 
 # Right: convert onto a common unit first, then combine
-right_total = gas_a + gas_b.to(ureg.Mcf)  # 2_700 Mcf
+right_total = gas_a + gas_b.to("Mcf")  # 2_700 Mcf
 ```
 
 ---

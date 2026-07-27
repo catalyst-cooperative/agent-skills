@@ -30,19 +30,23 @@ from bs4 import BeautifulSoup
 
 # --- Paths -------------------------------------------------------------------
 
-PUDL_REPO = os.environ.get("PUDL_REPO", "/Users/zane/code/catalyst/pudl")
-PUDL_OUTPUT = os.environ.get("PUDL_OUTPUT", "/Users/zane/code/catalyst/pudl-output")
-AGENT_SKILLS = os.environ.get("AGENT_SKILLS", "/Users/zane/code/catalyst/agent-skills")
+PUDL_REPO: str = os.environ.get("PUDL_REPO", "/Users/zane/code/catalyst/pudl")
+PUDL_OUTPUT: str = os.environ.get(
+    "PUDL_OUTPUT", "/Users/zane/code/catalyst/pudl-output"
+)
+AGENT_SKILLS: str = os.environ.get(
+    "AGENT_SKILLS", "/Users/zane/code/catalyst/agent-skills"
+)
 
-HTML_PATH = os.environ.get(
+HTML_PATH: str = os.environ.get(
     "HTML_PATH",
     str(Path(PUDL_REPO) / "docs/data_sources/ferc6/ferc6_blank_2025-07-31.html"),
 )
-XBRL_DATAPACKAGE_PATH = os.environ.get(
+XBRL_DATAPACKAGE_PATH: str = os.environ.get(
     "XBRL_DATAPACKAGE_PATH",
     str(Path(PUDL_OUTPUT) / "ferc6_xbrl_datapackage.json"),
 )
-OUTPUT_PATH = os.environ.get(
+OUTPUT_PATH: str = os.environ.get(
     "OUTPUT_PATH",
     str(Path(AGENT_SKILLS) / "skills/pudl/assets/ferc6_schedules.json"),
 )
@@ -192,8 +196,8 @@ def build_dbf_by_schedule() -> dict[str, list[str]]:
         for sched in schedules:
             if table not in result[sched]:
                 result[sched].append(table)
-    for sched in result:
-        result[sched] = sorted(set(result[sched]))
+    for sched, tables in result.items():
+        result[sched] = sorted(set(tables))
     return dict(result)
 
 

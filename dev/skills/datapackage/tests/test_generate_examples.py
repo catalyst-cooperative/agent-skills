@@ -15,8 +15,8 @@ import duckdb
 import polars as pl
 import pyarrow.parquet as pq
 import pytest
-from .conftest import DATE_COLUMNS
 
+from .conftest import DATE_COLUMNS
 
 SCRIPT_PATH = Path(__file__).parent.parent / "scripts" / "generate_examples.py"
 

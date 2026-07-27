@@ -40,7 +40,7 @@ _DESCRIPTOR_URLS: dict[str, str] = {
     "ferceqr_parquet_datapackage.json": _FERCEQR,
 }
 
-DESCRIPTORS = list(_DESCRIPTOR_URLS)
+DESCRIPTORS: list[str] = list(_DESCRIPTOR_URLS)
 
 CACHE_DIR = Path(__file__).parent.parent / "assets" / "cache"
 
@@ -80,7 +80,7 @@ def fetch_one(filename: str, force: bool = False) -> tuple[str, int, str, bool]:
     last_error: Exception | None = None
     for attempt in range(1, MAX_ATTEMPTS + 1):
         try:
-            with urllib.request.urlopen(url, timeout=REQUEST_TIMEOUT_SECONDS) as resp:  # noqa: S310
+            with urllib.request.urlopen(url, timeout=REQUEST_TIMEOUT_SECONDS) as resp:
                 data = resp.read()
             out.write_bytes(data)
             digest = hashlib.sha256(data).hexdigest()[:12]

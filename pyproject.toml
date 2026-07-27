@@ -65,27 +65,26 @@ description = "Stop and remove the dev container"
 
 [tool.pixi.dependencies]
 python = ">=3.14"
-duckdb = ">=1.5.4,<2"
+duckdb = ">=1.5.5,<2"
 jq = ">=1.8.2,<2"
-prek = ">=0.4.10"
+prek = ">=0.4.11"
 mdformat = ">=1.0.0"
 mdformat-footnote = ">=0.1.3"
 mdformat-front-matters = ">=2.0.0"
 mdformat-gfm = ">=1.0.0"
 pandas = ">=3.0.3"
 pyarrow = ">=24.0.0"
-polars = ">=1.42.0"
+polars = ">=1.43.0"
 awscli = ">=2.35.11"
 s3fs = ">=2026.6.0"
 fsspec = ">=2026.6.0"
-ruff = ">=0.15.22"
+ruff = ">=0.16"
 nodejs = ">=26.3.1"
 prettier = ">=3.8.4"
 shellcheck = ">=0.11.0"
 taplo = "==0.9.3"
 actionlint = ">=1.7.12"
 typos = ">=1.48"
-ty = ">=0.0.61"
 beautifulsoup4 = ">=4.15.0"
 zensical = ">=0.0.51"
 frictionless = ">=5.19.0,<6"
@@ -95,20 +94,14 @@ pint = ">=0.25.3,<0.26"
 pytest = ">=9.1.1"
 markdownlint-cli2 = ">=0.22.1"
 requests = ">=2.34.2"
+pyrefly = ">=1.1.1"
 
 # These dependencies are needed inside the dev container
 gh = ">=2.95.0"
 curl = ">=8.21.0"
 ca-certificates = ">=2026.6.17"
 ripgrep = ">=15.1.0"
-duckdb-cli = ">=1.5.4"
-
-[tool.ty.environment]
-extra-paths = [
-  "dev/skills/datapackage/scripts",
-  "dev/tools",
-  "skills/pudl/scripts",
-]
+duckdb-cli = ">=1.5.5,<2"
 
 [tool.mdformat]
 # Use "no" wrapping so paragraphs stay as single long lines, soft-wrapped in the editor.
@@ -131,3 +124,43 @@ recieved = "recieved"
 Recieved = "Recieved"
 transporation = "transporation"
 Transporation = "Transporation"
+
+[tool.ruff]
+# Configurations that apply to both the `format` and `lint` subcommands.
+target-version = "py314"
+line-length = 88
+indent-width = 4
+
+[tool.ruff.format]
+# Configuration specfic to the `format` subcommand.
+# We use black compatible formatting.
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint]
+# Configurations that apply to the `lint` subcommand.
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
+inline-quotes = "double"
+multiline-quotes = "double"
+
+[tool.pyrefly]
+preset = "default"
+project-includes = ["**/*.py*", "**/*.ipynb"]
+python-version = "3.14"
+python-platform = "linux"
+python-interpreter-path = ".pixi/envs/default/bin/python3"
+search-path = [
+  "dev/skills/datapackage/scripts",
+  "dev/tools",
+  "skills/pudl/scripts",
+]
