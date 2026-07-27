@@ -356,7 +356,9 @@ def generate_duckdb(out: Path, package_meta: dict[str, Any]) -> None:
     # - Both resources share the same "path" (the .duckdb file)
     # - The non-standard "duckdb_table" key identifies which table inside the DB
     # - bytes/hash appear only on the first resource (shared-file convention)
-    stations_df, readings_df = build_sample_dataframes()
+    # stations_df/readings_df look unused to static analysis, but DuckDB's
+    # replacement scan resolves them by name from this frame in the SQL below.
+    stations_df, readings_df = build_sample_dataframes()  # noqa: RUF059
     out.mkdir(parents=True, exist_ok=True)
     db_path = out / "weather.duckdb"
     db_path.unlink(missing_ok=True)
@@ -403,7 +405,9 @@ def generate_duckdb_no_ext(out: Path, package_meta: dict[str, Any]) -> None:
 
     These packages are used exclusively by test_table_discovery.py.
     """
-    stations_df, readings_df = build_sample_dataframes()
+    # stations_df/readings_df look unused to static analysis, but DuckDB's
+    # replacement scan resolves them by name from this frame in the SQL below.
+    stations_df, readings_df = build_sample_dataframes()  # noqa: RUF059
     out.mkdir(parents=True, exist_ok=True)
     db_path = out / "weather.duckdb"
     db_path.unlink(missing_ok=True)

@@ -683,7 +683,7 @@ def main():
     # Build schedule_num -> {title, div_id} mapping
     # There may be duplicate page numbers (e.g. 254 has two schedules)
     sched_info = {}  # schedule_num -> list of {title, div_id}
-    for key, info in toc_schedules.items():
+    for info in toc_schedules.values():
         snum = info["schedule"]
         if snum not in sched_info:
             sched_info[snum] = []

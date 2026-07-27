@@ -218,7 +218,7 @@ After editing, validate only the files you changed unless the task explicitly ca
 
 Use `git status --short` to decide which files need checking.
 
-- Python: `ruff check --fix`, `ruff format`, and `ty check` when Python changes are relevant
+- Python: `ruff check --fix`, `ruff format`, and `pyrefly check` when Python changes are relevant
 - Markdown: `mdformat` and `markdownlint-cli2`
 - JSON: `pixi run prek run pretty-format-json --files ...`
 - YAML: `prettier --write`
@@ -230,7 +230,7 @@ Prefer these patterns:
 
 - `pixi run ruff check --fix path/to/file.py`
 - `pixi run ruff format path/to/file.py`
-- `pixi run ty check`
+- `pixi run pyrefly check`
 - `pixi run markdownlint-cli2 path/to/file.md`
 - `pixi run mdformat path/to/file.md`
 - `pixi run prettier --write path/to/file.yaml`
@@ -248,15 +248,15 @@ If a task touches multiple file types, prefer `pixi run prek run --files ...` on
 - **Line endings**: LF only. The `mixed-line-ending` hook enforces this; do not commit CRLF line endings.
 - **Shell scripts**: Write POSIX-compatible shell.
     The `shellcheck` hook validates all shell scripts.
-- **Python type checking**: `ty` runs as a pre-commit hook locally but is skipped in CI (`ci: skip: [ty-check]` in `.pre-commit-config.yaml`).
+- **Python type checking**: `pyrefly` runs as a pre-commit hook locally but is skipped in CI (`ci: skip: [pyrefly-check]` in `.pre-commit-config.yaml`).
     Always run it locally before committing Python changes.
 - **Documentation**: The `docs/` site is built with Zensical and deployed by CI on push to `main`.
     Edit source files in `docs/` (markdown); never commit the `site/` build output.
 - **Large files**: The `check-added-large-files` hook is configured at 800 KB to catch accidental large-file additions.
     Treat that threshold as a prompt to confirm intent, not as a blanket prohibition on larger generated artifacts.
-- **Type checking**: `ty` is intentionally run over the whole repository.
+- **Type checking**: `pyrefly` is intentionally run over the whole repository.
     It is fast enough not to be burdensome here, and project-wide checking catches cross-file import, symbol redefinition, and interface drift issues that file-scoped checks can miss.
-    The `ty` hook is skipped in CI, so run it locally after making Python changes.
+    The `pyrefly` hook is skipped in CI, so run it locally after making Python changes.
 - **JSON formatting**: The `pretty-format-json` hook uses specific arguments (`--autofix --indent=2 --no-sort-keys`).
     Calling it through `prek` is simpler than replicating them.
     Python code that writes JSON must use `indent=2` and the default `ensure_ascii=True` — do **not** pass `ensure_ascii=False`.

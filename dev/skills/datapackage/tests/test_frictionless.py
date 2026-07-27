@@ -36,6 +36,7 @@ def frictionless(*args: str, cwd: Path | None = None) -> subprocess.CompletedPro
         capture_output=True,
         text=True,
         cwd=cwd,
+        check=False,
     )
 
 

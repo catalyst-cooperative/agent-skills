@@ -192,8 +192,8 @@ def build_dbf_by_schedule() -> dict[str, list[str]]:
         for sched in schedules:
             if table not in result[sched]:
                 result[sched].append(table)
-    for sched in result:
-        result[sched] = sorted(set(result[sched]))
+    for sched, tables in result.items():
+        result[sched] = sorted(set(tables))
     return dict(result)
 
 

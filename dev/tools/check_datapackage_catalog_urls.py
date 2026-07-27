@@ -51,7 +51,7 @@ def load_entries(catalog_path: Path) -> list[dict[str, Any]]:
     payload = json.loads(catalog_path.read_text(encoding="utf-8"))
     entries = payload.get("entries")
     if not isinstance(entries, list):
-        raise ValueError("Catalog missing 'entries' list")
+        raise TypeError("Catalog missing 'entries' list")
     return entries
 
 

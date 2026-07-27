@@ -21,7 +21,7 @@ from .conftest import (
 def run_shell(command: str) -> str:
     """Run a documented shell one-liner (may include a pipeline) and return stdout."""
     result = subprocess.run(
-        command, shell=True, capture_output=True, text=True, cwd=Path.cwd()
+        command, shell=True, capture_output=True, text=True, cwd=Path.cwd(), check=False
     )
     assert result.returncode == 0, (
         f"Command exited {result.returncode}\ncommand: {command}\nstderr: {result.stderr}"
@@ -31,7 +31,7 @@ def run_shell(command: str) -> str:
 
 def jq(expr: str, path: Path) -> Any:
     result = subprocess.run(
-        ["jq", "-c", expr, str(path)], capture_output=True, text=True
+        ["jq", "-c", expr, str(path)], capture_output=True, text=True, check=False
     )
     assert result.returncode == 0, (
         f"jq exited {result.returncode}\nstderr: {result.stderr}"

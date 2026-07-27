@@ -228,9 +228,7 @@ def test_polars_read_parquet_stations(version):
     )
     assert isinstance(df_polars, pl.DataFrame)
     assert df_polars.height > 0
-    assert set(["station_id", "commissioned_date", "latitude"]).issubset(
-        df_polars.columns
-    )
+    assert {"station_id", "commissioned_date", "latitude"}.issubset(df_polars.columns)
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
@@ -245,7 +243,7 @@ def test_polars_read_parquet_readings(version):
     )
     assert isinstance(df_polars, pl.DataFrame)
     assert df_polars.height > 0
-    assert set(["station_id", "date", "temp_max_c"]).issubset(df_polars.columns)
+    assert {"station_id", "date", "temp_max_c"}.issubset(df_polars.columns)
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
@@ -270,9 +268,7 @@ def test_polars_to_pandas_stations(version):
         f"got {type(df_pandas)}"
     )
     assert not df_pandas.empty
-    assert set(["station_id", "commissioned_date", "latitude"]).issubset(
-        df_pandas.columns
-    )
+    assert {"station_id", "commissioned_date", "latitude"}.issubset(df_pandas.columns)
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
@@ -285,7 +281,7 @@ def test_polars_scan_csv_to_pandas(version):
 
     assert isinstance(df_pandas, pd.DataFrame)
     assert not df_pandas.empty
-    assert set(["station_id", "latitude"]).issubset(df_pandas.columns)
+    assert {"station_id", "latitude"}.issubset(df_pandas.columns)
 
 
 # ---------------------------------------------------------------------------

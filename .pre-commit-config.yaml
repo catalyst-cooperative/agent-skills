@@ -1,5 +1,5 @@
 ci:
-  skip: [ty-check]
+  skip: [pyrefly-check]
 
 repos:
   - repo: https://github.com/DavidAnson/markdownlint-cli2
@@ -45,9 +45,9 @@ repos:
 
   - repo: local
     hooks:
-      - id: ty-check
-        name: ty
-        entry: pixi run ty check
+      - id: pyrefly-check
+        name: pyrefly-check
+        entry: pixi run pyrefly check
         language: system
         types_or: [python, pyi]
         pass_filenames: false
@@ -79,7 +79,7 @@ repos:
     hooks:
       - id: hadolint
 
-  - repo: https://github.com/adhtruong/mirrors-typos
+  - repo: https://github.com/crate-ci/typos
     rev: v1.48.0
     hooks:
       - id: typos

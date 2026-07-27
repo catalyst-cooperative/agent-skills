@@ -39,6 +39,8 @@ sys.path.insert(
     ),
 )
 
+from typing import Self
+
 import fetch_descriptor
 
 SMALLEST_DESCRIPTOR = "ferc714_xbrl_datapackage.json"
@@ -53,7 +55,7 @@ class _FakeResponse:
     def read(self) -> bytes:
         return self._data
 
-    def __enter__(self) -> "_FakeResponse":
+    def __enter__(self) -> Self:
         return self
 
     def __exit__(self, *exc_info: object) -> bool:

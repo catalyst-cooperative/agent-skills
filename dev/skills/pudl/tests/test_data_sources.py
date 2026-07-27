@@ -21,6 +21,7 @@ def jq(expr: str, path: Path = SAMPLE_DESCRIPTOR) -> Any:
         ["jq", "-c", expr, str(path)],
         capture_output=True,
         text=True,
+        check=False,
     )
     assert result.returncode == 0, (
         f"jq exited {result.returncode}\nexpression: {expr!r}\nstderr: {result.stderr}"
