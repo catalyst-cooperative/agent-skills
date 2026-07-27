@@ -42,7 +42,7 @@ def jq(expr: str, path: Path) -> Any:
     return [json.loads(ln) for ln in lines]
 
 
-def test_find_ferc1_schedules_by_account():
+def test_find_ferc1_schedules_by_account() -> None:
     """Find all Form 1 schedules that reference a specific account number."""
     result = jq(
         f'[.[] | select(.ferc_accounts[] == "{KNOWN_ACCOUNT}")] | .[] | {{schedule, title}}',
@@ -51,7 +51,7 @@ def test_find_ferc1_schedules_by_account():
     assert result, f"Expected at least one FERC1 schedule referencing {KNOWN_ACCOUNT}"
 
 
-def test_find_ferc2_schedules_by_account():
+def test_find_ferc2_schedules_by_account() -> None:
     """Find all Form 2 schedules that reference a specific account number."""
     result = jq(
         '[.[] | select(.ferc_accounts[] == "489.2")] | .[] | {schedule, title}',
@@ -60,7 +60,7 @@ def test_find_ferc2_schedules_by_account():
     assert result, "Expected at least one FERC2 schedule referencing account 489.2"
 
 
-def test_account_definitions_for_schedule(tmp_path):
+def test_account_definitions_for_schedule(tmp_path: Path) -> None:
     """Get all account definitions for a specific Form 1 schedule, via xargs join."""
     sched = "232"
     accounts_path = FERC_ELECTRICITY_ACCOUNTS
@@ -79,7 +79,7 @@ def test_account_definitions_for_schedule(tmp_path):
         assert account["description"]
 
 
-def test_slurpfile_index_join_for_ferc1_topic():
+def test_slurpfile_index_join_for_ferc1_topic() -> None:
     """--slurpfile + INDEX() join: resolve account descriptions for a topical keyword search."""
     command = (
         f"jq -c --slurpfile accounts '{FERC_ELECTRICITY_ACCOUNTS}' '\n"
@@ -105,7 +105,7 @@ def test_slurpfile_index_join_for_ferc1_topic():
         )
 
 
-def test_ferc2_topic_search_needs_no_join():
+def test_ferc2_topic_search_needs_no_join() -> None:
     """Single-file Form 2 topic search (no account join required)."""
     result = jq(
         '[.[] | select(.description | test("storage"; "i"))] | .[] | {schedule, title, xbrl_tables}',

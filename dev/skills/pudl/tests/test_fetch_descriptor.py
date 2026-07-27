@@ -62,7 +62,7 @@ class _FakeResponse:
         return False
 
 
-def test_ferceqr_uses_its_own_base_url():
+def test_ferceqr_uses_its_own_base_url() -> None:
     """Static routing check, no network: FERC EQR is hosted under a separate S3 prefix."""
     assert (
         fetch_descriptor._DESCRIPTOR_URLS["ferceqr_parquet_datapackage.json"]
@@ -70,7 +70,7 @@ def test_ferceqr_uses_its_own_base_url():
     )
 
 
-def test_other_descriptors_use_the_nightly_base_url():
+def test_other_descriptors_use_the_nightly_base_url() -> None:
     """Static routing check, no network: every non-EQR descriptor is under /nightly."""
     for name in fetch_descriptor.DESCRIPTORS:
         if name == "ferceqr_parquet_datapackage.json":
@@ -79,7 +79,9 @@ def test_other_descriptors_use_the_nightly_base_url():
 
 
 @pytest.fixture(scope="module")
-def real_fetch_result(tmp_path_factory):
+def real_fetch_result(
+    tmp_path_factory: pytest.TempPathFactory,
+) -> tuple[tuple[str, int, str, bool], bytes]:
     """The one live S3 call this whole module makes, shared by every test below."""
     cache_dir = tmp_path_factory.mktemp("real_fetch_once")
     original_cache_dir = fetch_descriptor.CACHE_DIR
@@ -92,7 +94,9 @@ def real_fetch_result(tmp_path_factory):
     return result, data
 
 
-def test_fetch_one_downloads_the_real_smallest_descriptor(real_fetch_result):
+def test_fetch_one_downloads_the_real_smallest_descriptor(
+    real_fetch_result: tuple[tuple[str, int, str, bool], bytes],
+) -> None:
     (filename, size, digest, was_cached), data = real_fetch_result
 
     assert filename == SMALLEST_DESCRIPTOR
@@ -105,7 +109,11 @@ def test_fetch_one_downloads_the_real_smallest_descriptor(real_fetch_result):
 
 
 @pytest.fixture
-def prepopulated_cache(tmp_path, monkeypatch, real_fetch_result):
+def prepopulated_cache(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    real_fetch_result: tuple[tuple[str, int, str, bool], bytes],
+) -> Path:
     """A tmp cache dir seeded with the one real download's bytes — no network needed
     to set up a "cache already has this file" starting state for the tests below."""
     _result, data = real_fetch_result
@@ -115,9 +123,9 @@ def prepopulated_cache(tmp_path, monkeypatch, real_fetch_result):
 
 
 def test_fetch_one_reuses_a_fresh_cache_without_a_network_call(
-    prepopulated_cache, monkeypatch
-):
-    def _fail_if_called(*_args, **_kwargs):
+    prepopulated_cache: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def _fail_if_called(*_args: object, **_kwargs: object) -> None:
         raise AssertionError("fetch_one() hit the network despite a fresh cache entry")
 
     monkeypatch.setattr(fetch_descriptor.urllib.request, "urlopen", _fail_if_called)
@@ -131,12 +139,14 @@ def test_fetch_one_reuses_a_fresh_cache_without_a_network_call(
 
 
 def test_force_bypasses_a_fresh_cache(
-    prepopulated_cache, monkeypatch, real_fetch_result
-):
+    prepopulated_cache: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    real_fetch_result: tuple[tuple[str, int, str, bool], bytes],
+) -> None:
     _result, data = real_fetch_result
     calls: list[str] = []
 
-    def _fake_urlopen(url, timeout=None):
+    def _fake_urlopen(url: str, timeout: float | None = None) -> _FakeResponse:
         calls.append(url)
         return _FakeResponse(data)
 
@@ -150,11 +160,15 @@ def test_force_bypasses_a_fresh_cache(
     assert len(calls) == 1
 
 
-def test_stale_cache_is_refetched(prepopulated_cache, monkeypatch, real_fetch_result):
+def test_stale_cache_is_refetched(
+    prepopulated_cache: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    real_fetch_result: tuple[tuple[str, int, str, bool], bytes],
+) -> None:
     _result, data = real_fetch_result
     calls: list[str] = []
 
-    def _fake_urlopen(url, timeout=None):
+    def _fake_urlopen(url: str, timeout: float | None = None) -> _FakeResponse:
         calls.append(url)
         return _FakeResponse(data)
 

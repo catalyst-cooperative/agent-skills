@@ -62,7 +62,7 @@ PKG = EXAMPLES / "v2" / "csv" / "datapackage.json"
 # ---------------------------------------------------------------------------
 
 
-def test_resource_count():
+def test_resource_count() -> None:
     """.resources | length → 2."""
     assert jq(".resources | length", PKG) == 2, (
         "Expected 2 resources (stations, daily-readings). "
@@ -70,7 +70,7 @@ def test_resource_count():
     )
 
 
-def test_resource_names_in_order():
+def test_resource_names_in_order() -> None:
     """[.resources[].name] → [\"stations\", \"daily-readings\"]."""
     names = jq("[.resources[].name]", PKG)
     assert names == RESOURCE_NAMES, (
@@ -78,7 +78,7 @@ def test_resource_names_in_order():
     )
 
 
-def test_resource_names_and_formats():
+def test_resource_names_and_formats() -> None:
     """Each resource reports its format via \\(.format // \"unknown\")."""
     rows = jq('[.resources[] | {name: .name, fmt: (.format // "unknown")}]', PKG)
     by_name = {r["name"]: r["fmt"] for r in rows}
@@ -87,7 +87,7 @@ def test_resource_names_and_formats():
     )
 
 
-def test_keyword_search_in_description():
+def test_keyword_search_in_description() -> None:
     """select(.description | test(...)) finds resources by keyword."""
     result = jq(
         '[.resources[] | select(.description | test("calibration"; "i")) | .name]',
@@ -104,7 +104,7 @@ def test_keyword_search_in_description():
 # ---------------------------------------------------------------------------
 
 
-def test_resource_description_nonempty():
+def test_resource_description_nonempty() -> None:
     """stations resource has a non-empty description."""
     desc = jq('.resources[] | select(.name == "stations") | .description', PKG)
     assert isinstance(desc, str) and len(desc) > 20, (
@@ -112,7 +112,7 @@ def test_resource_description_nonempty():
     )
 
 
-def test_station_field_names():
+def test_station_field_names() -> None:
     """stations schema has exactly the expected column names, in order."""
     names = jq(
         '[.resources[] | select(.name == "stations") | .schema.fields[].name]',
@@ -123,7 +123,7 @@ def test_station_field_names():
     )
 
 
-def test_reading_field_names():
+def test_reading_field_names() -> None:
     """daily-readings schema has exactly the expected column names, in order."""
     names = jq(
         '[.resources[] | select(.name == "daily-readings") | .schema.fields[].name]',
@@ -134,7 +134,7 @@ def test_reading_field_names():
     )
 
 
-def test_fields_with_unit():
+def test_fields_with_unit() -> None:
     """select(.unit != null) returns the four measurement columns."""
     fields = jq(
         '[.resources[] | select(.name == "daily-readings")'
@@ -147,7 +147,7 @@ def test_fields_with_unit():
     )
 
 
-def test_field_with_warning():
+def test_field_with_warning() -> None:
     """select(.warning != null) returns only precipitation_mm."""
     fields = jq(
         '[.resources[] | select(.name == "daily-readings")'
@@ -159,7 +159,7 @@ def test_field_with_warning():
     )
 
 
-def test_all_keys_on_resource():
+def test_all_keys_on_resource() -> None:
     """keys reveals non-spec extension fields on a resource."""
     keys = jq(
         '.resources[] | select(.name == "stations") | keys',
@@ -182,7 +182,7 @@ def test_all_keys_on_resource():
 # ---------------------------------------------------------------------------
 
 
-def test_integrity_fields_format():
+def test_integrity_fields_format() -> None:
     """hash is in 'algorithm:hex' format; bytes is a positive integer."""
     resource = jq(".resources[0]", PKG)
     assert isinstance(resource["bytes"], int) and resource["bytes"] > 0, (
@@ -208,7 +208,7 @@ def test_integrity_fields_format():
         ("v2", "parquet"),
     ],
 )
-def test_integrity_values_match_actual_files(version, backend):
+def test_integrity_values_match_actual_files(version: str, backend: str) -> None:
     """bytes and hash in the descriptor match the actual data files on disk."""
     pkg_dir = EXAMPLES / version / backend
     pkg = pkg_dir / "datapackage.json"
@@ -238,7 +238,7 @@ def test_integrity_values_match_actual_files(version, backend):
 # ---------------------------------------------------------------------------
 
 
-def test_package_top_level_keys():
+def test_package_top_level_keys() -> None:
     """del(.resources) returns expected package-level fields."""
     meta = jq("del(.resources)", PKG)
     for key in ("name", "title", "licenses", "sources", "$schema"):
@@ -248,7 +248,7 @@ def test_package_top_level_keys():
         )
 
 
-def test_v1_uses_profile_not_schema():
+def test_v1_uses_profile_not_schema() -> None:
     """v1 descriptor has 'profile', not '$schema' (spec version difference)."""
     v1_pkg = EXAMPLES / "v1" / "csv" / "datapackage.json"
     meta = jq("del(.resources)", v1_pkg)
@@ -256,14 +256,14 @@ def test_v1_uses_profile_not_schema():
     assert "$schema" not in meta, "v1 descriptor should not have '$schema'"
 
 
-def test_v2_uses_schema_not_profile():
+def test_v2_uses_schema_not_profile() -> None:
     """v2 descriptor has '$schema', not 'profile' (spec version difference)."""
     meta = jq("del(.resources)", PKG)
     assert "$schema" in meta, "v2 descriptor missing '$schema' field"
     assert "profile" not in meta, "v2 descriptor should not have 'profile'"
 
 
-def test_v1_contributors_use_role_string():
+def test_v1_contributors_use_role_string() -> None:
     """v1 contributors use 'role' (string), not 'roles' (array)."""
     v1_pkg = EXAMPLES / "v1" / "csv" / "datapackage.json"
     contributors = jq(".contributors", v1_pkg)
@@ -272,7 +272,7 @@ def test_v1_contributors_use_role_string():
         assert "roles" not in c, f"v1 contributor should not have 'roles': {c}"
 
 
-def test_v2_contributors_use_roles_array():
+def test_v2_contributors_use_roles_array() -> None:
     """v2 contributors use 'roles' (array), not 'role' (string)."""
     contributors = jq(".contributors", PKG)
     for c in contributors:
@@ -287,7 +287,7 @@ def test_v2_contributors_use_roles_array():
 # ---------------------------------------------------------------------------
 
 
-def test_foreign_key_references_stations():
+def test_foreign_key_references_stations() -> None:
     """daily-readings has a foreign key referencing stations.station_id."""
     fks = jq(
         '.resources[] | select(.name == "daily-readings") | .schema.foreignKeys',
@@ -305,7 +305,7 @@ def test_foreign_key_references_stations():
 # ---------------------------------------------------------------------------
 
 
-def test_resource_paths_resolve_to_existing_files():
+def test_resource_paths_resolve_to_existing_files() -> None:
     """Every resource path in each descriptor resolves to an existing file."""
     for version in ("v1", "v2"):
         for backend in ("csv", "parquet", "sqlite", "duckdb"):

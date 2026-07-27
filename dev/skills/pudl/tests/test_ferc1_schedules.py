@@ -31,7 +31,7 @@ def jq(expr: str, path: Path) -> Any:
     return [json.loads(ln) for ln in lines]
 
 
-def test_find_schedules_mentioning_account_in_description():
+def test_find_schedules_mentioning_account_in_description() -> None:
     r"""test("182\\.3") over description matches on a literal account number."""
     schedules = jq(
         r'[.[] | select(.description | test("182\\.3"))] | .[] | {schedule, title}',
@@ -40,7 +40,7 @@ def test_find_schedules_mentioning_account_in_description():
     assert schedules, "Expected at least one schedule whose description mentions 182.3"
 
 
-def test_schedules_with_pudl_tables():
+def test_schedules_with_pudl_tables() -> None:
     """select(.pudl_tables | length > 0) returns only integrated schedules."""
     schedules = jq(
         "[.[] | select(.pudl_tables | length > 0)] | .[] | {schedule, title, pudl_tables}",
@@ -53,7 +53,7 @@ def test_schedules_with_pudl_tables():
         )
 
 
-def test_schedules_linked_to_account():
+def test_schedules_linked_to_account() -> None:
     """select(.ferc_accounts[] == ...) resolves the schedules that cite an account."""
     schedules = jq(
         f'[.[] | select(.ferc_accounts[] == "{KNOWN_ACCOUNT}")] | .[] | {{schedule, title}}',
@@ -64,7 +64,7 @@ def test_schedules_linked_to_account():
     )
 
 
-def test_pudl_table_names_for_schedule():
+def test_pudl_table_names_for_schedule() -> None:
     """Get PUDL table names for a specific schedule."""
     tables = jq(
         f'.[] | select(.schedule == "{KNOWN_FERC1_SCHEDULE}") | .pudl_tables[]',
@@ -77,7 +77,7 @@ def test_pudl_table_names_for_schedule():
         assert table.startswith("out_ferc1__"), f"Unexpected table name: {table}"
 
 
-def test_shape_of_the_data():
+def test_shape_of_the_data() -> None:
     """Every record has the documented typed fields."""
     schedules = jq(".", FERC1_SCHEDULES)
     assert schedules, "ferc1_schedules.json should not be empty"

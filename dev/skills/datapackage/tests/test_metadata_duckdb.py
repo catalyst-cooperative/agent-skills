@@ -55,7 +55,7 @@ def jq(expr: str, path: Path) -> Any:
         ("v2", "parquet"),
     ],
 )
-def test_jq_discovers_paths_then_duckdb_reads_data(version, backend):
+def test_jq_discovers_paths_then_duckdb_reads_data(version: str, backend: str) -> None:
     """Use jq to discover resource paths, then query those files with DuckDB."""
     pkg_dir = EXAMPLES / version / backend
     pkg = pkg_dir / "datapackage.json"
@@ -92,7 +92,7 @@ def test_jq_discovers_paths_then_duckdb_reads_data(version, backend):
     )
 
 
-def test_jq_extracts_relative_path_string_for_handoff():
+def test_jq_extracts_relative_path_string_for_handoff() -> None:
     """Step 4 handoff query returns a relative path string from the descriptor."""
     pkg = EXAMPLES / "v2" / "parquet" / "datapackage.json"
     rel_path = jq(

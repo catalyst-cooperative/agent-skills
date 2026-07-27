@@ -4,7 +4,7 @@
 import json
 import re
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 
 HTML_PATH = (
     "/Users/zane/code/catalyst/pudl/docs/data_sources/ferc2/ferc2_blank_2025-07-31.html"
@@ -419,7 +419,7 @@ def get_schedule_number_from_table(table_name: str) -> str:
     return last
 
 
-def extract_description_from_div(div) -> str:
+def extract_description_from_div(div: Tag | None) -> str:
     """Extract useful description text from a schedule div."""
     if div is None:
         return ""
@@ -585,12 +585,12 @@ DIV_ID_TO_SCHEDULE_NUM = {
 
 # TOC data: schedule_num -> (title, div_id)
 # Build from TOC table
-def parse_toc(soup):
+def parse_toc(soup: BeautifulSoup) -> dict[tuple[str, str], dict[str, str]]:
     """Parse the table of contents table."""
     tables = soup.find_all("table")
     toc_table = tables[7]
 
-    schedules = {}
+    schedules: dict[tuple[str, str], dict[str, str]] = {}
     rows = toc_table.find_all("tr")
     for row in rows:
         cells = row.find_all(["td", "th"])
@@ -607,7 +607,7 @@ def parse_toc(soup):
 
         # Get the link target from page cell
         link = page_cell.find("a")
-        href = link.get("href", "") if link else ""
+        href = str(link.get("href", "")) if link else ""
         div_id = href.lstrip("#") if href else ""
 
         # Get the page number
@@ -672,7 +672,7 @@ CUSTOM_DESCRIPTIONS = {
 }
 
 
-def main():
+def main() -> None:
     with open(HTML_PATH, "r") as f:
         soup = BeautifulSoup(f.read(), "html.parser")
 

@@ -31,7 +31,7 @@ def jq(expr: str, path: Path) -> Any:
     return [json.loads(ln) for ln in lines]
 
 
-def test_find_schedules_mentioning_topic():
+def test_find_schedules_mentioning_topic() -> None:
     """test('storage') over description finds schedules about a topic."""
     schedules = jq(
         '[.[] | select(.description | test("storage"))] | .[] | {schedule, title}',
@@ -42,7 +42,7 @@ def test_find_schedules_mentioning_topic():
     )
 
 
-def test_schedules_linked_to_account():
+def test_schedules_linked_to_account() -> None:
     """select(.ferc_accounts[] == ...) resolves the schedules that cite an account."""
     schedules = jq(
         f'[.[] | select(.ferc_accounts[] == "{KNOWN_ACCOUNT}")] | .[] | {{schedule, title}}',
@@ -53,7 +53,7 @@ def test_schedules_linked_to_account():
     )
 
 
-def test_xbrl_table_names_for_schedule():
+def test_xbrl_table_names_for_schedule() -> None:
     """Get XBRL table names for a specific schedule."""
     tables = jq(
         f'.[] | select(.schedule == "{KNOWN_FERC2_SCHEDULE}") | .xbrl_tables[]',
@@ -64,7 +64,7 @@ def test_xbrl_table_names_for_schedule():
     assert tables, f"Expected schedule {KNOWN_FERC2_SCHEDULE} to have XBRL tables"
 
 
-def test_shape_of_the_data():
+def test_shape_of_the_data() -> None:
     """Every record has the documented typed fields; pudl_tables/dbf_tables are empty."""
     schedules = jq(".", FERC2_SCHEDULES)
     assert schedules, "ferc2_schedules.json should not be empty"

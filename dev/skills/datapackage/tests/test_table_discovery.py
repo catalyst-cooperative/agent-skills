@@ -63,7 +63,7 @@ def attach_no_ext(version: str) -> duckdb.DuckDBPyConnection:
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
-def test_no_extension_fields(version):
+def test_no_extension_fields(version: str) -> None:
     """No resource in the duckdb-no-ext descriptor has a duckdb_table field."""
     descriptor = load_descriptor(version)
     for resource in descriptor["resources"]:
@@ -82,7 +82,7 @@ def test_no_extension_fields(version):
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
-def test_step2a_direct_name_match(version):
+def test_step2a_direct_name_match(version: str) -> None:
     """Resource name 'stations' matches the DuckDB table name directly."""
     descriptor = load_descriptor(version)
     resource = resource_by_name(descriptor, "stations")
@@ -107,7 +107,7 @@ def test_step2a_direct_name_match(version):
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
-def test_step2b_raw_name_fails(version):
+def test_step2b_raw_name_fails(version: str) -> None:
     """Querying 'daily-readings' by the raw resource name raises CatalogException."""
     con = attach_no_ext(version)
     with pytest.raises(duckdb.CatalogException):
@@ -115,7 +115,7 @@ def test_step2b_raw_name_fails(version):
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
-def test_step2b_hyphen_to_underscore(version):
+def test_step2b_hyphen_to_underscore(version: str) -> None:
     """Replacing hyphens with underscores in 'daily-readings' finds the table."""
     descriptor = load_descriptor(version)
     resource = resource_by_name(descriptor, "daily-readings")
@@ -145,7 +145,7 @@ def test_step2b_hyphen_to_underscore(version):
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
-def test_step3_show_tables_returns_expected_names(version):
+def test_step3_show_tables_returns_expected_names(version: str) -> None:
     """SHOW ALL TABLES filtered by 'db' returns exactly the two expected table names."""
     con = attach_no_ext(version)
     rows = con.execute(
@@ -159,7 +159,7 @@ def test_step3_show_tables_returns_expected_names(version):
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
-def test_step3_infer_resource_to_table_mapping(version):
+def test_step3_infer_resource_to_table_mapping(version: str) -> None:
     """Normalising resource names maps every resource to a real table.
 
     Models the agent algorithm: list all tables, then for each resource try

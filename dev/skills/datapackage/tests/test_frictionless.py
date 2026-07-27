@@ -93,7 +93,7 @@ _PARQUET_DESCRIPTOR_ONLY = ["--skip-errors", "byte-count,type-error,primary-key"
     ],
     ids=lambda x: "/".join(x) if isinstance(x, list) and x else (x or "no-flags"),
 )
-def test_validates(version, backend, extra_args):
+def test_validates(version: str, backend: str, extra_args: list[str]) -> None:
     """Every example package validates without errors (basic usage from the reference)."""
     pkg = EXAMPLES / version / backend / "datapackage.json"
     result = frictionless("validate", str(pkg), *extra_args)
@@ -106,7 +106,7 @@ def test_validates(version, backend, extra_args):
 # ---------------------------------------------------------------------------
 
 
-def test_json_output_structure_csv():
+def test_json_output_structure_csv() -> None:
     """--json output matches the documented structure: valid, stats, tasks."""
     pkg = EXAMPLES / "v2" / "csv" / "datapackage.json"
     result = frictionless("validate", "--json", str(pkg))
@@ -152,7 +152,7 @@ def test_json_output_structure_csv():
 # ---------------------------------------------------------------------------
 
 
-def test_resource_name_flag():
+def test_resource_name_flag() -> None:
     """--resource-name limits validation to one named resource."""
     pkg = EXAMPLES / "v2" / "csv" / "datapackage.json"
     result = frictionless("validate", "--json", "--resource-name", "stations", str(pkg))
@@ -171,7 +171,7 @@ def test_resource_name_flag():
 
 
 @pytest.mark.parametrize("version,standards", [("v1", "v1"), ("v2", "v2")])
-def test_standards_flag(version, standards):
+def test_standards_flag(version: str, standards: str) -> None:
     """--standards v1/v2 validates the matching spec-version descriptor."""
     pkg = EXAMPLES / version / "csv" / "datapackage.json"
     result = frictionless("validate", "--standards", standards, "--json", str(pkg))
@@ -186,7 +186,7 @@ def test_standards_flag(version, standards):
 # ---------------------------------------------------------------------------
 
 
-def test_table_dimensions_check_stations():
+def test_table_dimensions_check_stations() -> None:
     """--checks table-dimensions:numRows=5 passes for the 5-row stations file.
 
     frictionless rejects absolute paths as 'not safe' when using --checks on a
@@ -204,7 +204,7 @@ def test_table_dimensions_check_stations():
     assert_exit_zero(result)
 
 
-def test_table_dimensions_check_readings():
+def test_table_dimensions_check_readings() -> None:
     """--checks table-dimensions:numRows=150 passes for 150 daily readings (5×30)."""
     pkg = EXAMPLES / "v2" / "csv" / "datapackage.json"
     result = frictionless(
@@ -227,7 +227,7 @@ def test_table_dimensions_check_readings():
 # ---------------------------------------------------------------------------
 
 
-def test_limit_rows_zero_is_fast_structural_check():
+def test_limit_rows_zero_is_fast_structural_check() -> None:
     """--limit-rows 0 validates descriptor structure without reading data rows."""
     pkg = EXAMPLES / "v2" / "csv" / "datapackage.json"
     result = frictionless("validate", "--limit-rows", "0", "--json", str(pkg))
@@ -254,7 +254,7 @@ def test_limit_rows_zero_is_fast_structural_check():
         ("v2", "duckdb"),
     ],
 )
-def test_db_backends_produce_type_file(version, backend):
+def test_db_backends_produce_type_file(version: str, backend: str) -> None:
     """SQLite and DuckDB resources report type='file', not type='table'."""
     pkg = EXAMPLES / version / backend / "datapackage.json"
     result = frictionless("validate", "--json", str(pkg))
@@ -274,7 +274,7 @@ def test_db_backends_produce_type_file(version, backend):
 # ---------------------------------------------------------------------------
 
 
-def test_describe_infers_schema_from_csv():
+def test_describe_infers_schema_from_csv() -> None:
     """frictionless describe --json infers a resource descriptor from a CSV file."""
     stations_csv = EXAMPLES / "v2" / "csv" / "stations.csv"
     result = frictionless("describe", "--json", str(stations_csv))
@@ -296,7 +296,7 @@ def test_describe_infers_schema_from_csv():
 # ---------------------------------------------------------------------------
 
 
-def test_invalid_csv_against_external_schema_reports_errors(tmp_path: Path):
+def test_invalid_csv_against_external_schema_reports_errors(tmp_path: Path) -> None:
     """bad_stations.csv fails validation against the stations table schema."""
     schema_path = tmp_path / "stations_schema.json"
     schema_path.write_text(

@@ -40,7 +40,7 @@ _DESCRIPTOR_URLS: dict[str, str] = {
     "ferceqr_parquet_datapackage.json": _FERCEQR,
 }
 
-DESCRIPTORS = list(_DESCRIPTOR_URLS)
+DESCRIPTORS: list[str] = list(_DESCRIPTOR_URLS)
 
 CACHE_DIR = Path(__file__).parent.parent / "assets" / "cache"
 

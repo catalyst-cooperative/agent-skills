@@ -28,15 +28,15 @@ from generate_examples import (
 EXAMPLES = Path(__file__).parent.parent / "assets" / "examples"
 
 # ── Dataset dimensions ────────────────────────────────────────────────────────
-STATION_COUNT = len(STATIONS)
+STATION_COUNT: int = len(STATIONS)
 READING_COUNT = STATION_COUNT * SAMPLE_PERIODS
 
 # ── Descriptor structure ──────────────────────────────────────────────────────
 RESOURCE_NAMES = [STATIONS_RESOURCE_BASE["name"], READINGS_RESOURCE_BASE["name"]]
 
 # Column names in definition order (Pydantic preserves field order)
-STATION_COLUMNS = list(Station.model_fields.keys())
-READING_COLUMNS = list(Reading.model_fields.keys())
+STATION_COLUMNS: list[str] = list(Station.model_fields.keys())
+READING_COLUMNS: list[str] = list(Reading.model_fields.keys())
 
 # Columns that should carry a proper date type in typed backends (Parquet, DuckDB, SQLite)
 DATE_COLUMNS = {

@@ -44,7 +44,7 @@ def resource_by_name(descriptor: dict, name: str) -> dict:
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
-def test_duckdb_sql_df_stations(version):
+def test_duckdb_sql_df_stations(version: str) -> None:
     """duckdb.sql(...).df() returns a pandas DataFrame for a Parquet file."""
     path = str(EXAMPLES / version / "parquet" / "stations.parquet")
     df = duckdb.sql(f"SELECT * FROM read_parquet('{path}') LIMIT 100").df()
@@ -66,7 +66,7 @@ def test_duckdb_sql_df_stations(version):
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
-def test_duckdb_read_csv_stations(version):
+def test_duckdb_read_csv_stations(version: str) -> None:
     """read_csv loads 5 station rows with the expected column names."""
     path = str(EXAMPLES / version / "csv" / "stations.csv")
     con = duckdb.connect()
@@ -79,7 +79,7 @@ def test_duckdb_read_csv_stations(version):
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
-def test_duckdb_read_csv_readings(version):
+def test_duckdb_read_csv_readings(version: str) -> None:
     """read_csv loads 150 reading rows."""
     path = str(EXAMPLES / version / "csv" / "daily-readings.csv")
     con = duckdb.connect()
@@ -108,7 +108,9 @@ def test_duckdb_read_csv_readings(version):
         ("v2", "daily-readings", READING_COUNT),
     ],
 )
-def test_duckdb_attach_sqlite(version, resource_name, expected_count):
+def test_duckdb_attach_sqlite(
+    version: str, resource_name: str, expected_count: int
+) -> None:
     """ATTACH sqlite reads the table named by the sqlite_table extension field."""
     descriptor = load_descriptor(version, "sqlite")
     resource = resource_by_name(descriptor, resource_name)
@@ -141,7 +143,9 @@ def test_duckdb_attach_sqlite(version, resource_name, expected_count):
         ("v2", "daily-readings", READING_COUNT),
     ],
 )
-def test_duckdb_attach_duckdb_file(version, resource_name, expected_count):
+def test_duckdb_attach_duckdb_file(
+    version: str, resource_name: str, expected_count: int
+) -> None:
     """ATTACH duckdb reads the table named by the duckdb_table extension field."""
     descriptor = load_descriptor(version, "duckdb")
     resource = resource_by_name(descriptor, resource_name)
@@ -166,7 +170,7 @@ def test_duckdb_attach_duckdb_file(version, resource_name, expected_count):
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
-def test_duckdb_join_driven_by_foreign_keys(version):
+def test_duckdb_join_driven_by_foreign_keys(version: str) -> None:
     """The documented join uses column names read from foreignKeys, not guessed ones."""
     descriptor = load_descriptor(version, "csv")
     readings = resource_by_name(descriptor, "daily-readings")
@@ -217,7 +221,7 @@ def test_duckdb_join_driven_by_foreign_keys(version):
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
-def test_polars_read_parquet_stations(version):
+def test_polars_read_parquet_stations(version: str) -> None:
     """Polars lazy parquet pattern (scan -> select/filter -> collect) works for stations."""
     path = str(EXAMPLES / version / "parquet" / "stations.parquet")
     df_polars = (
@@ -232,7 +236,7 @@ def test_polars_read_parquet_stations(version):
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
-def test_polars_read_parquet_readings(version):
+def test_polars_read_parquet_readings(version: str) -> None:
     """Polars lazy parquet pattern works for daily-readings."""
     path = str(EXAMPLES / version / "parquet" / "daily-readings.parquet")
     df_polars = (
@@ -247,7 +251,7 @@ def test_polars_read_parquet_readings(version):
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
-def test_polars_to_pandas_stations(version):
+def test_polars_to_pandas_stations(version: str) -> None:
     """polars.to_pandas() produces a pandas DataFrame with the correct shape and columns.
 
     Documents the recommended conversion pattern from the "Polars" section:
@@ -272,7 +276,7 @@ def test_polars_to_pandas_stations(version):
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
-def test_polars_scan_csv_to_pandas(version):
+def test_polars_scan_csv_to_pandas(version: str) -> None:
     """Polars lazy CSV scan pattern can be collected and converted to pandas."""
     path = str(EXAMPLES / version / "csv" / "stations.csv")
     df_polars = pl.scan_csv(path).select(["station_id", "latitude"]).collect()
@@ -291,7 +295,7 @@ def test_polars_scan_csv_to_pandas(version):
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
-def test_pandas_read_parquet_stations(version):
+def test_pandas_read_parquet_stations(version: str) -> None:
     """pandas read_parquet loads stations with the expected shape."""
     path = str(EXAMPLES / version / "parquet" / "stations.parquet")
     df = pd.read_parquet(path)
@@ -303,7 +307,7 @@ def test_pandas_read_parquet_stations(version):
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
-def test_pandas_read_parquet_readings(version):
+def test_pandas_read_parquet_readings(version: str) -> None:
     """pandas read_parquet loads daily-readings with the expected shape."""
     path = str(EXAMPLES / version / "parquet" / "daily-readings.parquet")
     df = pd.read_parquet(path)
@@ -314,7 +318,7 @@ def test_pandas_read_parquet_readings(version):
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
-def test_pandas_read_csv_stations(version):
+def test_pandas_read_csv_stations(version: str) -> None:
     """pandas read_csv loads stations as a DataFrame."""
     path = str(EXAMPLES / version / "csv" / "stations.csv")
     df = pd.read_csv(path)
@@ -331,7 +335,7 @@ def test_pandas_read_csv_stations(version):
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
-def test_sqlite3_stations(version):
+def test_sqlite3_stations(version: str) -> None:
     """Python sqlite3 + pandas.read_sql pattern works for a sqlite-backed resource."""
     descriptor = load_descriptor(version, "sqlite")
     resource = resource_by_name(descriptor, "stations")

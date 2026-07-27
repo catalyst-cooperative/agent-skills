@@ -154,7 +154,13 @@ inline-quotes = "double"
 multiline-quotes = "double"
 
 [tool.pyrefly]
+preset = "default"
 project-includes = ["**/*.py*", "**/*.ipynb"]
 python-version = "3.14"
 python-platform = "linux"
 python-interpreter-path = ".pixi/envs/default/bin/python3"
+search-path = [
+  "dev/skills/datapackage/scripts",
+  "dev/tools",
+  "skills/pudl/scripts",
+]
