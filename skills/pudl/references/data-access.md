@@ -77,6 +77,37 @@ etc.
 citation, use a fixed versioned path (e.g. `v2024.11.0`) so results are reproducible
 and the data never changes under you.
 
+### DuckDB and S3: required setup
+
+The `pudl.catalyst.coop` bucket name contains dots. DuckDB's default S3 addressing mode
+is virtual-hosted-style, which folds the bucket name into the hostname
+(`pudl.catalyst.coop.s3.us-west-2.amazonaws.com`). AWS's S3 TLS certificate only covers
+one wildcard level (`*.s3.<region>.amazonaws.com`), so that hostname doesn't match the
+certificate, and DuckDB fails with an `SSL peer certificate or SSH remote key was not OK`
+error — not a permissions or connectivity problem.
+
+This bucket is free and public and needs **no** AWS credentials — but if the user
+happens to have credentials configured (even invalid or expired ones, e.g. a stale SSO
+token), DuckDB picks up `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY` from the environment
+automatically and tries to sign requests with them, turning a should-just-work public
+read into a confusing `403 Forbidden` / `InvalidAccessKeyId` error. Clear them
+explicitly rather than assuming their absence.
+
+Run this once per DuckDB session before any query touching `s3://pudl.catalyst.coop/...`
+(including through `/attach-db` or `/query`):
+
+```sql
+SET s3_url_style = 'path';
+SET s3_access_key_id = '';
+SET s3_secret_access_key = '';
+```
+
+The first line switches to path-style addressing
+(`s3.us-west-2.amazonaws.com/pudl.catalyst.coop/...`), which keeps the bucket name out of
+the hostname and avoids the certificate mismatch. The next two force anonymous requests
+regardless of what's in the environment. Every DuckDB SQL example below assumes all
+three have already been set.
+
 ### FERC EQR (Electric Quarterly Reports / Form 920)
 
 The FERC EQR dataset (also known as **FERC Form 920**) is distributed separately at
@@ -105,6 +136,10 @@ Examples:
 **With DuckDB (pure SQL — no Python required):**
 
 ```sql
+SET s3_url_style = 'path';
+SET s3_access_key_id = '';
+SET s3_secret_access_key = '';
+
 -- Attach the EQR descriptor (optional, for schema inspection)
 -- Then query specific quarters directly
 SELECT * FROM read_parquet(
@@ -122,10 +157,13 @@ Parquet files from S3 without downloading them.
 ```python
 import polars as pl
 
+storage_options = {"aws_skip_signature": "true", "aws_region": "us-west-2"}
+
 # Load a single quarter
 df = (
     pl.scan_parquet(
-        "s3://pudl.catalyst.coop/ferceqr/core_ferceqr__transactions/2023q1.parquet"
+        "s3://pudl.catalyst.coop/ferceqr/core_ferceqr__transactions/2023q1.parquet",
+        storage_options=storage_options,
     )
     .select(["seller_name", "buyer_name", "transaction_quantity"])
     .collect()
@@ -133,7 +171,8 @@ df = (
 
 # Load all quarters for a year using a glob
 df = pl.scan_parquet(
-    "s3://pudl.catalyst.coop/ferceqr/core_ferceqr__transactions/2023q*.parquet"
+    "s3://pudl.catalyst.coop/ferceqr/core_ferceqr__transactions/2023q*.parquet",
+    storage_options=storage_options,
 ).collect()
 ```
 
@@ -225,9 +264,15 @@ base path. There are three known issues with these descriptors:
 Use the `/attach-db` skill to attach and query an XBRL DuckDB file
 directly from S3 without downloading. Pure SQL (no Python required):
 
+**`ATTACH` needs the `https://` URL, not `s3://`.** `read_parquet()` and `glob()`
+accept `s3://` once `s3_url_style = 'path'` is set (see above), but DuckDB's `ATTACH`
+fails with `database does not exist` for an `s3://` URI regardless of that setting —
+use the `https://s3.us-west-2.amazonaws.com/...` form instead.
+
 ```sql
 -- Attach the Form 1 XBRL database
-ATTACH 's3://pudl.catalyst.coop/nightly/ferc1_xbrl.duckdb' AS ferc1 (READ_ONLY);
+ATTACH 'https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/ferc1_xbrl.duckdb'
+    AS ferc1 (READ_ONLY);
 
 -- List available tables
 SHOW ALL TABLES;
@@ -244,7 +289,8 @@ import duckdb
 
 con = duckdb.connect()
 con.execute(
-    "ATTACH 's3://pudl.catalyst.coop/nightly/ferc1_xbrl.duckdb' AS ferc1 (READ_ONLY)"
+    "ATTACH 'https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/ferc1_xbrl.duckdb'"
+    " AS ferc1 (READ_ONLY)"
 )
 df = con.execute(
     "SELECT * FROM ferc1.steam_electric_generating_plant_statistics_large_plants_402_duration LIMIT 100"
@@ -262,13 +308,22 @@ column name doesn't guarantee a matching unit, and mismatched-scale units (e.g. 
 
 ### With pandas
 
+**Pass `storage_options={"anon": True}`.** Without it, pandas/s3fs falls back to
+anonymous access only when it finds no credentials at all — but if the user has any
+AWS credentials configured, even invalid or expired ones, s3fs tries to sign requests
+with them first and fails with a `403`/`ACCESS_DENIED` error instead of falling back.
+Passing `anon=True` explicitly skips the credential lookup entirely, so this works the
+same way regardless of what's in the user's environment.
+
 ```python
 import pandas as pd
 
 table = "out_eia923__generation"
 
-# From S3 (no credentials needed)
-df = pd.read_parquet(f"s3://pudl.catalyst.coop/nightly/{table}.parquet")
+# From S3 (no credentials needed or used)
+df = pd.read_parquet(
+    f"s3://pudl.catalyst.coop/nightly/{table}.parquet", storage_options={"anon": True}
+)
 
 # From local file
 df = pd.read_parquet(f"/path/to/pudl_parquet/{table}.parquet")
@@ -277,6 +332,7 @@ df = pd.read_parquet(f"/path/to/pudl_parquet/{table}.parquet")
 df = pd.read_parquet(
     f"s3://pudl.catalyst.coop/nightly/{table}.parquet",
     columns=["plant_id_eia", "report_date", "net_generation_mwh"],
+    storage_options={"anon": True},
 )
 ```
 
@@ -288,6 +344,10 @@ df = pd.read_parquet(
 Pure SQL (no Python required) — use `/query` to run these:
 
 ```sql
+SET s3_url_style = 'path';
+SET s3_access_key_id = '';
+SET s3_secret_access_key = '';
+
 SELECT plant_id_eia, report_date, net_generation_mwh
 FROM read_parquet('s3://pudl.catalyst.coop/nightly/out_eia923__generation.parquet')
 WHERE report_date >= '2020-01-01'
@@ -299,7 +359,11 @@ Or from Python:
 ```python
 import duckdb
 
-result = duckdb.sql("""
+con = duckdb.connect()
+con.execute("SET s3_url_style = 'path'")
+con.execute("SET s3_access_key_id = ''")
+con.execute("SET s3_secret_access_key = ''")
+result = con.execute("""
     SELECT plant_id_eia, report_date, net_generation_mwh
     FROM read_parquet('s3://pudl.catalyst.coop/nightly/out_eia923__generation.parquet')
     WHERE report_date >= '2020-01-01'
@@ -312,12 +376,20 @@ hourly tables (e.g., `out_ferc714__respondents_hourly`).
 
 ### With polars (memory-efficient alternative to pandas)
 
+**Pass `storage_options` explicitly.** Unlike pandas/s3fs, polars does not fall back to
+anonymous access on its own — with no AWS credentials or region configured (the common
+case, since this bucket needs neither), it hangs trying an EC2 instance-metadata lookup
+and then fails because it can't determine the bucket's region. Skip both problems with:
+
 ```python
 import polars as pl
 
 table = "out_eia923__generation"
 
-lf = pl.scan_parquet(f"s3://pudl.catalyst.coop/nightly/{table}.parquet")
+lf = pl.scan_parquet(
+    f"s3://pudl.catalyst.coop/nightly/{table}.parquet",
+    storage_options={"aws_skip_signature": "true", "aws_region": "us-west-2"},
+)
 df = lf.select(["plant_id_eia", "report_date", "net_generation_mwh"]).collect()
 ```
 
@@ -329,8 +401,12 @@ down column selection and row filters to the Parquet reader.
 ## Listing all available tables
 
 ```sql
+SET s3_url_style = 'path';
+SET s3_access_key_id = '';
+SET s3_secret_access_key = '';
+
 -- Pure DuckDB SQL: list all Parquet tables in the nightly build
-SELECT filename
+SELECT file
 FROM glob('s3://pudl.catalyst.coop/nightly/*.parquet');
 ```
 

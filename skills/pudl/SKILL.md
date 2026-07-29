@@ -194,7 +194,15 @@ user explicitly asks to load or explore data.
     ```
 
 - The S3 bucket `s3://pudl.catalyst.coop` is **free and publicly accessible** — no
-    AWS credentials needed.
+    AWS credentials needed, and any ambient credentials (even invalid ones) should be
+    explicitly bypassed rather than assumed absent.
+
+- **DuckDB, pandas, and polars each need explicit setup to query this bucket
+    reliably** — see
+    [Data Access: DuckDB and S3](./references/data-access.md#duckdb-and-s3-required-setup)
+    (`s3_url_style` plus clearing S3 credential settings; applies through `/attach-db`
+    and `/query` too) and the pandas/polars sections below it (`storage_options` for
+    anonymous access) for why each is needed.
 
 - The Parquet path for any table is `s3://pudl.catalyst.coop/nightly/<table_name>.parquet`.
 
