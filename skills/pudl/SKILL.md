@@ -13,15 +13,14 @@ description: >
   FERC Form 1, FERC Form 714, FERC EQR, EPA CEMS, EPA CAMD, etc.).
 license: CC-BY-4.0
 compatibility: |
-  Required skills: datapackage (which requires jq >= 1.8, attach-db, and query)
-  Required Python packages: pandas >= 2.0, s3fs (for S3 access)
-  Optional Python packages: polars >= 1.0, markitdown[pdf,docx] (to convert downloaded
-    PDF/Word blank forms and instructions to text)
-  Optional skills: dignified-python
+  Required skills: datapackage
+  Optional Python packages: polars >= 1.0 (preferred for DataFrame work), pandas >= 2.0
+    with s3fs (only needed if using pandas for S3 access), markitdown[pdf,docx] (to
+    convert downloaded PDF/Word blank forms and instructions to text)
 metadata:
   - author: Catalyst Cooperative
   - email: hello@catalyst.coop
-  - last-updated: 2026-07-19
+  - last-updated: 2026-07-29
 ---
 
 # PUDL Data Explorer Guide
@@ -134,7 +133,7 @@ the question at hand, not only when the user asks for it by name.
     distinguish between a concept-DOI and a concrete-DOI, or whenever interpreting what
     a column, code, or schedule actually means.
 - [Data Access](./references/data-access.md) — S3 paths, loading patterns
-    (pandas/DuckDB/polars/pure SQL), FERC historical database locations, and EQR access;
+    (pandas/DuckDB/polars/pure SQL), raw per-form FERC Parquet locations, and EQR access;
     read whenever generating data-loading code or explaining how to access any PUDL output
 - [PUDL Datapackage Extensions](./references/metadata-and-querying.md) — PUDL-specific
     additions to the standard datapackage schema: RST/docstring-formatted descriptions,
@@ -214,11 +213,14 @@ the question at hand, not only when the user asks for it by name.
 - **DuckDB, pandas, and polars each need explicit setup to query this bucket
     reliably** — see
     [Data Access: DuckDB and S3](./references/data-access.md#duckdb-and-s3-required-setup)
-    (`s3_url_style` plus clearing S3 credential settings; applies through `/attach-db`
-    and `/query` too) and the pandas/polars sections below it (`storage_options` for
-    anonymous access) for why each is needed.
+    (`s3_url_style` plus clearing S3 credential settings; applies through `/query` too)
+    and the pandas/polars sections below it (`storage_options` for anonymous access)
+    for why each is needed.
 
-- The Parquet path for any table is `s3://pudl.catalyst.coop/nightly/<table_name>.parquet`.
+- The Parquet path for a **core PUDL output table** is
+    `s3://pudl.catalyst.coop/nightly/<table_name>.parquet`. Raw per-form FERC tables
+    use a different path — see
+    [Raw per-form Parquet directories](./references/data-access.md#raw-per-form-parquet-directories).
 
 - **Always surface usage warnings** from the descriptor before providing loading code.
 
@@ -306,9 +308,7 @@ jq '[.[] | select(.description | test("storage"; "i"))] |
 
 ## Delegation
 
-| User intent                        | Hand off to         |
-| ---------------------------------- | ------------------- |
-| Query datapackage.json metadata    | `/datapackage`      |
-| Attach a .duckdb or .sqlite file   | `/attach-db`        |
-| Run SQL or NL queries against data | `/query`            |
-| General Python/pandas help         | `/dignified-python` |
+| User intent                        | Hand off to    |
+| ---------------------------------- | -------------- |
+| Query datapackage.json metadata    | `/datapackage` |
+| Run SQL or NL queries against data | `/query`       |

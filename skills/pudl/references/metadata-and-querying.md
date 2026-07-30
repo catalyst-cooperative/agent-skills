@@ -181,8 +181,6 @@ right_total = gas_a + gas_b.to("Mcf")  # 2_700 Mcf
 
 ---
 
----
-
 ## Joining PUDL tables: use declared foreign keys, and PUDL's ID crosswalks
 
 **Before joining two PUDL resources, check `schema.foreignKeys` on each — don't join

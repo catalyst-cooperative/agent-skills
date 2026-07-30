@@ -87,7 +87,7 @@ read into a confusing `403 Forbidden` / `InvalidAccessKeyId` error. Clear them
 explicitly rather than assuming their absence.
 
 Run this once per DuckDB session before any query touching `s3://pudl.catalyst.coop/...`
-(including through `/attach-db` or `/query`):
+(including through `/query`):
 
 ```sql
 SET s3_url_style = 'path';
@@ -259,9 +259,14 @@ SELECT file
 FROM glob('s3://pudl.catalyst.coop/nightly/ferc1_xbrl/*.parquet');
 ```
 
-Or query the descriptor with jq (see the `datapackage` skill for full querying patterns):
+Or query the descriptor with jq (see the `datapackage` skill for full querying patterns).
+The remote filename inside every form/era directory is always `datapackage.json` — download
+it and give the local copy a disambiguated name so you can tell descriptors apart once
+you've fetched more than one:
 
 ```bash
+curl -o ferc1_xbrl_datapackage.json \
+    https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/ferc1_xbrl/datapackage.json
 jq -r '.resources[].name' ferc1_xbrl_datapackage.json
 ```
 

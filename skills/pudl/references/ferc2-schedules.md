@@ -19,8 +19,8 @@ Companies; there is no separate accounts reference file for gas companies in thi
 ## Querying the machine-readable index
 
 Use [`ferc2_schedules.json`](../assets/ferc2_schedules.json) for all programmatic
-lookups. `xbrl_tables` and `ferc_accounts` are typed arrays; `schedule` is the page key.
-`pudl_tables` and `dbf_tables` are present but currently empty (Form 2 is not yet
+lookups. `xbrl_tables`, `dbf_tables`, and `ferc_accounts` are typed arrays; `schedule`
+is the page key. `pudl_tables` is present but currently empty (Form 2 is not yet
 integrated into PUDL).
 
 ### jq examples
@@ -63,8 +63,8 @@ Raw tables come in two formats within the XBRL-derived data:
 - **Instant tables** (`_instant` suffix): record point-in-time balances (e.g. balance
     sheet accounts, end-of-year plant totals).
 
-Many schedules are split across multiple sub-tables in the XBRL database, one per
-section, account type, or monthly period.
+Many schedules are split across multiple sub-tables in the XBRL-derived Parquet data,
+one per section, account type, or monthly period.
 
 Source (schedule titles and descriptions): FERC Form 2 blank form (2025-07-31 edition).
 `ferc2` doesn't have a PUDL docs page yet (its `documentation` field is `null` — see

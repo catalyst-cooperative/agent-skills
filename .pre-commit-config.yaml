@@ -1,5 +1,5 @@
 ci:
-  skip: [pyrefly-check]
+  skip: [pyrefly-check, pytest]
 
 repos:
   - repo: https://github.com/DavidAnson/markdownlint-cli2
@@ -83,3 +83,14 @@ repos:
     rev: v1.48.0
     hooks:
       - id: typos
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        stages: [pre-commit]
+        language: unsupported
+        verbose: false
+        pass_filenames: false
+        always_run: true
+        entry: pixi run test

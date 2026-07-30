@@ -69,7 +69,9 @@ The **`name`** field is the short code used in:
 
 - Cached raw-archive paths: `s3://pudl.catalyst.coop/zenodo/<name>/<concrete-doi>/`
 - Table name prefixes (second component): e.g. `out_eia923__generation`
-- FERC XBRL descriptor filenames: e.g. `ferc1_xbrl_datapackage.json`
+- Raw per-form FERC directory names: e.g. `nightly/ferc1_xbrl/` (each such directory
+    holds a `datapackage.json` plus one Parquet file per table — see
+    [Data Access: Raw per-form Parquet directories](./data-access.md#raw-per-form-parquet-directories))
 
 ---
 
