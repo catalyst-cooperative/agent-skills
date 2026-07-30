@@ -43,15 +43,6 @@ repos:
         args: [--fix]
       - id: ruff-format
 
-  - repo: local
-    hooks:
-      - id: pyrefly-check
-        name: pyrefly-check
-        entry: pixi run pyrefly check
-        language: system
-        types_or: [python, pyi]
-        pass_filenames: false
-
   - repo: https://github.com/rbubley/mirrors-prettier
     rev: v3.9.6
     hooks:
@@ -86,6 +77,25 @@ repos:
 
   - repo: local
     hooks:
+      - id: pyrefly-check
+        name: pyrefly-check
+        entry: pixi run pyrefly check
+        language: system
+        types_or: [python, pyi]
+        pass_filenames: false
+      - id: update-skill-last-updated
+        name: update `last-updated` metadata in SKILL.md
+        language: system
+        files: ^skills/.*/SKILL\.md$
+        pass_filenames: true
+        entry: |-
+          bash -c '
+          today=$(date +%Y-%m-%d)
+          for f in "$@"; do
+            sed -i.bak -E "s/^([[:space:]]*-[[:space:]]*last-updated:).*/\1 ${today}/" "$f"
+            rm -f "$f.bak"
+          done
+          ' --
       - id: pytest
         name: pytest
         stages: [pre-commit]
