@@ -47,11 +47,16 @@ in `SKILL.md` for that pattern.
 
 ## About FERC Form 2 data
 
-None of FERC Form 2 has yet been integrated into the main PUDL data pipeline. The raw
-XBRL-derived data (2021–present) is available in `ferc2_xbrl.duckdb` and
-`ferc2_xbrl.sqlite`. There is no equivalent DBF-era database for Form 2 yet.
+None of FERC Form 2 has yet been integrated into the main PUDL data pipeline. Raw
+Parquet tables are available for both eras:
 
-Raw tables come in two formats within the XBRL database:
+- **XBRL (2021–present):** `s3://pudl.catalyst.coop/nightly/ferc2_xbrl/`
+- **DBF (1996–2020):** `s3://pudl.catalyst.coop/nightly/ferc2_dbf/`
+
+See [Raw per-form Parquet directories](./data-access.md#raw-per-form-parquet-directories)
+for how to load these.
+
+Raw tables come in two formats within the XBRL-derived data:
 
 - **Duration tables** (`_duration` suffix): record values that apply over a time period
     (e.g. income, expenses, changes in plant balance).

@@ -45,17 +45,12 @@ every time you are about to generate data-loading code:
     line to their shell startup file (e.g. `~/.zshrc`, `~/.bashrc`, or
     `~/.profile`) if you have permission to edit environment files.
 
-1. **FERC raw databases** — the FERC DuckDB and SQLite files can also be downloaded
-    for local use. Only suggest this if the user has already been querying them
-    remotely in the current session — these are much messier than the processed PUDL
-    Parquet outputs, so don't proactively recommend them.
-
 ---
 
 ## Data locations
 
-All PUDL outputs — Parquet files, FERC SQLite/DuckDB databases, and descriptors — are
-free and publicly accessible on AWS S3. No AWS credentials or account needed.
+All PUDL outputs — Parquet files and datapackage.json descriptors — are free and
+publicly accessible on AWS S3. No AWS credentials or account needed.
 
 ### Core PUDL outputs
 
@@ -66,12 +61,10 @@ free and publicly accessible on AWS S3. No AWS credentials or account needed.
 | Local download (`$PUDL_DATA`)               | `$PUDL_DATA/<table_name>.parquet`                         |
 | Local PUDL pipeline output (`$PUDL_OUTPUT`) | `$PUDL_OUTPUT/parquet/<table_name>.parquet`               |
 
-Datapackage JSON descriptors at the same base path: `pudl_parquet_datapackage.json`,
-`ferc1_xbrl_datapackage.json`, `ferc2_xbrl_datapackage.json`,
-`ferc6_xbrl_datapackage.json`, `ferc60_xbrl_datapackage.json`,
-`ferc714_xbrl_datapackage.json`. If using local PUDL pipeline output, these databases
-will be in the directory above the Parquet files: `$PUDL_OUTPUT/ferc1_xbrl_datapackage.json`,
-etc.
+The core PUDL Parquet outputs share a single descriptor at the same base path:
+`pudl_parquet_datapackage.json`. The raw per-form FERC data described in
+[FERC historical form data](#ferc-historical-form-data) below has its own
+`datapackage.json` per form/era directory.
 
 **Use S3 nightly** for most exploratory work. For production pipelines or academic
 citation, use a fixed versioned path (e.g. `v2024.11.0`) so results are reproducible
@@ -183,11 +176,12 @@ Descriptor:
 
 ---
 
-## FERC historical form databases
+## FERC historical form data
 
 FERC Forms 1, 2, 6, 60, and 714 span two distinct filing eras with different source
-formats. PUDL converts these into databases published alongside the core Parquet
-outputs at the same S3 base path.
+formats. PUDL converts each form/era combination into a set of raw Parquet files
+published alongside the core PUDL outputs at the same S3 base path — one Parquet file
+per table, plus a `datapackage.json` descriptor, inside a per-form/era directory.
 
 ### Reporting epochs
 
@@ -199,102 +193,76 @@ outputs at the same S3 base path.
 | Form 60 (Centralized Service Companies)                         | DBF              | 2006–2020    | 2021–present |
 | Form 714 (Electricity Balancing Authorities and Planning Areas) | CSV (DBF export) | 2006-2020    | 2021–present |
 
+**Form 714 has no DBF-derived Parquet data.** The legacy CSV export was never
+converted; only the XBRL-derived raw data (2021–present) and the integrated PUDL
+tables (2006–present) are available for Form 714.
+
 ### PUDL integration status
 
 Always check whether a PUDL integrated table exists before falling back to raw
-databases. Integrated tables are cleaned, entity-resolved, and span all years with a
-uniform schema.
+per-form data. Integrated tables are cleaned, entity-resolved, and span all years with
+a uniform schema.
 
 - **FERC Form 1**: Only some schedules have been integrated. See
     [FERC Form 1 Schedules](./ferc1-schedules.md) for the per-schedule breakdown.
-    For unintegrated Form 1 schedules, use the raw DBF or XBRL databases below.
-    Only provide raw Form 1 data if a user **explicitly** requests it.
+    For unintegrated Form 1 schedules, use the raw DBF- or XBRL-derived Parquet files
+    below. Only provide raw Form 1 data if a user **explicitly** requests it.
 - **FERC Forms 2, 6, and 60**: None of this data has been integrated into PUDL.
-    It is only available through the raw databases.
+    It is only available through the raw per-form Parquet files.
 - **FERC Form 714**: Only the integrated PUDL tables span pre-2021 years.
     The legacy CSV files were not structured for general machine-readable extraction.
     Integrated Form 714 tables cover all electronic reporting years (2006–present).
 
-### DBF-derived databases (pre-2021, Forms 1/2/6/60)
+### Raw per-form Parquet directories
 
-PUDL consolidates all DBF years for each form into a single SQLite database:
-
-| Form    | S3 path                                                 |
-| ------- | ------------------------------------------------------- |
-| Form 1  | `s3://pudl.catalyst.coop/nightly/ferc1_dbf.sqlite.zip`  |
-| Form 2  | `s3://pudl.catalyst.coop/nightly/ferc2_dbf.sqlite.zip`  |
-| Form 6  | `s3://pudl.catalyst.coop/nightly/ferc6_dbf.sqlite.zip`  |
-| Form 60 | `s3://pudl.catalyst.coop/nightly/ferc60_dbf.sqlite.zip` |
-
-**No datapackage descriptors exist** for these databases — the original DBF files are
-almost entirely undocumented. For Form 1, the [FERC Form 1 Schedules](./ferc1-schedules.md)
-reference provides a hand-compiled schedule-to-table mapping. No equivalent mapping
-exists for Forms 2, 6, or 60.
-
-### XBRL-derived databases (2021–present, all forms)
-
-PUDL converts XBRL filings into both SQLite and DuckDB:
-
-| Form     | DuckDB (preferred)                                    | SQLite (zipped, must download)                            |
-| -------- | ----------------------------------------------------- | --------------------------------------------------------- |
-| Form 1   | `s3://pudl.catalyst.coop/nightly/ferc1_xbrl.duckdb`   | `s3://pudl.catalyst.coop/nightly/ferc1_xbrl.sqlite.zip`   |
-| Form 2   | `s3://pudl.catalyst.coop/nightly/ferc2_xbrl.duckdb`   | `s3://pudl.catalyst.coop/nightly/ferc2_xbrl.sqlite.zip`   |
-| Form 6   | `s3://pudl.catalyst.coop/nightly/ferc6_xbrl.duckdb`   | `s3://pudl.catalyst.coop/nightly/ferc6_xbrl.sqlite.zip`   |
-| Form 60  | `s3://pudl.catalyst.coop/nightly/ferc60_xbrl.duckdb`  | `s3://pudl.catalyst.coop/nightly/ferc60_xbrl.sqlite.zip`  |
-| Form 714 | `s3://pudl.catalyst.coop/nightly/ferc714_xbrl.duckdb` | `s3://pudl.catalyst.coop/nightly/ferc714_xbrl.sqlite.zip` |
-
-**Prefer DuckDB**: DuckDB files can be queried remotely (see below) without
-downloading. SQLite files are published as `.zip` archives, must be downloaded and
-unzipped before use, and cannot be read remotely; some exceed 1 GB uncompressed.
-
-Datapackage descriptors with table and column metadata exist for the XBRL databases:
-`ferc1_xbrl_datapackage.json`, `ferc2_xbrl_datapackage.json`, etc., at the same S3
-base path. There are three known issues with these descriptors:
-
-1. **Absolute path bug**: the `path` field for each resource contains an absolute path
-    from the build machine (e.g. `/home/user/pudl-work/ferc1_xbrl.sqlite`). Use only
-    the final filename component to construct the actual S3 path.
-1. **Points at SQLite, not DuckDB**: the `path` field always refers to the `.sqlite`
-    file. Replace `.sqlite` with `.duckdb` to get the DuckDB path.
-1. **Table descriptions are not useful**: they contain raw XBRL entity names rather
-    than human-readable descriptions. Rely on the table name and column names instead.
-
-### Querying XBRL databases with DuckDB
-
-Use the `/attach-db` skill to attach and query an XBRL DuckDB file
-directly from S3 without downloading. Pure SQL (no Python required):
-
-**`ATTACH` needs the `https://` URL, not `s3://`.** `read_parquet()` and `glob()`
-accept `s3://` once `s3_url_style = 'path'` is set (see above), but DuckDB's `ATTACH`
-fails with `database does not exist` for an `s3://` URI regardless of that setting —
-use the `https://s3.us-west-2.amazonaws.com/...` form instead.
-
-```sql
--- Attach the Form 1 XBRL database
-ATTACH 'https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/ferc1_xbrl.duckdb'
-    AS ferc1 (READ_ONLY);
-
--- List available tables
-SHOW ALL TABLES;
-
--- Query a specific schedule table
-SELECT * FROM ferc1.steam_electric_generating_plant_statistics_large_plants_402_duration
-LIMIT 100;
+```text
+s3://pudl.catalyst.coop/nightly/<form>_<era>/datapackage.json
+s3://pudl.catalyst.coop/nightly/<form>_<era>/<table_name>.parquet
 ```
 
-Or from Python if needed:
+| Form     | DBF-derived (legacy)                          | XBRL-derived (2021–present)                     |
+| -------- | --------------------------------------------- | ----------------------------------------------- |
+| Form 1   | `s3://pudl.catalyst.coop/nightly/ferc1_dbf/`  | `s3://pudl.catalyst.coop/nightly/ferc1_xbrl/`   |
+| Form 2   | `s3://pudl.catalyst.coop/nightly/ferc2_dbf/`  | `s3://pudl.catalyst.coop/nightly/ferc2_xbrl/`   |
+| Form 6   | `s3://pudl.catalyst.coop/nightly/ferc6_dbf/`  | `s3://pudl.catalyst.coop/nightly/ferc6_xbrl/`   |
+| Form 60  | `s3://pudl.catalyst.coop/nightly/ferc60_dbf/` | `s3://pudl.catalyst.coop/nightly/ferc60_xbrl/`  |
+| Form 714 | *(none — see above)*                          | `s3://pudl.catalyst.coop/nightly/ferc714_xbrl/` |
 
-```python
-import duckdb
+For example, the Form 1 XBRL table `identification_001_duration` lives at
+`s3://pudl.catalyst.coop/nightly/ferc1_xbrl/identification_001_duration.parquet`, and
+its descriptor is at `s3://pudl.catalyst.coop/nightly/ferc1_xbrl/datapackage.json`.
 
-con = duckdb.connect()
-con.execute(
-    "ATTACH 'https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/ferc1_xbrl.duckdb'"
-    " AS ferc1 (READ_ONLY)"
-)
-df = con.execute(
-    "SELECT * FROM ferc1.steam_electric_generating_plant_statistics_large_plants_402_duration LIMIT 100"
-).df()
+These are read the same way as any other PUDL Parquet table — see
+[Loading PUDL Parquet tables](#loading-pudl-parquet-tables) below, substituting the
+form/era directory for `nightly/`. Use the `datapackage` skill against each
+directory's `datapackage.json` to discover table and column names before querying.
+
+DBF-derived table names are the original (often cryptic) FERC identifiers, e.g.
+`f1_adit_amrt_prop`. Hand-compiled schedule-to-table mappings are available for Forms
+1 (Electricity) and 2 (Gas Pipelines):
+
+- [FERC Form 1 Schedules and Tables](./ferc1-schedules.md)
+- [FERC Form 2 Schedules and Tables](./ferc2-schedules.md)
+
+Equivalent mappings do not yet exist for Forms 6 or 60.
+
+### Listing tables in a raw per-form directory
+
+Using DuckDB:
+
+```sql
+SET s3_url_style = 'path';
+SET s3_access_key_id = '';
+SET s3_secret_access_key = '';
+
+SELECT file
+FROM glob('s3://pudl.catalyst.coop/nightly/ferc1_xbrl/*.parquet');
+```
+
+Or query the descriptor with jq (see the `datapackage` skill for full querying patterns):
+
+```bash
+jq -r '.resources[].name' ferc1_xbrl_datapackage.json
 ```
 
 ---

@@ -28,16 +28,23 @@ from pathlib import Path
 _NIGHTLY = "https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly"
 _FERCEQR = "https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/ferceqr"
 
-# Maps each descriptor filename to its S3 base URL.
-# Most descriptors live under /nightly; FERC EQR has its own path.
+# Maps each local cache filename to its full descriptor URL on S3. The core PUDL
+# descriptor and FERC EQR keep their filename in the URL, but each raw per-form FERC
+# directory (e.g. nightly/ferc1_xbrl/) publishes a same-named datapackage.json, so the
+# local cache filename below is a disambiguated <form>_<era>_datapackage.json name and
+# the URL points at the actual remote path.
 _DESCRIPTOR_URLS: dict[str, str] = {
-    "pudl_parquet_datapackage.json": _NIGHTLY,
-    "ferc1_xbrl_datapackage.json": _NIGHTLY,
-    "ferc2_xbrl_datapackage.json": _NIGHTLY,
-    "ferc6_xbrl_datapackage.json": _NIGHTLY,
-    "ferc60_xbrl_datapackage.json": _NIGHTLY,
-    "ferc714_xbrl_datapackage.json": _NIGHTLY,
-    "ferceqr_parquet_datapackage.json": _FERCEQR,
+    "pudl_parquet_datapackage.json": f"{_NIGHTLY}/pudl_parquet_datapackage.json",
+    "ferc1_dbf_datapackage.json": f"{_NIGHTLY}/ferc1_dbf/datapackage.json",
+    "ferc1_xbrl_datapackage.json": f"{_NIGHTLY}/ferc1_xbrl/datapackage.json",
+    "ferc2_dbf_datapackage.json": f"{_NIGHTLY}/ferc2_dbf/datapackage.json",
+    "ferc2_xbrl_datapackage.json": f"{_NIGHTLY}/ferc2_xbrl/datapackage.json",
+    "ferc6_dbf_datapackage.json": f"{_NIGHTLY}/ferc6_dbf/datapackage.json",
+    "ferc6_xbrl_datapackage.json": f"{_NIGHTLY}/ferc6_xbrl/datapackage.json",
+    "ferc60_dbf_datapackage.json": f"{_NIGHTLY}/ferc60_dbf/datapackage.json",
+    "ferc60_xbrl_datapackage.json": f"{_NIGHTLY}/ferc60_xbrl/datapackage.json",
+    "ferc714_xbrl_datapackage.json": f"{_NIGHTLY}/ferc714_xbrl/datapackage.json",
+    "ferceqr_parquet_datapackage.json": f"{_FERCEQR}/ferceqr_parquet_datapackage.json",
 }
 
 DESCRIPTORS: list[str] = list(_DESCRIPTOR_URLS)
@@ -74,8 +81,7 @@ def fetch_one(filename: str, force: bool = False) -> tuple[str, int, str, bool]:
             digest = hashlib.sha256(data).hexdigest()[:12]
             return filename, len(data), digest, True
 
-    base = _DESCRIPTOR_URLS.get(filename, _NIGHTLY)
-    url = f"{base}/{filename}"
+    url = _DESCRIPTOR_URLS.get(filename, f"{_NIGHTLY}/{filename}")
 
     last_error: Exception | None = None
     for attempt in range(1, MAX_ATTEMPTS + 1):

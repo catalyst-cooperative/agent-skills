@@ -40,11 +40,11 @@ SMALL_PARQUET_URL = f"s3://pudl.catalyst.coop/nightly/{SMALL_PARQUET_TABLE}.parq
 GENERATION_TABLE_URL = "s3://pudl.catalyst.coop/nightly/out_eia923__generation.parquet"
 FILTER_CUTOFF_DATE = datetime.date(2020, 1, 1)
 
-# Smallest of the five FERC XBRL DuckDB databases (~50 MB) -- exercises the
-# documented "ATTACH a remote .duckdb file" pattern. ATTACH is queried over
-# https://, not s3://, per the note in data-access.md.
-FERC60_XBRL_HTTPS_URL = (
-    "https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/ferc60_xbrl.duckdb"
+# A table from the raw per-form FERC Parquet directories -- exercises the documented
+# "raw per-form Parquet directory" pattern (one Parquet file per table, alongside a
+# datapackage.json, under nightly/<form>_<era>/).
+FERC1_XBRL_TABLE_URL = (
+    "s3://pudl.catalyst.coop/nightly/ferc1_xbrl/identification_001_duration.parquet"
 )
 
 
@@ -155,14 +155,15 @@ def test_polars_scan_parquet_with_select_and_filter() -> None:
     assert (df["report_date"] >= FILTER_CUTOFF_DATE).all()
 
 
-def test_attach_ferc_xbrl_duckdb_over_https() -> None:
-    """DuckDB's ATTACH rejects s3:// URIs outright (regardless of s3_url_style),
-    so the documented pattern uses the https:// form instead. That form doesn't go
-    through DuckDB's S3 credential-signing path at all, so no anonymous-access
-    setting is needed here."""
+def test_read_raw_ferc_xbrl_parquet_table_from_s3() -> None:
+    """Raw per-form FERC data (DBF- and XBRL-derived) is published as one Parquet
+    file per table inside a per-form/era directory, read the same way as any other
+    PUDL Parquet table -- no SQLite/DuckDB database or download required."""
     con = duckdb.connect()
-    con.execute(f"ATTACH '{FERC60_XBRL_HTTPS_URL}' AS ferc60 (READ_ONLY)")
-    tables = con.execute(
-        "SELECT table_name FROM duckdb_tables() WHERE database_name = 'ferc60' LIMIT 1"
-    ).fetchall()
-    assert tables, "Expected at least one table in the attached ferc60 XBRL database"
+    con.execute("SET s3_url_style = 'path'")
+    con.execute("SET s3_access_key_id = ''")
+    con.execute("SET s3_secret_access_key = ''")
+    df = con.execute(
+        f"SELECT * FROM read_parquet('{FERC1_XBRL_TABLE_URL}') LIMIT 5"
+    ).df()
+    assert not df.empty

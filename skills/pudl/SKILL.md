@@ -34,11 +34,11 @@ PUDL's primary outputs are Apache Parquet files, described by a Frictionless Dat
 Package descriptor. For generic descriptor-querying patterns (jq), use
 the `datapackage` skill — this skill provides PUDL-specific knowledge layered on top.
 
-Beyond the main Parquet outputs, PUDL also distributes FERC historical form databases
-(SQLite and DuckDB, covering Forms 1/2/6/60/714) and the FERC EQR (partitioned Parquet,
-separate from the main build). These have different access patterns and are not covered
-by the main Frictionless descriptor — see [Data Access](./references/data-access.md)
-for the full picture.
+Beyond the main Parquet outputs, PUDL also distributes raw per-form FERC Parquet data
+(covering Forms 1/2/6/60/714, each with its own `datapackage.json`) and the FERC EQR
+(partitioned Parquet, separate from the main build). These have different access
+patterns and are not covered by the main Frictionless descriptor — see
+[Data Access](./references/data-access.md) for the full picture.
 
 ## Workflow overview
 
@@ -50,10 +50,11 @@ the question at hand, not only when the user asks for it by name.
     - S3: `s3://pudl.catalyst.coop/nightly/pudl_parquet_datapackage.json`
     - HTTPS: `https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/pudl_parquet_datapackage.json`
 
-    FERC XBRL-derived tables have their own descriptors at the same base path:
-    `ferc1_xbrl_datapackage.json`, `ferc2_xbrl_datapackage.json`,
-    `ferc6_xbrl_datapackage.json`, `ferc60_xbrl_datapackage.json`,
-    `ferc714_xbrl_datapackage.json`
+    Raw per-form FERC data has its own `datapackage.json` in each form/era directory,
+    e.g. `s3://pudl.catalyst.coop/nightly/ferc1_xbrl/datapackage.json` and
+    `s3://pudl.catalyst.coop/nightly/ferc1_dbf/datapackage.json` — see
+    [Raw per-form Parquet directories](./references/data-access.md#raw-per-form-parquet-directories)
+    for the full list.
 
     The FERC EQR (Electric Quarterly Reports) is distributed separately due to its
     size, and only one version is publicly available at a time:

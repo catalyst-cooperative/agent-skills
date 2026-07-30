@@ -82,12 +82,16 @@ only when:
 
 Raw tables come in two formats depending on the filing year:
 
-- **XBRL (2021–present):** tables in `ferc1_xbrl.duckdb` / `ferc1_xbrl.sqlite`. Table
-    names embed the schedule/page number just before the `_duration` or `_instant` suffix.
-    Duration tables record changes over a period; instant tables record point-in-time
-    balances. Many schedules have multiple sub-tables (e.g. one per section or account
-    type).
-- **DBF (1994–2020):** tables in `ferc1_dbf.sqlite`. Table names start with `f1_`.
+- **XBRL (2021–present):** Parquet tables in
+    `s3://pudl.catalyst.coop/nightly/ferc1_xbrl/`. Table names embed the schedule/page
+    number just before the `_duration` or `_instant` suffix. Duration tables record
+    changes over a period; instant tables record point-in-time balances. Many
+    schedules have multiple sub-tables (e.g. one per section or account type).
+- **DBF (1994–2020):** Parquet tables in
+    `s3://pudl.catalyst.coop/nightly/ferc1_dbf/`. Table names start with `f1_`.
+
+See [Raw per-form Parquet directories](./data-access.md#raw-per-form-parquet-directories)
+for how to load these.
 
 Source (schedule titles): FERC Form 1 blank form (2025-07-31 edition),
 "LIST OF SCHEDULES (Electric Utility)". The blank form and filer instructions are also
