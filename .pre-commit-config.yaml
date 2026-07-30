@@ -1,5 +1,5 @@
 ci:
-  skip: [pyrefly-check, pytest]
+  skip: [pyrefly-check, pytest, last-updated]
 
 repos:
   - repo: https://github.com/DavidAnson/markdownlint-cli2
@@ -83,7 +83,7 @@ repos:
         language: system
         types_or: [python, pyi]
         pass_filenames: false
-      - id: update-skill-last-updated
+      - id: last-updated
         name: update `last-updated` metadata in SKILL.md
         language: system
         files: ^skills/.*/SKILL\.md$
