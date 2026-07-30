@@ -40,9 +40,10 @@ for other installation methods.
     recommend and when to warn you off a preliminary table.
 - **FERC Form 1 and Form 2 lookups.** Resolving a schedule number ("Schedule 301"), a
     FERC account number, or a topic to the PUDL tables that cover it.
-- **Loading data.** Working pandas, DuckDB, or polars code to read Parquet directly
-    from PUDL's public S3 bucket (no credentials needed) or a local download, plus
-    locations for the FERC historical DuckDB/SQLite databases and the FERC EQR dataset.
+- **Loading data.** Working DuckDB (pure SQL, no Python required), polars, or pandas
+    code to read Parquet directly from PUDL's public S3 bucket (no credentials needed)
+    or a local download, plus locations for the raw per-form FERC Parquet directories
+    and the FERC EQR dataset.
 - **Pointing you at methodology.** For anything involving cleaning, imputation,
     allocation, or entity resolution, the agent looks at PUDL's own methodology
     write-ups before explaining implementation details.
@@ -63,7 +64,7 @@ over lower-tier alternatives.
 > "I want to load `out_eia923__yearly_generation` in a script. I don't have PUDL
 > installed locally — can I get it from S3?"
 
-The agent returns working pandas or DuckDB code reading straight from the public S3
+The agent returns working DuckDB or polars code reading straight from the public S3
 bucket, with no PUDL package import required, and shows column projection for large
 tables.
 

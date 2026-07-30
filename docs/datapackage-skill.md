@@ -23,9 +23,11 @@ npx skills add catalyst-cooperative/agent-skills -s datapackage
 
 Querying metadata requires [`jq`](https://jqlang.org/) (>= 1.8). Loading data works with
 whatever's already in your environment: pandas or polars if you have Python set up, or
-DuckDB directly with no Python required at all (via the companion `attach-db` and
-`query` skills from [duckdb/duckdb-skills](https://github.com/duckdb/duckdb-skills), for
-pure-SQL workflows). Validating a package's structural integrity is optional and uses the
+DuckDB directly with no Python required at all (via the companion `attach-db`, `query`,
+and `install-duckdb` skills from
+[duckdb/duckdb-skills](https://github.com/duckdb/duckdb-skills) — `install-duckdb`
+surfaces the right install command for your platform if the DuckDB CLI itself isn't
+found). Validating a package's structural integrity is optional and uses the
 [`frictionless`](https://framework.frictionlessdata.io/) CLI if it's installed. See the
 [main README](https://github.com/catalyst-cooperative/agent-skills#installing) for other
 installation methods.
