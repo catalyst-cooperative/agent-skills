@@ -20,7 +20,7 @@ compatibility: |
 metadata:
   - author: Catalyst Cooperative
   - email: hello@catalyst.coop
-  - last-updated: 2026-07-29
+  - last-updated: 2026-07-30
 ---
 
 # PUDL Data Explorer Guide
