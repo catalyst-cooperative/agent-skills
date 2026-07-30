@@ -43,6 +43,19 @@ If a new documented example needs a resource, source, or field the sample
 doesn't currently carry, add it to the `SOURCE_NAMES` list or `RESOURCE_FIELDS`
 mapping in `build_metadata_fixture.py` — don't hand-edit the generated JSON.
 
+## markitdown is deliberately not a pixi dependency
+
+`test_markitdown_conversion.py` builds its own throwaway `uv`-managed venv rather than
+using a pixi-installed `markitdown`. This isn't a stopgap — adding `markitdown[pdf]`
+directly to this workspace's pixi environment currently fails to solve at all on
+`osx-arm64` with Python ≥ 3.14: its transitive dependency chain
+(`magika` → `onnxruntime`) has no wheel matching pixi's default macOS platform-tag
+baseline for `cp314`, even though a plain `uv pip install "markitdown[pdf]"` on the
+same machine resolves and runs it fine (`uv` resolves against the running machine;
+pixi resolves against a portable baseline). If you try `pixi add markitdown` again
+after an upstream release and it still fails, that's this same gap, not a fluke —
+keep using the `uv`-venv pattern rather than fighting the pixi solver.
+
 ## Guardrails
 
 - Keep distributed skill docs free of references to dev-only paths and scripts.

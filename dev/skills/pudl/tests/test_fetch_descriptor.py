@@ -1,7 +1,7 @@
 """Tests for skills/pudl/scripts/fetch_descriptor.py.
 
 Exactly one test in this module makes a real network call — downloading the
-smallest of the seven descriptors (ferc714_xbrl_datapackage.json, ~65 KB) from the
+smallest of the eleven descriptors (ferc714_xbrl_datapackage.json, ~65 KB) from the
 real S3 bucket, via a module-scoped fixture, so the suite verifies the script
 actually works against the real service it's built for. Compare
 dev/tools/check_datapackage_catalog_urls.py, which similarly makes live requests in
@@ -64,10 +64,9 @@ class _FakeResponse:
 
 def test_ferceqr_uses_its_own_base_url() -> None:
     """Static routing check, no network: FERC EQR is hosted under a separate S3 prefix."""
-    assert (
-        fetch_descriptor._DESCRIPTOR_URLS["ferceqr_parquet_datapackage.json"]
-        == fetch_descriptor._FERCEQR
-    )
+    assert fetch_descriptor._DESCRIPTOR_URLS[
+        "ferceqr_parquet_datapackage.json"
+    ].startswith(fetch_descriptor._FERCEQR)
 
 
 def test_other_descriptors_use_the_nightly_base_url() -> None:
@@ -75,7 +74,18 @@ def test_other_descriptors_use_the_nightly_base_url() -> None:
     for name in fetch_descriptor.DESCRIPTORS:
         if name == "ferceqr_parquet_datapackage.json":
             continue
-        assert fetch_descriptor._DESCRIPTOR_URLS[name] == fetch_descriptor._NIGHTLY
+        assert fetch_descriptor._DESCRIPTOR_URLS[name].startswith(
+            fetch_descriptor._NIGHTLY
+        )
+
+
+def test_raw_ferc_form_descriptors_point_at_their_own_subdirectory() -> None:
+    """Static routing check, no network: each raw per-form FERC descriptor (e.g.
+    ferc1_xbrl_datapackage.json) is cached under a disambiguated local filename but
+    fetched from the shared remote name `datapackage.json` inside that form/era's own
+    S3 subdirectory, since every such subdirectory publishes a same-named descriptor."""
+    url = fetch_descriptor._DESCRIPTOR_URLS["ferc1_xbrl_datapackage.json"]
+    assert url == f"{fetch_descriptor._NIGHTLY}/ferc1_xbrl/datapackage.json"
 
 
 @pytest.fixture(scope="module")

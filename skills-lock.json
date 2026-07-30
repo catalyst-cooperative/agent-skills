@@ -7,12 +7,6 @@
       "skillPath": "skills/attach-db/SKILL.md",
       "computedHash": "db6a105a312536b75a58616dfd38b46909253c88fcb1ffd58bfc506ffa3065d6"
     },
-    "dignified-python": {
-      "source": "dagster-io/skills",
-      "sourceType": "github",
-      "skillPath": "skills/dignified-python/skills/dignified-python/SKILL.md",
-      "computedHash": "af77280f19bc321a9456d4695f13e6b9d9822766a0faeff2e198acea375fd5b3"
-    },
     "duckdb-docs": {
       "source": "duckdb/duckdb-skills",
       "sourceType": "github",
@@ -36,12 +30,6 @@
       "sourceType": "github",
       "skillPath": "skills/read-file/SKILL.md",
       "computedHash": "16607eb0d4dc7e2ff8d92e2bdba6bedb67aedb1189f66249a46ed672ca1782c4"
-    },
-    "skill-creator": {
-      "source": "anthropics/claude-plugins-official",
-      "sourceType": "github",
-      "skillPath": "plugins/skill-creator/skills/skill-creator/SKILL.md",
-      "computedHash": "b122f4d1e91aa1d83027e050b5b37c3156203ee85458d7b1360bc48167c9e02a"
     }
   }
 }

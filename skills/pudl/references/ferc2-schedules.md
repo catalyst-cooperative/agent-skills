@@ -19,8 +19,8 @@ Companies; there is no separate accounts reference file for gas companies in thi
 ## Querying the machine-readable index
 
 Use [`ferc2_schedules.json`](../assets/ferc2_schedules.json) for all programmatic
-lookups. `xbrl_tables` and `ferc_accounts` are typed arrays; `schedule` is the page key.
-`pudl_tables` and `dbf_tables` are present but currently empty (Form 2 is not yet
+lookups. `xbrl_tables`, `dbf_tables`, and `ferc_accounts` are typed arrays; `schedule`
+is the page key. `pudl_tables` is present but currently empty (Form 2 is not yet
 integrated into PUDL).
 
 ### jq examples
@@ -47,23 +47,33 @@ in `SKILL.md` for that pattern.
 
 ## About FERC Form 2 data
 
-None of FERC Form 2 has yet been integrated into the main PUDL data pipeline. The raw
-XBRL-derived data (2021–present) is available in `ferc2_xbrl.duckdb` and
-`ferc2_xbrl.sqlite`. There is no equivalent DBF-era database for Form 2 yet.
+None of FERC Form 2 has yet been integrated into the main PUDL data pipeline. Raw
+Parquet tables are available for both eras:
 
-Raw tables come in two formats within the XBRL database:
+- **XBRL (2021–present):** `s3://pudl.catalyst.coop/nightly/ferc2_xbrl/`
+- **DBF (1996–2020):** `s3://pudl.catalyst.coop/nightly/ferc2_dbf/`
+
+See [Raw per-form Parquet directories](./data-access.md#raw-per-form-parquet-directories)
+for how to load these.
+
+Raw tables come in two formats within the XBRL-derived data:
 
 - **Duration tables** (`_duration` suffix): record values that apply over a time period
     (e.g. income, expenses, changes in plant balance).
 - **Instant tables** (`_instant` suffix): record point-in-time balances (e.g. balance
     sheet accounts, end-of-year plant totals).
 
-Many schedules are split across multiple sub-tables in the XBRL database, one per
-section, account type, or monthly period.
+Many schedules are split across multiple sub-tables in the XBRL-derived Parquet data,
+one per section, account type, or monthly period.
 
 Source (schedule titles and descriptions): FERC Form 2 blank form (2025-07-31 edition).
-The blank form HTML can be found at
-`docs/data_sources/ferc2/ferc2_blank_2025-07-31.html` in the PUDL source repository.
+`ferc2` doesn't have a PUDL docs page yet (its `documentation` field is `null` — see
+[Data Sources](./data-sources.md#the-sources-schema)), so its blank form and filer
+instructions aren't linked from `docs.catalyst.coop` the way FERC Form 1's are. Get them
+from the source agency's own page instead — the `path` field on the `ferc2` `sources`
+record. See
+[Data Sources: Blank forms and filer instructions](./data-sources.md#blank-forms-and-filer-instructions)
+for the general pattern for sources that do have a docs page.
 
 ---
 

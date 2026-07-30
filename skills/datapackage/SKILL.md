@@ -13,12 +13,12 @@ license: CC-BY-4.0
 compatibility: |
   Required CLI tools: jq >= 1.8
   Optional CLI tools: frictionless >= 5.19 (with fastparquet for Parquet support)
-  Required skills: attach-db, query (optional: install-duckdb)
+  Required skills: install-duckdb, query, attach-db
   Optional Python packages: pandas, polars, duckdb (for DataFrame work)
 metadata:
   - author: Catalyst Cooperative
   - email: hello@catalyst.coop
-  - last-updated: 2026-07-19
+  - last-updated: 2026-07-30
 ---
 
 # Frictionless Data Package Guide

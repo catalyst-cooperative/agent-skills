@@ -6,6 +6,8 @@ platforms = ["osx-arm64", "osx-64", "linux-64", "linux-aarch64"]
 mdformat-mkdocs = ">=5.1.4"
 mdformat_simple_breaks = ">=0.1.0"
 mdformat-wikilink = ">=0.3.0"
+# Issues with python 3.14 -- try later
+# markitdown = { version = ">=0.1.7", extras = ["pdf", "docx"] }
 
 [tool.pixi.tasks.install-skills]
 cmd = "npx --yes skills experimental_install"
@@ -37,9 +39,6 @@ pixi install \
   && pixi run install-skills \
   && pixi run npm install -g \
       @anthropic-ai/claude-code \
-      @google/gemini-cli \
-      @openai/codex \
-      @earendil-works/pi-tui \
       opencode-ai
 """
 description = "Set up the dev container: install pixi environment, skills, and agent CLIs (run once after first start)"
@@ -95,6 +94,7 @@ pytest = ">=9.1.1"
 markdownlint-cli2 = ">=0.22.1"
 requests = ">=2.34.2"
 pyrefly = ">=1.1.1"
+uv = ">=0.11.33,<0.13"
 
 # These dependencies are needed inside the dev container
 gh = ">=2.95.0"

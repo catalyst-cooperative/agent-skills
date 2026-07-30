@@ -69,7 +69,9 @@ The **`name`** field is the short code used in:
 
 - Cached raw-archive paths: `s3://pudl.catalyst.coop/zenodo/<name>/<concrete-doi>/`
 - Table name prefixes (second component): e.g. `out_eia923__generation`
-- FERC XBRL descriptor filenames: e.g. `ferc1_xbrl_datapackage.json`
+- Raw per-form FERC directory names: e.g. `nightly/ferc1_xbrl/` (each such directory
+    holds a `datapackage.json` plus one Parquet file per table — see
+    [Data Access: Raw per-form Parquet directories](./data-access.md#raw-per-form-parquet-directories))
 
 ---
 
@@ -114,12 +116,82 @@ if you share the link with the user, give them the plain `.html` URL from the fi
 See [PUDL Datapackage Extensions: Per-resource provenance](./metadata-and-querying.md#per-resource-provenance-sources)
 for exactly how that append works.
 
+**Exception: fetch the raw `.html` page (not `.md`) for the "Download additional
+documentation" links** — see
+[Blank forms and filer instructions](#blank-forms-and-filer-instructions) below for why.
+
 ```bash
 # Fetch a source's docs page (markdown version)
 jq -r '.sources[] | select(.name == "eia923") | .documentation + ".md"' "$PKG" | xargs curl -s
 ```
 
 Or use the `WebFetch` tool if available in your environment.
+
+## Blank forms and filer instructions
+
+Table and column descriptions in the descriptor summarize what data *contains*, but
+they rarely explain what a filer was actually asked to report. For that, go to the
+source: the blank form and filer instructions a respondent used to fill it out. These
+define a code's exact scope, what a schedule line item is asking for, or how a term was
+defined in a given filing year — context that's often impossible to infer from a column
+name or description alone, and that changes as forms are revised over the years.
+
+**Check for these whenever you're about to explain what something in the data means,**
+not only when the user names the form and asks for it directly — most users won't know
+these documents exist. If the source has a `documentation` page, look for a "Download
+additional documentation" section on it before falling back to a description-only
+answer.
+
+### Finding them
+
+Fetch the **raw `.html`** docs page for this section, not the `.md` mirror. The `.md`
+mirror does list the same files, but as relative links that don't resolve to a working
+URL; the `.html` page's links resolve to `https://docs.catalyst.coop/pudl/en/nightly/_downloads/<hash>/<filename>`,
+which does work. This is the one place on the docs site where the `.md`-first rule
+above should not be followed.
+
+```bash
+# Find the "Download additional documentation" section for a source
+curl -s "$(jq -r '.sources[] | select(.name == "ferc1") | .documentation' "$PKG")" |
+    grep -A50 'id="download-additional-documentation"'
+```
+
+Not every source has this section — most FERC forms and some EIA forms do; many
+sources don't, and some (e.g. `ferc2` at the time of writing) don't have a
+`documentation` page at all yet. If a source has neither, say so rather than guessing
+at or constructing a URL; point the user to the source agency's own page instead (the
+`path` field on that source's `sources` record).
+
+Python's `urllib` returns `403 Forbidden` fetching from `docs.catalyst.coop` with its
+default `User-Agent` string — override it with any other value. `curl` and `requests`
+both work fine with their own defaults.
+
+### Choosing an edition
+
+Multiple editions accumulate over the years as a form is revised. **Prefer the newest
+edition** — it's the most likely to describe current reporting practice — with one
+twist: recent FERC forms are published as plain `.html`, while older editions (and most
+EIA instructions) are PDFs. When a newer edition is easier to read (HTML) than an older
+one (PDF), that's an extra reason to prefer it, not just its recency.
+
+### Reading them
+
+HTML editions are plain text — fetch and read them directly, same as any other web page.
+PDFs and Word documents (`.docx`, occasionally used for cover memos or errata) need
+converting to text first.
+Download the file, then convert it with [markitdown](https://github.com/microsoft/markitdown)
+(`uv pip install "markitdown[pdf,docx]"` if not already available — the base package
+alone doesn't include PDF or docx support; add other extras the same way for other
+formats you run into):
+
+```bash
+curl -s -o ferc1_blank_2019-12-31.pdf \
+    "https://docs.catalyst.coop/pudl/en/nightly/_downloads/fd9ba713087c5c0be586ac51ba237731/ferc1_blank_2019-12-31.pdf"
+markitdown ferc1_blank_2019-12-31.pdf > ferc1_blank_2019-12-31.md
+```
+
+These forms often run 50-100+ pages; skim the converted markdown or search it for the
+schedule, line item, or term you need rather than reading it front to back.
 
 ### Zenodo and DOI conventions
 

@@ -13,14 +13,14 @@ description: >
   FERC Form 1, FERC Form 714, FERC EQR, EPA CEMS, EPA CAMD, etc.).
 license: CC-BY-4.0
 compatibility: |
-  Required skills: datapackage (which requires jq >= 1.8, attach-db, and query)
-  Required Python packages: pandas >= 2.0, s3fs (for S3 access)
-  Optional Python packages: polars >= 1.0
-  Optional skills: dignified-python
+  Required skills: datapackage
+  Optional Python packages: polars >= 1.0 (preferred for DataFrame work), pandas >= 2.0
+    with s3fs (only needed if using pandas for S3 access), markitdown[pdf,docx] (to
+    convert downloaded PDF/Word blank forms and instructions to text)
 metadata:
   - author: Catalyst Cooperative
   - email: hello@catalyst.coop
-  - last-updated: 2026-07-19
+  - last-updated: 2026-07-30
 ---
 
 # PUDL Data Explorer Guide
@@ -33,27 +33,27 @@ PUDL's primary outputs are Apache Parquet files, described by a Frictionless Dat
 Package descriptor. For generic descriptor-querying patterns (jq), use
 the `datapackage` skill — this skill provides PUDL-specific knowledge layered on top.
 
-Beyond the main Parquet outputs, PUDL also distributes FERC historical form databases
-(SQLite and DuckDB, covering Forms 1/2/6/60/714) and the FERC EQR (partitioned Parquet,
-separate from the main build). These have different access patterns and are not covered
-by the main Frictionless descriptor — see [Data Access](./references/data-access.md)
-for the full picture.
+Beyond the main Parquet outputs, PUDL also distributes raw per-form FERC Parquet data
+(covering Forms 1/2/6/60/714, each with its own `datapackage.json`) and the FERC EQR
+(partitioned Parquet, separate from the main build). These have different access
+patterns and are not covered by the main Frictionless descriptor — see
+[Data Access](./references/data-access.md) for the full picture.
 
 ## Workflow overview
 
-Most interactions only require steps 1–3. Steps 4 and 5 add real cost (computation,
-potentially slow S3 downloads, extra dependencies) — only proceed to them when the
-user explicitly asks to load or explore data.
+Every step below is inexpensive and should happen by default whenever it's relevant to
+the question at hand, not only when the user asks for it by name.
 
 1. **Locate the metadata** — the primary PUDL descriptor (Parquet outputs) is at:
 
     - S3: `s3://pudl.catalyst.coop/nightly/pudl_parquet_datapackage.json`
     - HTTPS: `https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/pudl_parquet_datapackage.json`
 
-    FERC XBRL-derived tables have their own descriptors at the same base path:
-    `ferc1_xbrl_datapackage.json`, `ferc2_xbrl_datapackage.json`,
-    `ferc6_xbrl_datapackage.json`, `ferc60_xbrl_datapackage.json`,
-    `ferc714_xbrl_datapackage.json`
+    Raw per-form FERC data has its own `datapackage.json` in each form/era directory,
+    e.g. `s3://pudl.catalyst.coop/nightly/ferc1_xbrl/datapackage.json` and
+    `s3://pudl.catalyst.coop/nightly/ferc1_dbf/datapackage.json` — see
+    [Raw per-form Parquet directories](./references/data-access.md#raw-per-form-parquet-directories)
+    for the full list.
 
     The FERC EQR (Electric Quarterly Reports) is distributed separately due to its
     size, and only one version is publicly available at a time:
@@ -90,6 +90,10 @@ user explicitly asks to load or explore data.
     the same habit applies to other sources' `core_*__codes_*` tables). Flag it if
     an answer came from recalled knowledge rather than the sweep.
 
+1. **Consult primary-source forms and instructions when metadata alone doesn't fully
+    explain something** — don't wait for the user to ask for these by name. See
+    [Data Sources: Blank forms and filer instructions](./references/data-sources.md#blank-forms-and-filer-instructions).
+
 1. **Check table tier** — see [Data Quality and Context](./references/data-quality-and-context.md).
     Prefer `out_*` tables; warn users about `_core_*` tables.
 
@@ -108,19 +112,28 @@ user explicitly asks to load or explore data.
     point the user to it. Only dive into code-level implementation after the user has
     seen that write-up or if no methodology page exists for the topic.
 
-1. *(Only if the user explicitly asks to load data)* **Load the data** — Parquet from
-    S3 or local. See [Data Access](./references/data-access.md).
+1. **Load the data, efficiently** — Loading data doesn't have to mean downloading an
+    entire table. `SELECT ... LIMIT` in DuckDB, `pl.scan_parquet()` with
+    `.select()`/`.filter()` before `.collect()` in polars, and a `columns=` argument in
+    pandas all push the selection down to the Parquet reader itself. Treat sampling and
+    down-selecting as the normal way to explore a table, not an optimization reserved
+    for when a file turns out to be huge. You should estimate a table's size before a
+    full, unfiltered load, and only load the full table if the job genuinely needs every
+    row; see [Data Access](./references/data-access.md) for the loading patterns
+    themselves.
 
 ## Reference index
 
 - [Data Sources](./references/data-sources.md) — how to query the PUDL descriptor's own
     `sources` array (31 datasets, with short codes, names, licensing, and per-source
-    documentation links); read when a user asks about a specific source dataset
-    (EIA-860, FERC Form 714, EPA CEMS, etc.) or needs documentation links, or when
+    documentation links), and where to find and read each source's blank forms and
+    filer instructions; read when a user asks about a specific source dataset
+    (EIA-860, FERC Form 714, EPA CEMS, etc.) or needs documentation links, when
     resolving a raw-archive S3 path and you need the short code and have to
-    distinguish between a concept-DOI and a concrete-DOI.
+    distinguish between a concept-DOI and a concrete-DOI, or whenever interpreting what
+    a column, code, or schedule actually means.
 - [Data Access](./references/data-access.md) — S3 paths, loading patterns
-    (pandas/DuckDB/polars/pure SQL), FERC historical database locations, and EQR access;
+    (pandas/DuckDB/polars/pure SQL), raw per-form FERC Parquet locations, and EQR access;
     read whenever generating data-loading code or explaining how to access any PUDL output
 - [PUDL Datapackage Extensions](./references/metadata-and-querying.md) — PUDL-specific
     additions to the standard datapackage schema: RST/docstring-formatted descriptions,
@@ -194,9 +207,20 @@ user explicitly asks to load or explore data.
     ```
 
 - The S3 bucket `s3://pudl.catalyst.coop` is **free and publicly accessible** — no
-    AWS credentials needed.
+    AWS credentials needed, and any ambient credentials (even invalid ones) should be
+    explicitly bypassed rather than assumed absent.
 
-- The Parquet path for any table is `s3://pudl.catalyst.coop/nightly/<table_name>.parquet`.
+- **DuckDB, pandas, and polars each need explicit setup to query this bucket
+    reliably** — see
+    [Data Access: DuckDB and S3](./references/data-access.md#duckdb-and-s3-required-setup)
+    (`s3_url_style` plus clearing S3 credential settings; applies through `/query` too)
+    and the pandas/polars sections below it (`storage_options` for anonymous access)
+    for why each is needed.
+
+- The Parquet path for a **core PUDL output table** is
+    `s3://pudl.catalyst.coop/nightly/<table_name>.parquet`. Raw per-form FERC tables
+    use a different path — see
+    [Raw per-form Parquet directories](./references/data-access.md#raw-per-form-parquet-directories).
 
 - **Always surface usage warnings** from the descriptor before providing loading code.
 
@@ -284,9 +308,7 @@ jq '[.[] | select(.description | test("storage"; "i"))] |
 
 ## Delegation
 
-| User intent                        | Hand off to         |
-| ---------------------------------- | ------------------- |
-| Query datapackage.json metadata    | `/datapackage`      |
-| Attach a .duckdb or .sqlite file   | `/attach-db`        |
-| Run SQL or NL queries against data | `/query`            |
-| General Python/pandas help         | `/dignified-python` |
+| User intent                        | Hand off to    |
+| ---------------------------------- | -------------- |
+| Query datapackage.json metadata    | `/datapackage` |
+| Run SQL or NL queries against data | `/query`       |

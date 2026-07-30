@@ -45,17 +45,12 @@ every time you are about to generate data-loading code:
     line to their shell startup file (e.g. `~/.zshrc`, `~/.bashrc`, or
     `~/.profile`) if you have permission to edit environment files.
 
-1. **FERC raw databases** — the FERC DuckDB and SQLite files can also be downloaded
-    for local use. Only suggest this if the user has already been querying them
-    remotely in the current session — these are much messier than the processed PUDL
-    Parquet outputs, so don't proactively recommend them.
-
 ---
 
 ## Data locations
 
-All PUDL outputs — Parquet files, FERC SQLite/DuckDB databases, and descriptors — are
-free and publicly accessible on AWS S3. No AWS credentials or account needed.
+All PUDL outputs — Parquet files and datapackage.json descriptors — are free and
+publicly accessible on AWS S3. No AWS credentials or account needed.
 
 ### Core PUDL outputs
 
@@ -66,16 +61,45 @@ free and publicly accessible on AWS S3. No AWS credentials or account needed.
 | Local download (`$PUDL_DATA`)               | `$PUDL_DATA/<table_name>.parquet`                         |
 | Local PUDL pipeline output (`$PUDL_OUTPUT`) | `$PUDL_OUTPUT/parquet/<table_name>.parquet`               |
 
-Datapackage JSON descriptors at the same base path: `pudl_parquet_datapackage.json`,
-`ferc1_xbrl_datapackage.json`, `ferc2_xbrl_datapackage.json`,
-`ferc6_xbrl_datapackage.json`, `ferc60_xbrl_datapackage.json`,
-`ferc714_xbrl_datapackage.json`. If using local PUDL pipeline output, these databases
-will be in the directory above the Parquet files: `$PUDL_OUTPUT/ferc1_xbrl_datapackage.json`,
-etc.
+The core PUDL Parquet outputs share a single descriptor at the same base path:
+`pudl_parquet_datapackage.json`. The raw per-form FERC data described in
+[FERC historical form data](#ferc-historical-form-data) below has its own
+`datapackage.json` per form/era directory.
 
 **Use S3 nightly** for most exploratory work. For production pipelines or academic
 citation, use a fixed versioned path (e.g. `v2024.11.0`) so results are reproducible
 and the data never changes under you.
+
+### DuckDB and S3: required setup
+
+The `pudl.catalyst.coop` bucket name contains dots. DuckDB's default S3 addressing mode
+is virtual-hosted-style, which folds the bucket name into the hostname
+(`pudl.catalyst.coop.s3.us-west-2.amazonaws.com`). AWS's S3 TLS certificate only covers
+one wildcard level (`*.s3.<region>.amazonaws.com`), so that hostname doesn't match the
+certificate, and DuckDB fails with an `SSL peer certificate or SSH remote key was not OK`
+error — not a permissions or connectivity problem.
+
+This bucket is free and public and needs **no** AWS credentials — but if the user
+happens to have credentials configured (even invalid or expired ones, e.g. a stale SSO
+token), DuckDB picks up `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY` from the environment
+automatically and tries to sign requests with them, turning a should-just-work public
+read into a confusing `403 Forbidden` / `InvalidAccessKeyId` error. Clear them
+explicitly rather than assuming their absence.
+
+Run this once per DuckDB session before any query touching `s3://pudl.catalyst.coop/...`
+(including through `/query`):
+
+```sql
+SET s3_url_style = 'path';
+SET s3_access_key_id = '';
+SET s3_secret_access_key = '';
+```
+
+The first line switches to path-style addressing
+(`s3.us-west-2.amazonaws.com/pudl.catalyst.coop/...`), which keeps the bucket name out of
+the hostname and avoids the certificate mismatch. The next two force anonymous requests
+regardless of what's in the environment. Every DuckDB SQL example below assumes all
+three have already been set.
 
 ### FERC EQR (Electric Quarterly Reports / Form 920)
 
@@ -105,6 +129,10 @@ Examples:
 **With DuckDB (pure SQL — no Python required):**
 
 ```sql
+SET s3_url_style = 'path';
+SET s3_access_key_id = '';
+SET s3_secret_access_key = '';
+
 -- Attach the EQR descriptor (optional, for schema inspection)
 -- Then query specific quarters directly
 SELECT * FROM read_parquet(
@@ -122,10 +150,13 @@ Parquet files from S3 without downloading them.
 ```python
 import polars as pl
 
+storage_options = {"aws_skip_signature": "true", "aws_region": "us-west-2"}
+
 # Load a single quarter
 df = (
     pl.scan_parquet(
-        "s3://pudl.catalyst.coop/ferceqr/core_ferceqr__transactions/2023q1.parquet"
+        "s3://pudl.catalyst.coop/ferceqr/core_ferceqr__transactions/2023q1.parquet",
+        storage_options=storage_options,
     )
     .select(["seller_name", "buyer_name", "transaction_quantity"])
     .collect()
@@ -133,7 +164,8 @@ df = (
 
 # Load all quarters for a year using a glob
 df = pl.scan_parquet(
-    "s3://pudl.catalyst.coop/ferceqr/core_ferceqr__transactions/2023q*.parquet"
+    "s3://pudl.catalyst.coop/ferceqr/core_ferceqr__transactions/2023q*.parquet",
+    storage_options=storage_options,
 ).collect()
 ```
 
@@ -144,11 +176,12 @@ Descriptor:
 
 ---
 
-## FERC historical form databases
+## FERC historical form data
 
 FERC Forms 1, 2, 6, 60, and 714 span two distinct filing eras with different source
-formats. PUDL converts these into databases published alongside the core Parquet
-outputs at the same S3 base path.
+formats. PUDL converts each form/era combination into a set of raw Parquet files
+published alongside the core PUDL outputs at the same S3 base path — one Parquet file
+per table, plus a `datapackage.json` descriptor, inside a per-form/era directory.
 
 ### Reporting epochs
 
@@ -160,100 +193,96 @@ outputs at the same S3 base path.
 | Form 60 (Centralized Service Companies)                         | DBF              | 2006–2020    | 2021–present |
 | Form 714 (Electricity Balancing Authorities and Planning Areas) | CSV (DBF export) | 2006-2020    | 2021–present |
 
+**Form 714 has no DBF-derived Parquet data.** The legacy CSV export was never
+converted; only the XBRL-derived raw data (2021–present) and the integrated PUDL
+tables (2006–present) are available for Form 714.
+
 ### PUDL integration status
 
 Always check whether a PUDL integrated table exists before falling back to raw
-databases. Integrated tables are cleaned, entity-resolved, and span all years with a
-uniform schema.
+per-form data. Integrated tables are cleaned, entity-resolved, and span all years with
+a uniform schema.
 
 - **FERC Form 1**: Only some schedules have been integrated. See
     [FERC Form 1 Schedules](./ferc1-schedules.md) for the per-schedule breakdown.
-    For unintegrated Form 1 schedules, use the raw DBF or XBRL databases below.
-    Only provide raw Form 1 data if a user **explicitly** requests it.
+    For unintegrated Form 1 schedules, use the raw DBF- or XBRL-derived Parquet files
+    below. Only provide raw Form 1 data if a user **explicitly** requests it.
 - **FERC Forms 2, 6, and 60**: None of this data has been integrated into PUDL.
-    It is only available through the raw databases.
+    It is only available through the raw per-form Parquet files.
 - **FERC Form 714**: Only the integrated PUDL tables span pre-2021 years.
     The legacy CSV files were not structured for general machine-readable extraction.
     Integrated Form 714 tables cover all electronic reporting years (2006–present).
 
-### DBF-derived databases (pre-2021, Forms 1/2/6/60)
+### Raw per-form Parquet directories
 
-PUDL consolidates all DBF years for each form into a single SQLite database:
-
-| Form    | S3 path                                                 |
-| ------- | ------------------------------------------------------- |
-| Form 1  | `s3://pudl.catalyst.coop/nightly/ferc1_dbf.sqlite.zip`  |
-| Form 2  | `s3://pudl.catalyst.coop/nightly/ferc2_dbf.sqlite.zip`  |
-| Form 6  | `s3://pudl.catalyst.coop/nightly/ferc6_dbf.sqlite.zip`  |
-| Form 60 | `s3://pudl.catalyst.coop/nightly/ferc60_dbf.sqlite.zip` |
-
-**No datapackage descriptors exist** for these databases — the original DBF files are
-almost entirely undocumented. For Form 1, the [FERC Form 1 Schedules](./ferc1-schedules.md)
-reference provides a hand-compiled schedule-to-table mapping. No equivalent mapping
-exists for Forms 2, 6, or 60.
-
-### XBRL-derived databases (2021–present, all forms)
-
-PUDL converts XBRL filings into both SQLite and DuckDB:
-
-| Form     | DuckDB (preferred)                                    | SQLite (zipped, must download)                            |
-| -------- | ----------------------------------------------------- | --------------------------------------------------------- |
-| Form 1   | `s3://pudl.catalyst.coop/nightly/ferc1_xbrl.duckdb`   | `s3://pudl.catalyst.coop/nightly/ferc1_xbrl.sqlite.zip`   |
-| Form 2   | `s3://pudl.catalyst.coop/nightly/ferc2_xbrl.duckdb`   | `s3://pudl.catalyst.coop/nightly/ferc2_xbrl.sqlite.zip`   |
-| Form 6   | `s3://pudl.catalyst.coop/nightly/ferc6_xbrl.duckdb`   | `s3://pudl.catalyst.coop/nightly/ferc6_xbrl.sqlite.zip`   |
-| Form 60  | `s3://pudl.catalyst.coop/nightly/ferc60_xbrl.duckdb`  | `s3://pudl.catalyst.coop/nightly/ferc60_xbrl.sqlite.zip`  |
-| Form 714 | `s3://pudl.catalyst.coop/nightly/ferc714_xbrl.duckdb` | `s3://pudl.catalyst.coop/nightly/ferc714_xbrl.sqlite.zip` |
-
-**Prefer DuckDB**: DuckDB files can be queried remotely (see below) without
-downloading. SQLite files are published as `.zip` archives, must be downloaded and
-unzipped before use, and cannot be read remotely; some exceed 1 GB uncompressed.
-
-Datapackage descriptors with table and column metadata exist for the XBRL databases:
-`ferc1_xbrl_datapackage.json`, `ferc2_xbrl_datapackage.json`, etc., at the same S3
-base path. There are three known issues with these descriptors:
-
-1. **Absolute path bug**: the `path` field for each resource contains an absolute path
-    from the build machine (e.g. `/home/user/pudl-work/ferc1_xbrl.sqlite`). Use only
-    the final filename component to construct the actual S3 path.
-1. **Points at SQLite, not DuckDB**: the `path` field always refers to the `.sqlite`
-    file. Replace `.sqlite` with `.duckdb` to get the DuckDB path.
-1. **Table descriptions are not useful**: they contain raw XBRL entity names rather
-    than human-readable descriptions. Rely on the table name and column names instead.
-
-### Querying XBRL databases with DuckDB
-
-Use the `/attach-db` skill to attach and query an XBRL DuckDB file
-directly from S3 without downloading. Pure SQL (no Python required):
-
-```sql
--- Attach the Form 1 XBRL database
-ATTACH 's3://pudl.catalyst.coop/nightly/ferc1_xbrl.duckdb' AS ferc1 (READ_ONLY);
-
--- List available tables
-SHOW ALL TABLES;
-
--- Query a specific schedule table
-SELECT * FROM ferc1.steam_electric_generating_plant_statistics_large_plants_402_duration
-LIMIT 100;
+```text
+s3://pudl.catalyst.coop/nightly/<form>_<era>/datapackage.json
+s3://pudl.catalyst.coop/nightly/<form>_<era>/<table_name>.parquet
 ```
 
-Or from Python if needed:
+| Form     | DBF-derived (legacy)                          | XBRL-derived (2021–present)                     |
+| -------- | --------------------------------------------- | ----------------------------------------------- |
+| Form 1   | `s3://pudl.catalyst.coop/nightly/ferc1_dbf/`  | `s3://pudl.catalyst.coop/nightly/ferc1_xbrl/`   |
+| Form 2   | `s3://pudl.catalyst.coop/nightly/ferc2_dbf/`  | `s3://pudl.catalyst.coop/nightly/ferc2_xbrl/`   |
+| Form 6   | `s3://pudl.catalyst.coop/nightly/ferc6_dbf/`  | `s3://pudl.catalyst.coop/nightly/ferc6_xbrl/`   |
+| Form 60  | `s3://pudl.catalyst.coop/nightly/ferc60_dbf/` | `s3://pudl.catalyst.coop/nightly/ferc60_xbrl/`  |
+| Form 714 | *(none — see above)*                          | `s3://pudl.catalyst.coop/nightly/ferc714_xbrl/` |
 
-```python
-import duckdb
+For example, the Form 1 XBRL table `identification_001_duration` lives at
+`s3://pudl.catalyst.coop/nightly/ferc1_xbrl/identification_001_duration.parquet`, and
+its descriptor is at `s3://pudl.catalyst.coop/nightly/ferc1_xbrl/datapackage.json`.
 
-con = duckdb.connect()
-con.execute(
-    "ATTACH 's3://pudl.catalyst.coop/nightly/ferc1_xbrl.duckdb' AS ferc1 (READ_ONLY)"
-)
-df = con.execute(
-    "SELECT * FROM ferc1.steam_electric_generating_plant_statistics_large_plants_402_duration LIMIT 100"
-).df()
+These are read the same way as any other PUDL Parquet table — see
+[Loading PUDL Parquet tables](#loading-pudl-parquet-tables) below, substituting the
+form/era directory for `nightly/`. Use the `datapackage` skill against each
+directory's `datapackage.json` to discover table and column names before querying.
+
+DBF-derived table names are the original (often cryptic) FERC identifiers, e.g.
+`f1_adit_amrt_prop`. Hand-compiled schedule-to-table mappings are available for Forms
+1 (Electricity) and 2 (Gas Pipelines):
+
+- [FERC Form 1 Schedules and Tables](./ferc1-schedules.md)
+- [FERC Form 2 Schedules and Tables](./ferc2-schedules.md)
+
+Equivalent mappings do not yet exist for Forms 6 or 60.
+
+### Listing tables in a raw per-form directory
+
+Using DuckDB:
+
+```sql
+SET s3_url_style = 'path';
+SET s3_access_key_id = '';
+SET s3_secret_access_key = '';
+
+SELECT file
+FROM glob('s3://pudl.catalyst.coop/nightly/ferc1_xbrl/*.parquet');
+```
+
+Or query the descriptor with jq (see the `datapackage` skill for full querying patterns).
+The remote filename inside every form/era directory is always `datapackage.json` — download
+it and give the local copy a disambiguated name so you can tell descriptors apart once
+you've fetched more than one:
+
+```bash
+curl -o ferc1_xbrl_datapackage.json \
+    https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/ferc1_xbrl/datapackage.json
+jq -r '.resources[].name' ferc1_xbrl_datapackage.json
 ```
 
 ---
 
 ## Loading PUDL Parquet tables
+
+**Sample or aggregate by default rather than pulling a full table.** Some PUDL tables
+are multiple gigabytes; loading one in full to answer a question that a `LIMIT`, a row
+filter, a column selection, or an aggregate query would have answered just as well
+wastes time and memory for no benefit. DuckDB's `LIMIT`/`WHERE`, polars'
+`scan_parquet().select().filter().collect()` lazy pipeline, and pandas'
+`columns=`/`filters=` arguments all push the selection down to the Parquet reader
+itself, so only the requested data is ever transferred. Reach for whichever narrows the
+read before reaching for a full load. You should estimate a table's size before a full,
+unfiltered load, and only load the full table if the job genuinely needs every row.
 
 **Summing or joining quantity columns?** Check each field's `unit` first — a matching
 column name doesn't guarantee a matching unit, and mismatched-scale units (e.g. `Mcf` vs
@@ -262,22 +291,38 @@ column name doesn't guarantee a matching unit, and mismatched-scale units (e.g. 
 
 ### With pandas
 
+**Pass `storage_options={"anon": True}`.** Without it, pandas/s3fs falls back to
+anonymous access only when it finds no credentials at all — but if the user has any
+AWS credentials configured, even invalid or expired ones, s3fs tries to sign requests
+with them first and fails with a `403`/`ACCESS_DENIED` error instead of falling back.
+Passing `anon=True` explicitly skips the credential lookup entirely, so this works the
+same way regardless of what's in the user's environment.
+
 ```python
+import datetime
+
 import pandas as pd
 
 table = "out_eia923__generation"
 
-# From S3 (no credentials needed)
-df = pd.read_parquet(f"s3://pudl.catalyst.coop/nightly/{table}.parquet")
-
-# From local file
-df = pd.read_parquet(f"/path/to/pudl_parquet/{table}.parquet")
-
-# Load only specific columns (much faster for large tables)
+# Default: narrow to the columns (and, via `filters=`, the rows) you actually need --
+# much faster for large tables, since the selection is pushed down to the reader.
+# `filters=` compares against the column's actual type -- a date column needs a
+# `datetime.date`, not a string, or pyarrow raises ArrowNotImplementedError.
 df = pd.read_parquet(
     f"s3://pudl.catalyst.coop/nightly/{table}.parquet",
     columns=["plant_id_eia", "report_date", "net_generation_mwh"],
+    filters=[("report_date", ">=", datetime.date(2020, 1, 1))],
+    storage_options={"anon": True},
 )
+
+# Only when the task genuinely needs every column: drop `columns=`/`filters=`
+df = pd.read_parquet(
+    f"s3://pudl.catalyst.coop/nightly/{table}.parquet", storage_options={"anon": True}
+)
+
+# From local file (same columns=/filters= arguments apply)
+df = pd.read_parquet(f"/path/to/pudl_parquet/{table}.parquet")
 ```
 
 `s3fs` must be installed for S3 access. Install with `uv add s3fs` (preferred) or
@@ -288,6 +333,10 @@ df = pd.read_parquet(
 Pure SQL (no Python required) — use `/query` to run these:
 
 ```sql
+SET s3_url_style = 'path';
+SET s3_access_key_id = '';
+SET s3_secret_access_key = '';
+
 SELECT plant_id_eia, report_date, net_generation_mwh
 FROM read_parquet('s3://pudl.catalyst.coop/nightly/out_eia923__generation.parquet')
 WHERE report_date >= '2020-01-01'
@@ -299,7 +348,11 @@ Or from Python:
 ```python
 import duckdb
 
-result = duckdb.sql("""
+con = duckdb.connect()
+con.execute("SET s3_url_style = 'path'")
+con.execute("SET s3_access_key_id = ''")
+con.execute("SET s3_secret_access_key = ''")
+result = con.execute("""
     SELECT plant_id_eia, report_date, net_generation_mwh
     FROM read_parquet('s3://pudl.catalyst.coop/nightly/out_eia923__generation.parquet')
     WHERE report_date >= '2020-01-01'
@@ -312,25 +365,43 @@ hourly tables (e.g., `out_ferc714__respondents_hourly`).
 
 ### With polars (memory-efficient alternative to pandas)
 
+**Pass `storage_options` explicitly.** Unlike pandas/s3fs, polars does not fall back to
+anonymous access on its own — with no AWS credentials or region configured (the common
+case, since this bucket needs neither), it hangs trying an EC2 instance-metadata lookup
+and then fails because it can't determine the bucket's region. Skip both problems with:
+
 ```python
 import polars as pl
 
 table = "out_eia923__generation"
 
-lf = pl.scan_parquet(f"s3://pudl.catalyst.coop/nightly/{table}.parquet")
-df = lf.select(["plant_id_eia", "report_date", "net_generation_mwh"]).collect()
+lf = pl.scan_parquet(
+    f"s3://pudl.catalyst.coop/nightly/{table}.parquet",
+    storage_options={"aws_skip_signature": "true", "aws_region": "us-west-2"},
+)
+# Default: chain .select()/.filter() before .collect() so column and row pruning
+# happen at the Parquet reader, not after the whole table is already in memory.
+df = (
+    lf.select(["plant_id_eia", "report_date", "net_generation_mwh"])
+    .filter(pl.col("report_date") >= pl.date(2020, 1, 1))
+    .collect()
+)
 ```
 
-Polars lazy evaluation (`scan_parquet`) is preferred for tables > 500 MB — it pushes
-down column selection and row filters to the Parquet reader.
+Polars lazy evaluation (`scan_parquet`) is preferred since it pushes down column
+selection and row filters to the Parquet reader.
 
 ---
 
 ## Listing all available tables
 
 ```sql
+SET s3_url_style = 'path';
+SET s3_access_key_id = '';
+SET s3_secret_access_key = '';
+
 -- Pure DuckDB SQL: list all Parquet tables in the nightly build
-SELECT filename
+SELECT file
 FROM glob('s3://pudl.catalyst.coop/nightly/*.parquet');
 ```
 
