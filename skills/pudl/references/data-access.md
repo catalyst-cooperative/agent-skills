@@ -301,6 +301,16 @@ df = con.execute(
 
 ## Loading PUDL Parquet tables
 
+**Sample or aggregate by default rather than pulling a full table.** Some PUDL tables
+are multiple gigabytes; loading one in full to answer a question that a `LIMIT`, a row
+filter, a column selection, or an aggregate query would have answered just as well
+wastes time and memory for no benefit. DuckDB's `LIMIT`/`WHERE`, polars'
+`scan_parquet().select().filter().collect()` lazy pipeline, and pandas'
+`columns=`/`filters=` arguments all push the selection down to the Parquet reader
+itself, so only the requested data is ever transferred. Reach for whichever narrows the
+read before reaching for a full load. You should estimate a table's size before a full,
+unfiltered load, and only load the full table if the job genuinely needs every row.
+
 **Summing or joining quantity columns?** Check each field's `unit` first — a matching
 column name doesn't guarantee a matching unit, and mismatched-scale units (e.g. `Mcf` vs
 `MMcf`) combine silently into a wrong-but-plausible number. See
@@ -316,24 +326,30 @@ Passing `anon=True` explicitly skips the credential lookup entirely, so this wor
 same way regardless of what's in the user's environment.
 
 ```python
+import datetime
+
 import pandas as pd
 
 table = "out_eia923__generation"
 
-# From S3 (no credentials needed or used)
+# Default: narrow to the columns (and, via `filters=`, the rows) you actually need --
+# much faster for large tables, since the selection is pushed down to the reader.
+# `filters=` compares against the column's actual type -- a date column needs a
+# `datetime.date`, not a string, or pyarrow raises ArrowNotImplementedError.
+df = pd.read_parquet(
+    f"s3://pudl.catalyst.coop/nightly/{table}.parquet",
+    columns=["plant_id_eia", "report_date", "net_generation_mwh"],
+    filters=[("report_date", ">=", datetime.date(2020, 1, 1))],
+    storage_options={"anon": True},
+)
+
+# Only when the task genuinely needs every column: drop `columns=`/`filters=`
 df = pd.read_parquet(
     f"s3://pudl.catalyst.coop/nightly/{table}.parquet", storage_options={"anon": True}
 )
 
-# From local file
+# From local file (same columns=/filters= arguments apply)
 df = pd.read_parquet(f"/path/to/pudl_parquet/{table}.parquet")
-
-# Load only specific columns (much faster for large tables)
-df = pd.read_parquet(
-    f"s3://pudl.catalyst.coop/nightly/{table}.parquet",
-    columns=["plant_id_eia", "report_date", "net_generation_mwh"],
-    storage_options={"anon": True},
-)
 ```
 
 `s3fs` must be installed for S3 access. Install with `uv add s3fs` (preferred) or
@@ -390,11 +406,17 @@ lf = pl.scan_parquet(
     f"s3://pudl.catalyst.coop/nightly/{table}.parquet",
     storage_options={"aws_skip_signature": "true", "aws_region": "us-west-2"},
 )
-df = lf.select(["plant_id_eia", "report_date", "net_generation_mwh"]).collect()
+# Default: chain .select()/.filter() before .collect() so column and row pruning
+# happen at the Parquet reader, not after the whole table is already in memory.
+df = (
+    lf.select(["plant_id_eia", "report_date", "net_generation_mwh"])
+    .filter(pl.col("report_date") >= pl.date(2020, 1, 1))
+    .collect()
+)
 ```
 
-Polars lazy evaluation (`scan_parquet`) is preferred for tables > 500 MB — it pushes
-down column selection and row filters to the Parquet reader.
+Polars lazy evaluation (`scan_parquet`) is preferred since it pushes down column
+selection and row filters to the Parquet reader.
 
 ---
 

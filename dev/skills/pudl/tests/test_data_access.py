@@ -21,6 +21,7 @@ library's read then relies solely on the documented anonymous-access options
 Run:  pixi run pytest dev/skills/pudl/tests/test_data_access.py -v
 """
 
+import datetime
 from pathlib import Path
 
 import duckdb
@@ -32,6 +33,12 @@ import pytest
 # exercises the documented "read_parquet over s3://" pattern cheaply.
 SMALL_PARQUET_TABLE = "core_rus__codes_fuel_types"
 SMALL_PARQUET_URL = f"s3://pudl.catalyst.coop/nightly/{SMALL_PARQUET_TABLE}.parquet"
+
+# Used for the column+row pushdown tests below -- large enough that pulling it in
+# full would be wasteful, which is exactly the point of those tests: a pushed-down
+# filter should only read the matching row groups, not the whole file.
+GENERATION_TABLE_URL = "s3://pudl.catalyst.coop/nightly/out_eia923__generation.parquet"
+FILTER_CUTOFF_DATE = datetime.date(2020, 1, 1)
 
 # Smallest of the five FERC XBRL DuckDB databases (~50 MB) -- exercises the
 # documented "ATTACH a remote .duckdb file" pattern. ATTACH is queried over
@@ -96,6 +103,23 @@ def test_pandas_read_parquet_from_s3() -> None:
     assert "description" in df.columns
 
 
+def test_pandas_read_parquet_with_column_and_row_filters() -> None:
+    """pandas' `filters=` pushes a row filter down to the Parquet reader alongside
+    `columns=`, so only matching row groups are ever read. `filters=` must compare
+    against the column's actual type -- a `datetime.date`, not a string, for a date
+    column -- or pyarrow raises ArrowNotImplementedError."""
+    df = pd.read_parquet(
+        GENERATION_TABLE_URL,
+        columns=["plant_id_eia", "report_date"],
+        filters=[("report_date", ">=", FILTER_CUTOFF_DATE)],
+        storage_options={"anon": True},
+    )
+    assert not df.empty
+    assert list(df.columns) == ["plant_id_eia", "report_date"]
+    # report_date round-trips as plain datetime.date (object dtype), not Timestamp.
+    assert (df["report_date"] >= FILTER_CUTOFF_DATE).all()
+
+
 def test_polars_scan_parquet_from_s3() -> None:
     """polars needs storage_options={"aws_skip_signature": "true", "aws_region": ...}
     -- unlike pandas/s3fs, it doesn't fall back to anonymous access on its own, so
@@ -111,6 +135,24 @@ def test_polars_scan_parquet_from_s3() -> None:
     )
     assert not df.is_empty()
     assert df.columns == ["code", "description"]
+
+
+def test_polars_scan_parquet_with_select_and_filter() -> None:
+    """Chaining .select()/.filter() before .collect() on a lazy scan pushes both
+    the column and row selection down to the Parquet reader, same as pandas'
+    columns=/filters=, rather than materializing the full table first."""
+    df = (
+        pl.scan_parquet(
+            GENERATION_TABLE_URL,
+            storage_options={"aws_skip_signature": "true", "aws_region": "us-west-2"},
+        )
+        .select(["plant_id_eia", "report_date"])
+        .filter(pl.col("report_date") >= pl.lit(FILTER_CUTOFF_DATE))
+        .collect()
+    )
+    assert not df.is_empty()
+    assert df.columns == ["plant_id_eia", "report_date"]
+    assert (df["report_date"] >= FILTER_CUTOFF_DATE).all()
 
 
 def test_attach_ferc_xbrl_duckdb_over_https() -> None:

@@ -62,8 +62,13 @@ Many schedules are split across multiple sub-tables in the XBRL database, one pe
 section, account type, or monthly period.
 
 Source (schedule titles and descriptions): FERC Form 2 blank form (2025-07-31 edition).
-The blank form HTML can be found at
-`docs/data_sources/ferc2/ferc2_blank_2025-07-31.html` in the PUDL source repository.
+`ferc2` doesn't have a PUDL docs page yet (its `documentation` field is `null` — see
+[Data Sources](./data-sources.md#the-sources-schema)), so its blank form and filer
+instructions aren't linked from `docs.catalyst.coop` the way FERC Form 1's are. Get them
+from the source agency's own page instead — the `path` field on the `ferc2` `sources`
+record. See
+[Data Sources: Blank forms and filer instructions](./data-sources.md#blank-forms-and-filer-instructions)
+for the general pattern for sources that do have a docs page.
 
 ---
 

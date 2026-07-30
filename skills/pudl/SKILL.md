@@ -15,7 +15,8 @@ license: CC-BY-4.0
 compatibility: |
   Required skills: datapackage (which requires jq >= 1.8, attach-db, and query)
   Required Python packages: pandas >= 2.0, s3fs (for S3 access)
-  Optional Python packages: polars >= 1.0
+  Optional Python packages: polars >= 1.0, markitdown[pdf,docx] (to convert downloaded
+    PDF/Word blank forms and instructions to text)
   Optional skills: dignified-python
 metadata:
   - author: Catalyst Cooperative
@@ -41,9 +42,8 @@ for the full picture.
 
 ## Workflow overview
 
-Most interactions only require steps 1–3. Steps 4 and 5 add real cost (computation,
-potentially slow S3 downloads, extra dependencies) — only proceed to them when the
-user explicitly asks to load or explore data.
+Every step below is inexpensive and should happen by default whenever it's relevant to
+the question at hand, not only when the user asks for it by name.
 
 1. **Locate the metadata** — the primary PUDL descriptor (Parquet outputs) is at:
 
@@ -90,6 +90,10 @@ user explicitly asks to load or explore data.
     the same habit applies to other sources' `core_*__codes_*` tables). Flag it if
     an answer came from recalled knowledge rather than the sweep.
 
+1. **Consult primary-source forms and instructions when metadata alone doesn't fully
+    explain something** — don't wait for the user to ask for these by name. See
+    [Data Sources: Blank forms and filer instructions](./references/data-sources.md#blank-forms-and-filer-instructions).
+
 1. **Check table tier** — see [Data Quality and Context](./references/data-quality-and-context.md).
     Prefer `out_*` tables; warn users about `_core_*` tables.
 
@@ -108,17 +112,26 @@ user explicitly asks to load or explore data.
     point the user to it. Only dive into code-level implementation after the user has
     seen that write-up or if no methodology page exists for the topic.
 
-1. *(Only if the user explicitly asks to load data)* **Load the data** — Parquet from
-    S3 or local. See [Data Access](./references/data-access.md).
+1. **Load the data, efficiently** — Loading data doesn't have to mean downloading an
+    entire table. `SELECT ... LIMIT` in DuckDB, `pl.scan_parquet()` with
+    `.select()`/`.filter()` before `.collect()` in polars, and a `columns=` argument in
+    pandas all push the selection down to the Parquet reader itself. Treat sampling and
+    down-selecting as the normal way to explore a table, not an optimization reserved
+    for when a file turns out to be huge. You should estimate a table's size before a
+    full, unfiltered load, and only load the full table if the job genuinely needs every
+    row; see [Data Access](./references/data-access.md) for the loading patterns
+    themselves.
 
 ## Reference index
 
 - [Data Sources](./references/data-sources.md) — how to query the PUDL descriptor's own
     `sources` array (31 datasets, with short codes, names, licensing, and per-source
-    documentation links); read when a user asks about a specific source dataset
-    (EIA-860, FERC Form 714, EPA CEMS, etc.) or needs documentation links, or when
+    documentation links), and where to find and read each source's blank forms and
+    filer instructions; read when a user asks about a specific source dataset
+    (EIA-860, FERC Form 714, EPA CEMS, etc.) or needs documentation links, when
     resolving a raw-archive S3 path and you need the short code and have to
-    distinguish between a concept-DOI and a concrete-DOI.
+    distinguish between a concept-DOI and a concrete-DOI, or whenever interpreting what
+    a column, code, or schedule actually means.
 - [Data Access](./references/data-access.md) — S3 paths, loading patterns
     (pandas/DuckDB/polars/pure SQL), FERC historical database locations, and EQR access;
     read whenever generating data-loading code or explaining how to access any PUDL output

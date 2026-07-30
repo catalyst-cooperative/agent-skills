@@ -95,6 +95,7 @@ pytest = ">=9.1.1"
 markdownlint-cli2 = ">=0.22.1"
 requests = ">=2.34.2"
 pyrefly = ">=1.1.1"
+uv = ">=0.11.33,<0.13"
 
 # These dependencies are needed inside the dev container
 gh = ">=2.95.0"
