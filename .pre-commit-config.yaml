@@ -37,7 +37,7 @@ repos:
         args: [--autofix, --indent=2, --no-sort-keys]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.1
+    rev: v0.16.2
     hooks:
       - id: ruff-check
         args: [--fix]
@@ -66,12 +66,12 @@ repos:
 
   # Lint Dockerfiles for errors and to ensure best practices
   - repo: https://github.com/AleksaC/hadolint-py
-    rev: v2.14.0
+    rev: v2.15.1
     hooks:
       - id: hadolint
 
   - repo: https://github.com/crate-ci/typos
-    rev: v1.48.0
+    rev: v1
     hooks:
       - id: typos
 
