@@ -1,4 +1,4 @@
-FROM ghcr.io/prefix-dev/pixi:0.73.0
+FROM ghcr.io/prefix-dev/pixi:0.76.2
 
 # The pixi base image (Ubuntu) ships a user named "ubuntu" at UID/GID 1000.
 # We reuse it directly, adding passwordless sudo so the user can install
@@ -15,9 +15,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends sudo git openss
     && chmod 0440 /etc/sudoers.d/ubuntu \
     && chmod u+s /usr/bin/bwrap \
     && mkdir -p /workspace/.pixi \
-    && chown ubuntu:ubuntu /workspace/.pixi
+    && chown 1000:1000 /workspace/.pixi
 
-USER ubuntu
+USER 1000
 # Activate the pixi environment in every interactive shell.
 # shell-hook is guarded so it fails silently before devcontainer-install has run.
 # hadolint ignore=SC2016
