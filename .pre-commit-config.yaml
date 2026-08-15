@@ -70,7 +70,7 @@ repos:
     hooks:
       - id: hadolint
 
-  - repo: https://github.com/crate-ci/typos
+  - repo: https://github.com/adhtruong/mirrors-typos
     rev: v1.49.0
     hooks:
       - id: typos
