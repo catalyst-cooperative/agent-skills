@@ -25,6 +25,7 @@ npx skills add catalyst-cooperative/agent-skills -s pudl
 
 ### For Users
 
+- [Using Agent Skills in a Browser](https://support.claude.com/en/articles/12512180-use-skills-in-claude)
 - [Using Agent Skills in VS Code](https://code.visualstudio.com/docs/copilot/customization/agent-skills)
 - [Extend Claude with Agent Skills](https://code.claude.com/docs/en/skills)
 - [npx skills](https://github.com/vercel-labs/skills) (CLI for installing skills)
