@@ -32,6 +32,7 @@ npx skills add catalyst-cooperative/agent-skills -s pudl
 - ⚠️ [The Agent Skills Directory](https://skills.sh/) ⚠️
 - Using Agent Skills in a Browser
     - Claude
+
         - **Paid**: With a paid Claude subscription you can connect to the pudl skill as a marketplace.
             Go to "Customize" > "Plugins" > toggle "Yours" > button "+ Add" > "Add Marketplace" > "Add
             from a repository" > enter "catalyst-cooperative/agent-skills" > Select "PUDL data".
@@ -42,9 +43,11 @@ npx skills add catalyst-cooperative/agent-skills -s pudl
             stays up to date by re-uploading it periodically!
 
     - Other
+
         - Other tools, such as Gemini or ChatGPT, should also have skills or plugin management systems
             that enable you to connect to the pudl skill in your browser. The most accessible option
             will likely involve uploading a zipped pudl skill folder, similar to the free tier of Claude.
+
 ### For Skills Authors
 
 - [The Agent Skills Standard](https://agentskills.io)
