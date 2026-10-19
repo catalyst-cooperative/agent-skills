@@ -31,16 +31,20 @@ npx skills add catalyst-cooperative/agent-skills -s pudl
 - [Agent Skill Installation CLI](https://www.npmjs.com/package/skills)
 - ⚠️ [The Agent Skills Directory](https://skills.sh/) ⚠️
 - Using Agent Skills in a Browser
-     - Claude
-        - **paid**: With a paid Claude subscription you can connect to the pudl skill as a marketplace. Go to "Customize" > "Plugins" > toggle "Yours" > button "+ Add" > "Add Marketplace" > "Add from a
-        repository" > enter "catalyst-cooperative/agent-skills" > Select "PUDL data".
-        - **free**: With free access to Claude, you'll have to upload the pudl skill manually -- and
-        make sure it's up to date yourself. Download and zip the ``skills/pudl`` folder from this repo. Go to "Settings" > "Capabilities" > turn on "Code execution and file creation". Then go to 
-        "Customize" > "Skills" > button "+ Add" > "Upload skill" and drip the pudl.zip file in there.
-     - Other
-        - Other platforms such as Gemini or ChatGPT should also have ways to hook up skills to your browser. You'll likely be able to use the pudl.zip file from the "free" option in Claude in
-        these here too.
+    - Claude
+        - **Paid**: With a paid Claude subscription you can connect to the pudl skill as a marketplace.
+            Go to "Customize" > "Plugins" > toggle "Yours" > button "+ Add" > "Add Marketplace" > "Add
+            from a repository" > enter "catalyst-cooperative/agent-skills" > Select "PUDL data".
+        - **Free**: With free access to Claude, you'll have to upload the pudl skill manually. Download
+            and zip the `skills/pudl` folder from this repo. Go to "Settings" > "Capabilities" > turn on
+            "Code execution and file creation". Then go to "Customize" > "Skills" > button "+ Add" >
+            "Upload skill" and drop the pudl.zip file in there. You will have to make sure this file
+            stays up to date by re-uploading it periodically!
 
+    - Other
+        - Other tools, such as Gemini or ChatGPT, should also have skills or plugin management systems
+            that enable you to connect to the pudl skill in your browser. The most accessible option
+            will likely involve uploading a zipped pudl skill folder, similar to the free tier of Claude.
 ### For Skills Authors
 
 - [The Agent Skills Standard](https://agentskills.io)
