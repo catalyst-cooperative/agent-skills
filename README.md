@@ -25,12 +25,21 @@ npx skills add catalyst-cooperative/agent-skills -s pudl
 
 ### For Users
 
-- [Using Agent Skills in a Browser](https://support.claude.com/en/articles/12512180-use-skills-in-claude)
 - [Using Agent Skills in VS Code](https://code.visualstudio.com/docs/copilot/customization/agent-skills)
 - [Extend Claude with Agent Skills](https://code.claude.com/docs/en/skills)
 - [npx skills](https://github.com/vercel-labs/skills) (CLI for installing skills)
 - [Agent Skill Installation CLI](https://www.npmjs.com/package/skills)
 - ⚠️ [The Agent Skills Directory](https://skills.sh/) ⚠️
+- Using Agent Skills in a Browser
+     - Claude
+        - **paid**: With a paid Claude subscription you can connect to the pudl skill as a marketplace. Go to "Customize" > "Plugins" > toggle "Yours" > button "+ Add" > "Add Marketplace" > "Add from a
+        repository" > enter "catalyst-cooperative/agent-skills" > Select "PUDL data".
+        - **free**: With free access to Claude, you'll have to upload the pudl skill manually -- and
+        make sure it's up to date yourself. Download and zip the ``skills/pudl`` folder from this repo. Go to "Settings" > "Capabilities" > turn on "Code execution and file creation". Then go to 
+        "Customize" > "Skills" > button "+ Add" > "Upload skill" and drip the pudl.zip file in there.
+     - Other
+        - Other platforms such as Gemini or ChatGPT should also have ways to hook up skills to your browser. You'll likely be able to use the pudl.zip file from the "free" option in Claude in
+        these here too.
 
 ### For Skills Authors
 
