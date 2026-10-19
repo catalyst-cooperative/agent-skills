@@ -45,6 +45,7 @@ npx skills add catalyst-cooperative/agent-skills -s pudl
         - Other tools, such as Gemini or ChatGPT, should also have skills or plugin management systems
             that enable you to connect to the pudl skill in your browser. The most accessible option
             will likely involve uploading a zipped pudl skill folder, similar to the free tier of Claude.
+
 ### For Skills Authors
 
 - [The Agent Skills Standard](https://agentskills.io)
