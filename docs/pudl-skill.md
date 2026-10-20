@@ -25,7 +25,8 @@ npx skills add catalyst-cooperative/agent-skills --skill pudl
 ```
 
 See the [main README](https://github.com/catalyst-cooperative/agent-skills#installing)
-for other installation methods.
+for other installation methods, including how to use this skill with web-based
+AI tools like claude.ai.
 
 ## What it can help with
 
